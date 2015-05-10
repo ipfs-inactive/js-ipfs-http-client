@@ -288,3 +288,56 @@ module.exports = function (host, port) {
 function randomString () {
   return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
 }
+
+/**
+ * Creates a new client - with Promises
+ * @class
+ * All methods return a Promise instead of taking a callback as last parameter 
+ */
+module.exports.IpfsClient = function (host, port) {
+  var ipfsClient = module.exports(host, port)
+  promisify(ipfsClient)
+  return ipfsClient
+}
+
+/**
+ * Simple implementation of promisify
+ */
+function promisify(ipfs) {
+  var Promise
+
+  // Select Promise implementation
+  if (typeof module.exports.Promise === 'function') Promise = module.exports.Promise
+  else if (typeof global.Promise === 'function') Promise = global.Promise
+  else Promise = require('es6-promise').Promise
+
+  promisifyObject(ipfs, '')
+
+  function promisifyObject(obj) {
+    for (var key in obj) {
+      if (!obj.hasOwnProperty(key)) continue
+      if (typeof obj[key] === 'function') {
+        obj[key] = promisifyFunction(obj[key])
+      }
+      else if (typeof obj[key] === 'object') {
+        promisifyObject(obj[key])
+      }
+    }
+  }
+
+  function promisifyFunction(fn) {
+    return function () {
+      var args = []
+      for (var i = 0; i < arguments.length; i++)args[i] = arguments[i]
+
+      return new Promise(function (resolve, reject) {
+        var cb = function (error, result) {
+          if (error) reject(error)
+          else resolve(result)
+        }
+        args.push(cb)
+        fn.apply(null, args)
+      })
+    }
+  }
+}

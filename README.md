@@ -162,3 +162,27 @@ curl 'http://localhost:5001/api/v0/object/get?arg=QmYEqnfCZp7a39Gxrgyv3qRS4MoCTG
 ### Pin
 
 ### Gateway
+
+## Promise support
+In order to use a promisified client, instantiate the object as follow:
+
+```javascript
+var ipfsApi = require('ipfs-api')
+var ipfs = new ipfsApi.IpfsClient('localhost', '5001')
+ipfs.add(new Buffer('Hello world!')).then(function (result) {
+    console.log('Added: ', result)
+}).catch(function (error) {
+    console.log('Something went wrong: ', error)
+})
+```
+
+By default, it will try to use native promises. If not available it will try to use
+[es6-promise](https://www.npmjs.com/package/es6-promise) package.
+
+In order to use a custom Promise implementation, do as follow:
+
+```javascript
+var ipfsApi = require('ipfs-api')
+ipfsApi.Promise = require('es6-promise').Promise
+
+```
