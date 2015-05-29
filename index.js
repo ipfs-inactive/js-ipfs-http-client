@@ -154,6 +154,16 @@ module.exports = function (host, port) {
       return send('add', null, null, file, cb)
     },
     cat: argCommand('cat'),
+    slurp: function (path, cb) {
+      this.cat(path, function (err, stream) {
+        if (err) return cb(err)
+        var buf = ''
+        stream
+          .on('error', cb)
+          .on('data', function (data) { buf += data })
+          .on('end', function () { cb(null, buf) })
+      })
+    },
     ls: argCommand('ls'),
 
     config: {
