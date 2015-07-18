@@ -7,7 +7,8 @@
     "multiaddr": "^0.1.2",
     "multipart-stream": "^1.0.0",
     "streamifier": "^0.1.1",
-    "vinyl": "^0.5.0"
+    "vinyl": "^0.5.0",
+    "vinyl-fs": "^1.0.0"
   },
   "repository": {
     "type": "git",
