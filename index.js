@@ -1,11 +1,11 @@
 'use strict'
 
 var fs = require('fs')
-var path = require('path')
 var http = require('http')
 var qs = require('querystring')
 var multiaddr = require('multiaddr')
 var File = require('vinyl')
+var vinylfs = require('vinyl-fs')
 var MultipartDir = require('./multipartdir.js')
 var stream = require('stream')
 var streamifier = require('streamifier')
@@ -124,42 +124,41 @@ module.exports = function (host_or_multiaddr, port) {
   function getFileStream (files) {
     if (!files) return null
     if (!Array.isArray(files)) files = [files]
+    if (files.length === 0) throw new Error('no files given')
 
-    var file
+    var fstream = new stream.PassThrough({objectMode: true })
 
     for (var i = 0; i < files.length; i++) {
-
-      file = files[i]
+      var file = files[i]
 
       if (typeof file === 'string') {
-        file = new File({
-          cwd: path.dirname(file),
-          base: path.dirname(file),
-          path: file,
-          contents: fs.createReadStream(file)
-        })
+        vinylfs.src(file).pipe(fstream)
+
       } else if (Buffer.isBuffer(file)) {
-        file = new File({
+        fstream.push(new File({
           cwd: '/',
           base: '/',
           path: '/',
           contents: streamifier.createReadStream(file)
-        })
+        }))
+
       } else if (file instanceof stream.Stream) {
-        file = new File({
+        fstream.push(new File({
           cwd: '/',
           base: '/',
           path: '/',
           contents: file
-        })
-      } else if (!file instanceof File) {
-        return null
-      }
+        }))
 
-      files[i] = file
+      } else if (file instanceof File) {
+        fstream.push(file)
+
+      } else {
+        throw new Error('unsupported file ' + i)
+      }
     }
 
-    return MultipartDir(files)
+    return MultipartDir(fstream)
   }
 
   function command (name) {

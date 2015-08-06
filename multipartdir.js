@@ -3,19 +3,20 @@ var Path = require('path')
 var stream = require('stream')
 
 module.exports = function MultipartDir (files) {
-  if (files.length === 0) return null
-
   var root = {
     files: new Multipart(randomString()),
     folders: {}
   }
 
-  for (var i = 0; i < files.length; i++) {
-    addFile(root, files[i])
+  while (true) {
+    var file = files.read()
+    if (file == null) {
+      break
+    }
+    addFile(root, file)
   }
 
   collapse(root)
-
   return root.files
 }
 
