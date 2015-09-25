@@ -5,6 +5,8 @@
   "main": "src/index.js",
   "dependencies": {
     "brfs": "^1.4.0",
+    "go-ipfs": "^0.3.7",
+    "ipfsd-ctl": "^0.5.0",
     "merge-stream": "^1.0.0",
     "multiaddr": "^1.0.0",
     "multipart-stream": "^2.0.0",
