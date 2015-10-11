@@ -228,33 +228,54 @@ curl 'http://localhost:5001/api/v0/object/get?arg=QmYEqnfCZp7a39Gxrgyv3qRS4MoCTG
 
 ##### mkdir
 
-bash:
-`curl "http://localhost:5001/api/v0/files/mkdir?arg=%2F<folder name>`"
-
-response: (it returns empty when successful)
-```
-```
-
-javascript:
 ```JavaScript
 ipfs.files.mkdir(<folderName>, function (err) {})
 ```
 
-response: (it returns empty when successful)
-```
-```
-
 ##### cp
+
+```JavaScript
+ipfs.files.cp([<pathSrc>, <pathDst>], function (err) {})
+```
 
 ##### ls
 
+```JavaScript
+ipfs.files.ls(<path>, function (err, res) {})
+```
+
 ##### stat
+
+```JavaScript
+ipfs.files.stat(<path>, function (err, res) {})
+```
 
 ##### rm
 
+```JavaScript
+ipfs.files.rm(<path>, [<options>],  function (err) {})
+```
+
+For `rm -r` pass a options obj with `r: true`
+
 ##### read
+
+```JavaScript
+ipfs.files.read(<path>, function (err, res) {
+  if(res.readable) {
+    // Returned as a stream
+    res.pipe(process.stdout)
+  } else {
+    // Returned as a string
+    console.log(res)
+  }
+})
+```
 
 ##### write
 
 ##### mv
-curl "http://localhost:5001/api/v0/files/mkdir?arg=%2Ffolder4"
+
+```JavaScript
+ipfs.files.mv([<pathSrc>, <pathDst>], function (err) {})
+```
