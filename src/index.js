@@ -277,7 +277,6 @@ function IpfsAPI (host_or_multiaddr, port, opts) {
       return requestAPI('files/rm', path, opts, null, cb)
     },
     read: argCommand('files/read'),
-    // write: argCommand('files/write'),
     write: function (pathDst, files, opts, cb) {
       if (typeof (opts) === 'function' && cb === undefined) {
         cb = opts
