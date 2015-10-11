@@ -34,12 +34,14 @@ function onRes (buffer, cb) {
       const error = new Error(`Server responded with ${res.statusCode}`)
 
       Wreck.read(res, {json: true}, (err, payload) => {
+        console.log('WRECK')
         if (err) {
           error.code = payload.Code
           error.message = payload.Message
         }
         cb(error)
       })
+      return
     }
 
     // console.log('stream:', stream, ' chunked:', chunkedObjects)

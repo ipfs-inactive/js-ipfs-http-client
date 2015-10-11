@@ -223,3 +223,38 @@ curl 'http://localhost:5001/api/v0/object/get?arg=QmYEqnfCZp7a39Gxrgyv3qRS4MoCTG
 #### Pin
 
 #### Gateway
+
+#### Files
+
+##### mkdir
+
+bash:
+`curl "http://localhost:5001/api/v0/files/mkdir?arg=%2F<folder name>`"
+
+response: (it returns empty when successful)
+```
+```
+
+javascript:
+```JavaScript
+ipfs.files.mkdir(<folderName>, function (err) {})
+```
+
+response: (it returns empty when successful)
+```
+```
+
+##### cp
+
+##### ls
+
+##### stat
+
+##### rm
+
+##### read
+
+##### write
+
+##### mv
+curl "http://localhost:5001/api/v0/files/mkdir?arg=%2Ffolder4"

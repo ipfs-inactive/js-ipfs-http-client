@@ -267,4 +267,21 @@ function IpfsAPI (host_or_multiaddr, port, opts) {
       return requestAPI('dht/put', [key, value], opts, null, cb)
     }
   }
+
+  self.files = {
+    cp: argCommand('files/cp'),
+    ls: argCommand('files/ls'),
+    mkdir: argCommand('files/mkdir'),
+    stat: argCommand('files/stat'),
+    rm: function (key, value, opts, cb) {
+      if (typeof (opts) === 'function') {
+        cb = opts
+        opts = {}
+      }
+      return requestAPI('config', [key, value], opts, null, cb)
+    },
+    read: argCommand('files/read'),
+    write: argCommand('files/write'),
+    mv: argCommand('files/mv')
+  }
 }
