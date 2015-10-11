@@ -228,10 +228,19 @@ curl 'http://localhost:5001/api/v0/object/get?arg=QmYEqnfCZp7a39Gxrgyv3qRS4MoCTG
 
 ##### mkdir
 
+bash:
+`curl "http://localhost:5001/api/v0/files/mkdir?arg=%2F<folder name>`"
+
+response: (it returns empty when successful)
+```
+```
+
+javascript:
 ```JavaScript
 ipfs.files.mkdir(<folderName>, function (err) {})
 ```
 
+<<<<<<< 4308ddc1ef008e123922a46bad67f5ad758e66fb
 ##### cp
 
 ```JavaScript
@@ -279,3 +288,23 @@ ipfs.files.read(<path>, function (err, res) {
 ```JavaScript
 ipfs.files.mv([<pathSrc>, <pathDst>], function (err) {})
 ```
+=======
+response: (it returns empty when successful)
+```
+```
+
+##### cp
+
+##### ls
+
+##### stat
+
+##### rm
+
+##### read
+
+##### write
+
+##### mv
+curl "http://localhost:5001/api/v0/files/mkdir?arg=%2Ffolder4"
+>>>>>>> files api tests

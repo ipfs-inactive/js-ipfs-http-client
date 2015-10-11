@@ -274,10 +274,6 @@ function IpfsAPI (host_or_multiaddr, port, opts) {
     mkdir: argCommand('files/mkdir'),
     stat: argCommand('files/stat'),
     rm: function (path, opts, cb) {
-      if (typeof (opts) === 'function') {
-        cb = opts
-        opts = {}
-      }
       return requestAPI('files/rm', path, opts, null, cb)
     },
     read: argCommand('files/read'),
