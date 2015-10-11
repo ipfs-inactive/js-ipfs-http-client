@@ -273,12 +273,12 @@ function IpfsAPI (host_or_multiaddr, port, opts) {
     ls: argCommand('files/ls'),
     mkdir: argCommand('files/mkdir'),
     stat: argCommand('files/stat'),
-    rm: function (key, value, opts, cb) {
+    rm: function (path, opts, cb) {
       if (typeof (opts) === 'function') {
         cb = opts
         opts = {}
       }
-      return requestAPI('config', [key, value], opts, null, cb)
+      return requestAPI('files/rm', path, opts, null, cb)
     },
     read: argCommand('files/read'),
     write: argCommand('files/write'),
