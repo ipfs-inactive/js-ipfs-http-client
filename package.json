@@ -67,6 +67,11 @@
     "lint": "gulp lint",
     "build": "gulp build"
   },
+  "standard": {
+    "ignore": [
+      "dist/*"
+    ]
+  },
   "pre-commit": [
     "lint",
     "test"
