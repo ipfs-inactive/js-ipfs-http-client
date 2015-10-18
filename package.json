@@ -8,6 +8,7 @@
     "merge-stream": "^1.0.0",
     "multiaddr": "^1.0.0",
     "multipart-stream": "^2.0.0",
+    "testem": "^0.9.8",
     "vinyl": "^0.5.1",
     "vinyl-fs-browser": "^2.1.1-1",
     "vinyl-multipart-stream": "^1.2.6"
@@ -33,7 +34,7 @@
     "uglify-js": "^2.4.24"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
+    "test": "./node_modules/.bin/testem",
     "lint": "./node_modules/.bin/standard",
     "build": "./node_modules/.bin/browserify -t brfs -s ipfsAPI -e ./src/index.js | tee dist/ipfsapi.js | ./node_modules/.bin/uglifyjs -m > dist/ipfsapi.min.js"
   },
