@@ -1,0 +1,17 @@
+{
+    "framework": "mocha",
+    "serve_files": [ "browserified.js" ],
+    "src_files": [
+        "src/index.js",
+				"test/test.js"
+    ],
+    "launchers": {
+			"Node": {
+				"command": "./node_modules/.bin/mocha test/test.js -R tap",
+				"protocol": "tap"
+			}
+    },
+    "before_tests": "./test/build_and_start_daemon.sh",
+    "on_exit": "rm browserified.js;killall ipfs daemon",
+		"launch_in_dev": [ "chrome", "node", "firefox" ]
+}
