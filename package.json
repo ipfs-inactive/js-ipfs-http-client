@@ -5,12 +5,9 @@
   "main": "src/index.js",
   "dependencies": {
     "brfs": "^1.4.0",
-    "merge-stream": "^1.0.0",
     "multiaddr": "^1.0.0",
-    "multipart-stream": "^2.0.0",
-    "vinyl": "^0.5.1",
-    "vinyl-fs-browser": "^2.1.1-1",
-    "vinyl-multipart-stream": "^1.2.6"
+    "superagent": "^1.4.0",
+    "superagent-logger": "^1.0.3"
   },
   "browserify": {
     "transform": [

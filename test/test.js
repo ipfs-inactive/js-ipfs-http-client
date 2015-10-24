@@ -3,7 +3,6 @@ var ipfsApi = require('../src/index.js')
 var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
-var File = require('vinyl')
 
 // this comment is used by mocha, do not delete
 /*global describe, before, it*/
@@ -45,14 +44,7 @@ describe('ipfs node api', function () {
   it('add file', function (done) {
     this.timeout(10000)
 
-    var file = new File({
-      cwd: path.dirname(testfile),
-      base: path.dirname(testfile),
-      path: testfile,
-      contents: fs.createReadStream(testfile)
-    })
-
-    ipfs.add(file, function (err, res) {
+    ipfs.add(testfile, function (err, res) {
       if (err) throw err
 
       var added = res[0]
@@ -237,6 +229,7 @@ describe('ipfs node api', function () {
     this.timeout(10000)
     ipfs.refs(initDocs, {'format': '<src> <dst> <linkname>'}, function (err, objs) {
       if (err) throw err
+
       for (var i in objs) {
         var ref = objs[i]
         var refp = ref.Ref.replace('\n', '').split(' ')
