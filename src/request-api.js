@@ -93,13 +93,16 @@ function requestAPI (path, args, opts, files, buffer, cb) {
   var url = config.host + ':' + config.port + reqPath
 
   var req = request(method, url)
-    .use(logger)
     .set('User-Agent', config['user-agent'])
     .query(opts)
     .buffer(buffer)
     .parse(safeJSONParser.bind(null, buffer))
     .on('error', cb)
     .on('response', handle)
+
+  if (process.env.DEBUG) {
+    req.use(logger)
+  }
 
   if (files) {
     prepareFiles(files).forEach(function (file) {
