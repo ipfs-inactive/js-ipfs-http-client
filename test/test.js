@@ -3,7 +3,6 @@ var ipfsApi = require('../src/index.js')
 var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
-var File = require('vinyl')
 
 // this comment is used by mocha, do not delete
 /*global describe, before, it*/
@@ -45,14 +44,7 @@ describe('ipfs node api', function () {
   it('add file', function (done) {
     this.timeout(10000)
 
-    var file = new File({
-      cwd: path.dirname(testfile),
-      base: path.dirname(testfile),
-      path: testfile,
-      contents: fs.createReadStream(testfile)
-    })
-
-    ipfs.add(file, function (err, res) {
+    ipfs.add(testfile, function (err, res) {
       if (err) throw err
 
       var added = res[0]
@@ -118,7 +110,7 @@ describe('ipfs node api', function () {
     ipfs.ls(initDocs, function (err, res) {
       if (err) throw err
 
-      var dir = res.Objects[0]
+      var dir = res[0].Objects[0]
       for (var i in dir.Links) {
         var link = dir.Links[i]
         assert.equal(link.Hash, initDocsLs[link.Name])
@@ -161,7 +153,7 @@ describe('ipfs node api', function () {
       if (err) throw err
       ipfs.config.get(confKey, function (err, res) {
         if (err) throw err
-        assert.equal(res.Value, confVal)
+        assert.equal(res[0].Value, confVal)
         done()
       })
     })
@@ -174,7 +166,7 @@ describe('ipfs node api', function () {
 
     ipfs.block.put(blorb, function (err, res) {
       if (err) throw err
-      var store = res.Key
+      var store = res[0].Key
       assert.equal(store, 'QmPv52ekjS75L4JmHpXVeuJ5uX2ecSfSZo88NSyxwA3rAQ')
       done()
     })
@@ -201,7 +193,7 @@ describe('ipfs node api', function () {
   it('object.put', function (done) {
     ipfs.object.put(testObject, 'json', function (err, res) {
       if (err) throw err
-      var obj = res
+      var obj = res[0]
       assert.equal(obj.Hash, testObjectHash)
       assert.equal(obj.Links.length, 0)
       done()
@@ -211,7 +203,7 @@ describe('ipfs node api', function () {
   it('object.get', function (done) {
     ipfs.object.get(testObjectHash, function (err, res) {
       if (err) throw err
-      var obj = res
+      var obj = res[0]
       assert.equal(obj.Data, 'testdata')
       assert.equal(obj.Links.length, 0)
       done()
@@ -237,6 +229,7 @@ describe('ipfs node api', function () {
     this.timeout(10000)
     ipfs.refs(initDocs, {'format': '<src> <dst> <linkname>'}, function (err, objs) {
       if (err) throw err
+
       for (var i in objs) {
         var ref = objs[i]
         var refp = ref.Ref.replace('\n', '').split(' ')
@@ -253,7 +246,7 @@ describe('ipfs node api', function () {
     this.timeout(10000)
     ipfs.id(function (err, res) {
       if (err) throw err
-      var id = res
+      var id = res[0]
       assert(id.ID)
       assert(id.PublicKey)
       done()

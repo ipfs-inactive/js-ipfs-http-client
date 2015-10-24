@@ -8,6 +8,8 @@
     "merge-stream": "^1.0.0",
     "multiaddr": "^1.0.0",
     "multipart-stream": "^2.0.0",
+    "superagent": "^1.4.0",
+    "superagent-logger": "^1.0.3",
     "vinyl": "^0.5.1",
     "vinyl-fs-browser": "^2.1.1-1",
     "vinyl-multipart-stream": "^1.2.6"
