@@ -3,7 +3,6 @@ var ipfsAPI = require('../src/index.js')
 var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
-var File = require('vinyl')
 
 var isNode = !global.window
 
