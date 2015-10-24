@@ -119,8 +119,7 @@ function requestAPI (path, args, opts, files, buffer, cb) {
     if (stream && !buffer) return cb(null, res)
     if (chunkedObjects && buffer) return cb(null, res)
 
-    var body = Array.isArray(res.body) ? res.body : [res.body]
-    return cb(null, body)
+    return cb(null, res.body)
   }
 
   return req
