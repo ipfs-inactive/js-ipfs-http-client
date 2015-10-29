@@ -1,26 +1,9 @@
 var request = require('superagent')
-var logger = require('superagent-logger')
 
 var safeJSONParser = require('./json-parser')
 var getFilesStream = require('./get-files-stream')
 
-function prepareFiles (files) {
-  files = Array.isArray(files) ? files : [files]
-
-  return files.map(function (file) {
-    if (Buffer.isBuffer(file)) {
-      // Multipart requests require a filename to not
-      // trow, but if it's a buffer we don't know the name
-      return {
-        contents: file,
-        opts: {filename: ''}
-      }
-    }
-
-    // Just a file path
-    return {contents: file}
-  })
-}
+var isNode = !global.window
 
 function requestAPI (config, path, args, opts, files, buffer, cb) {
   opts = opts || {}
@@ -36,53 +19,45 @@ function requestAPI (config, path, args, opts, files, buffer, cb) {
   // this option is only used internally, not passed to daemon
   delete opts.followSymlinks
 
-  opts['stream-channels'] = true
-
   var method = files ? 'POST' : 'GET'
-  var reqPath = config['api-path'] + path
-  var url = config.host + ':' + config.port + reqPath
+  var url = `${config.host}:${config.port}${config['api-path']}${path}`
 
   var req = request(method, url)
     .set('User-Agent', config['user-agent'])
     .query(opts)
-    .buffer(buffer)
+    .query('stream-channels')
     .parse(safeJSONParser.bind(null, buffer))
     .on('error', cb)
-    .on('response', handle)
+    .on('response', res => {
+      if (res.error) return cb(res.error)
 
-  if (process.env.DEBUG) {
-    req.use(logger)
+      var headers = !!res.headers
+      var stream = headers && !!res.headers['x-stream-output']
+      var chunkedObjects = headers && !!res.headers['x-chunked-output']
+
+      if (stream && !buffer) return cb(null, res)
+      if (chunkedObjects && buffer) return cb(null, res)
+
+      return cb(null, res.body)
+    })
+
+  // Superagent does not support buffering on the client side
+  if (isNode) {
+    req.buffer(buffer)
   }
-
-  req.req.on('socket', socket => {
-    console.log('got socket')
-    socket.on('data', chunk => console.log(chunk.toString()))
-  })
 
   if (files) {
     var stream = getFilesStream(files, opts)
+    if (!stream.boundary) {
+      return cb(new Error('no boundary in multipart stream'))
+    }
+    req.set('Content-Type', 'multipart/form-data; boundary=' + stream.boundary)
     stream.pipe(req)
-
-
-
   } else {
     req.end()
   }
-
-  function handle (res) {
-    if (res.error) return cb(res.error, null)
-
-    var headers = !!res.headers
-    var stream = headers && !!res.headers['x-stream-output']
-    var chunkedObjects = headers && !!res.headers['x-chunked-output']
-
-    if (stream && !buffer) return cb(null, res)
-    if (chunkedObjects && buffer) return cb(null, res)
-
-    return cb(null, res.body)
-  }
 }
 
-exports = module.exports = function getRequestAPI (config) {
+module.exports = function getRequestAPI (config) {
   return requestAPI.bind(null, config)
 }

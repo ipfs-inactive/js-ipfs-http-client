@@ -74,7 +74,7 @@ describe('IPFS Node.js API wrapper tests', function () {
     it('used by every command')
   })
 
-  describe.only('.add', function () {
+  describe('.add', function () {
     it('add file', function (done) {
       if (!isNode) {
         return done()
