@@ -34,6 +34,11 @@ gulp.task('test:browser', function (done) {
 gulp.task('mocha', function () {
   return gulp.src('test/tests.js')
     .pipe($.mocha())
+    .once('error', err => {
+      console.error(err.stack)
+      process.exit(1)
+    })
+    .once('end', () => process.exit())
 })
 
 gulp.task('karma', function (done) {

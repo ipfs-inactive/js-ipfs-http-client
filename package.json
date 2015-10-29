@@ -1,16 +1,13 @@
 {
   "name": "ipfs-api",
-  "version": "2.4.1",
+  "version": "2.5.1",
   "description": "A client library for the IPFS API",
   "main": "src/index.js",
   "dependencies": {
     "brfs": "^1.4.0",
-    "merge-stream": "^1.0.0",
     "multiaddr": "^1.0.0",
-    "multipart-stream": "^2.0.0",
-    "vinyl": "^0.5.1",
-    "vinyl-fs-browser": "^2.1.1-1",
-    "vinyl-multipart-stream": "^1.2.6"
+    "superagent": "github:visionmedia/superagent",
+    "superagent-logger": "^1.0.3"
   },
   "browserify": {
     "transform": [
@@ -22,9 +19,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ipfs/node-ipfs-api"
+    "url": "https://github.com/ipfs/js-ipfs-api"
   },
   "devDependencies": {
+    "babel-eslint": "^4.1.3",
     "brfs": "^1.4.1",
     "browserify": "^11.0.0",
     "concurrently": "^0.1.1",
@@ -69,7 +67,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ipfs/node-ipfs-api/issues"
+    "url": "https://github.com/ipfs/js-ipfs-api/issues"
   },
-  "homepage": "https://github.com/ipfs/node-ipfs-api"
+  "homepage": "https://github.com/ipfs/js-ipfs-api"
 }
