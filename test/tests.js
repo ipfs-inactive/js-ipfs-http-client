@@ -3,6 +3,7 @@ var ipfsAPI = require('../src/index.js')
 var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
+var File = require('vinyl')
 
 var isNode = !global.window
 
@@ -73,7 +74,7 @@ describe('IPFS Node.js API wrapper tests', function () {
     it('used by every command')
   })
 
-  describe('.add', function () {
+  describe.only('.add', function () {
     it('add file', function (done) {
       if (!isNode) {
         return done()

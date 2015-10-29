@@ -1,52 +1,8 @@
 var request = require('superagent')
 var logger = require('superagent-logger')
 
-function safeJSONParser (buffer, res, done) {
-  var headers = !!res.headers
-  var stream = headers && !!res.headers['x-stream-output']
-  var chunkedObjects = headers && !!res.headers['x-chunked-output']
-
-  // No need to parse
-  if (stream && !buffer) return done()
-  if (chunkedObjects && buffer) return done()
-
-  var objects = []
-  var data = ''
-  res.text = ''
-  res.setEncoding('utf8')
-
-  res.on('data', function (chunk) {
-    res.text += chunk
-
-    if (!chunkedObjects) {
-      data += chunk
-      return
-    }
-
-    try {
-      var obj = JSON.parse(chunk.toString())
-      objects.push(obj)
-    } catch (e) {
-      chunkedObjects = false
-      data += chunk
-    }
-  })
-
-  res.on('end', function () {
-    var parsed
-
-    if (!chunkedObjects) {
-      try {
-        parsed = JSON.parse(data)
-        data = parsed
-      } catch (e) {}
-    } else {
-      data = objects
-    }
-
-    return done(null, data)
-  })
-}
+var safeJSONParser = require('./json-parser')
+var getFilesStream = require('./get-files-stream')
 
 function prepareFiles (files) {
   files = Array.isArray(files) ? files : [files]
@@ -98,13 +54,20 @@ function requestAPI (config, path, args, opts, files, buffer, cb) {
     req.use(logger)
   }
 
-  if (files) {
-    prepareFiles(files).forEach(function (file) {
-      req.attach('file', file.contents, file.opts)
-    })
-  }
+  req.req.on('socket', socket => {
+    console.log('got socket')
+    socket.on('data', chunk => console.log(chunk.toString()))
+  })
 
-  req.end()
+  if (files) {
+    var stream = getFilesStream(files, opts)
+    stream.pipe(req)
+
+
+
+  } else {
+    req.end()
+  }
 
   function handle (res) {
     if (res.error) return cb(res.error, null)
