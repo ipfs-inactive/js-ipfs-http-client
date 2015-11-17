@@ -117,6 +117,7 @@ function requestAPI (config, path, args, qs, files, buffer, cb) {
 
   const opts = {
     method: files ? 'POST' : 'GET',
+    protocol: 'http:',
     uri: `http://${config.host}:${config.port}${config['api-path']}${path}`,
     qs: qs,
     useQuerystring: true,
