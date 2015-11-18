@@ -143,6 +143,34 @@ apiClients['a'].add(__dirname + '/test-folder', { recursive: true }, function (e
 })
 ```
 
+add stream.
+
+```js
+this.timeout(10000)
+var stream = new Readable()
+stream.push('Hello world')
+stream.push(null)
+apiClients['a'].add(stream, function (err, res) {
+  if (err) throw err
+  var added = res[0] != null ? res[0] : res
+  assert.equal(added.Hash, 'QmNRCQWfgze6AbBCaT1rkrkV5tJ2aP4oTNPb5JZcXYywve')
+  done()
+})
+```
+
+add url.
+
+```js
+this.timeout(10000)
+var url = 'https://raw.githubusercontent.com/ipfs/js-ipfs-api/2a9cc63d7427353f2145af6b1a768a69e67c0588/README.md'
+apiClients['a'].add(url, function (err, res) {
+  if (err) throw err
+  var added = res[0] != null ? res[0] : res
+  assert.equal(added.Hash, 'QmZmHgEX9baxUn3qMjsEXQzG6DyNcrVnwieQQTrpDdrFvt')
+  done()
+})
+```
+
 <a name="ipfs-nodejs-api-wrapper-tests-cat"></a>
 ## .cat
 cat.
@@ -452,16 +480,15 @@ apiClients['a'].object.put(testPatchObject, 'json', function (err, res) {
     if (err) {
       throw err
     }
-    var o = JSON.parse(res)
-    assert.deepEqual(o, {
+    assert.deepEqual(res, {
       Hash: 'QmZFdJ3CQsY4kkyQtjoUo8oAzsEs5BNguxBhp8sjQMpgkd',
       Links: null
     })
-    apiClients['a'].object.get(o.Hash, function (err, res) {
+    apiClients['a'].object.get(res.Hash, function (err, res2) {
       if (err) {
         throw err
       }
-      assert.deepEqual(JSON.parse(res), {
+      assert.deepEqual(res2, {
         Data: 'testdata',
         Links: [{
           Name: 'next',
