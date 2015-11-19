@@ -29,8 +29,8 @@ connect Node a to b and c.
 
 ```js
 this.timeout(5000)
-var addrs = {}
-var counter = 0
+const addrs = {}
+let counter = 0
 collectAddr('b', finish)
 collectAddr('c', finish)
 function finish () {
@@ -40,7 +40,7 @@ function finish () {
   }
 }
 function collectAddr (key, cb) {
-  apiClients[key].id(function (err, id) {
+  apiClients[key].id((err, id) => {
     if (err) {
       throw err
     }
@@ -50,11 +50,11 @@ function collectAddr (key, cb) {
   })
 }
 function dial () {
-  apiClients['a'].swarm.connect(addrs['b'], function (err, res) {
+  apiClients['a'].swarm.connect(addrs['b'], (err, res) => {
     if (err) {
       throw err
     }
-    apiClients['a'].swarm.connect(addrs['c'], function (err) {
+    apiClients['a'].swarm.connect(addrs['c'], err => {
       if (err) {
         throw err
       }
@@ -82,15 +82,15 @@ if (!isNode) {
   return done()
 }
 this.timeout(10000)
-var file = new File({
+const file = new File({
   cwd: path.dirname(testfilePath),
   base: path.dirname(testfilePath),
   path: testfilePath,
   contents: new Buffer(testfile)
 })
-apiClients['a'].add(file, function (err, res) {
+apiClients['a'].add(file, (err, res) => {
   if (err) throw err
-  var added = res[0] != null ? res[0] : res
+  const added = res[0] != null ? res[0] : res
   assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
   assert.equal(added.Name, path.basename(testfilePath))
   done()
@@ -101,11 +101,11 @@ add buffer.
 
 ```js
 this.timeout(10000)
-var buf = new Buffer(testfile)
-apiClients['a'].add(buf, function (err, res) {
+let buf = new Buffer(testfile)
+apiClients['a'].add(buf, (err, res) => {
   if (err) throw err
   // assert.equal(res.length, 1)
-  var added = res[0] != null ? res[0] : res
+  const added = res[0] != null ? res[0] : res
   assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
   done()
 })
@@ -118,9 +118,9 @@ if (!isNode) {
   return done()
 }
 this.timeout(10000)
-apiClients['a'].add(testfilePath, function (err, res) {
+apiClients['a'].add(testfilePath, (err, res) => {
   if (err) throw err
-  var added = res[0] != null ? res[0] : res
+  const added = res[0] != null ? res[0] : res
   assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
   done()
 })
@@ -130,11 +130,11 @@ add a nested dir.
 
 ```js
 this.timeout(10000)
-apiClients['a'].add(__dirname + '/test-folder', { recursive: true }, function (err, res) {
+apiClients['a'].add(__dirname + '/test-folder', { recursive: true }, (err, res) => {
   if (isNode) {
     if (err) throw err
-    var added = res[res.length - 1]
-    assert.equal(added.Hash, 'QmZdsefMGMeG6bL719gX44XSVQrL6psEgRZdw1SGadFaK2')
+    const added = res[res.length - 1]
+    assert.equal(added.Hash, 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg')
     done()
   } else {
     assert.equal(err.message, 'Recursive uploads are not supported in the browser')
@@ -147,12 +147,12 @@ add stream.
 
 ```js
 this.timeout(10000)
-var stream = new Readable()
+const stream = new Readable()
 stream.push('Hello world')
 stream.push(null)
-apiClients['a'].add(stream, function (err, res) {
+apiClients['a'].add(stream, (err, res) => {
   if (err) throw err
-  var added = res[0] != null ? res[0] : res
+  const added = res[0] != null ? res[0] : res
   assert.equal(added.Hash, 'QmNRCQWfgze6AbBCaT1rkrkV5tJ2aP4oTNPb5JZcXYywve')
   done()
 })
@@ -162,10 +162,10 @@ add url.
 
 ```js
 this.timeout(10000)
-var url = 'https://raw.githubusercontent.com/ipfs/js-ipfs-api/2a9cc63d7427353f2145af6b1a768a69e67c0588/README.md'
-apiClients['a'].add(url, function (err, res) {
+const url = 'https://raw.githubusercontent.com/ipfs/js-ipfs-api/2a9cc63d7427353f2145af6b1a768a69e67c0588/README.md'
+apiClients['a'].add(url, (err, res) => {
   if (err) throw err
-  var added = res[0] != null ? res[0] : res
+  const added = res[0] != null ? res[0] : res
   assert.equal(added.Hash, 'QmZmHgEX9baxUn3qMjsEXQzG6DyNcrVnwieQQTrpDdrFvt')
   done()
 })
@@ -177,21 +177,21 @@ cat.
 
 ```js
 this.timeout(10000)
-apiClients['a'].cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', function (err, res) {
+apiClients['a'].cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
   if (err) {
     throw err
   }
-  if (typeof res === 'string') {
+  if (!res.on) {
     // Just  a string
-    assert.equal(res, testfile)
+    assert.equal(res.toString(), testfile)
     done()
     return
   }
-  var buf = ''
+  let buf = ''
   res
-    .on('error', function (err) { throw err })
-    .on('data', function (data) { buf += data })
-    .on('end', function () {
+    .on('error', err => { throw err })
+    .on('data', data => buf += data)
+    .on('end', () => {
       assert.equal(buf, testfile)
       done()
     })
@@ -207,21 +207,21 @@ if (!isNode) {
   return done()
 }
 this.timeout(100000)
-apiClients['a'].ls(folder, function (err, res) {
+apiClients['a'].ls(folder, (err, res) => {
   if (err) {
     throw err
   }
-  var objs = {
-    Hash: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q',
+  const objs = {
+    Hash: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg',
     Links: [{
       Name: 'add.js',
-      Hash: 'QmaeuuKLHzirbVoTjb3659fyyV381amjaGrU2pecHEWPrN',
-      Size: 481,
+      Hash: 'QmcUYKmQxmTcFom4R4UZP7FWeQzgJkwcFn51XrvsMy7PE9',
+      Size: 487,
       Type: 2
     }, {
       Name: 'cat.js',
-      Hash: 'QmTQhTtDWeaaP9pttDd1CuoVTLQm1w51ABfjgmGUbCUF6i',
-      Size: 364,
+      Hash: 'QmNeHxDfQfjVFyYj2iruvysLH9zpp78v3cu1s3BZq1j5hY',
+      Size: 368,
       Type: 2
     }, {
       Name: 'files',
@@ -230,18 +230,23 @@ apiClients['a'].ls(folder, function (err, res) {
       Type: 1
     }, {
       Name: 'ipfs-add.js',
-      Hash: 'QmTjXxUemcuMAZ2KNN3iJGWHwrkMsW8SWEwkYVSBi1nFD9',
-      Size: 315,
+      Hash: 'QmU7wetVaAqc3Meurif9hcYBHGvQmL5QdpPJYBoZizyTNL',
+      Size: 333,
       Type: 2
     }, {
       Name: 'ls.js',
-      Hash: 'QmXYUXDFNNh1wgwtX5QDG7MsuhAAcE9NzDYnz8SjnhvQrK',
-      Size: 428,
+      Hash: 'QmctZfSuegbi2TMFY2y3VQjxsH5JbRBu7XmiLfHNvshhio',
+      Size: 432,
       Type: 2
     }, {
+      Hash: 'QmTDH2RXGn8XyDAo9YyfbZAUXwL1FCr44YJCN9HBZmL9Gj',
+      Name: 'test-folder',
+      Size: 2212,
+      Type: 1
+    }, {
       Name: 'version.js',
-      Hash: 'QmUmDmH4hZgN5THnVP1VjJ1YWh5kWuhLGUihch8nFiD9iy',
-      Size: 153,
+      Hash: 'QmbkMNB6rwfYAxRvnG9CWJ6cKKHEdq2ZKTozyF5FQ7H8Rs',
+      Size: 155,
       Type: 2 }]
   }
   assert.deepEqual(res.Objects[0], objs)
@@ -255,11 +260,11 @@ apiClients['a'].ls(folder, function (err, res) {
 
 ```js
 this.timeout(10000)
-var confKey = 'arbitraryKey'
-var confVal = 'arbitraryVal'
-apiClients['a'].config.set(confKey, confVal, function (err, res) {
+const confKey = 'arbitraryKey'
+const confVal = 'arbitraryVal'
+apiClients['a'].config.set(confKey, confVal, (err, res) => {
   if (err) throw err
-  apiClients['a'].config.get(confKey, function (err, res) {
+  apiClients['a'].config.get(confKey, (err, res) => {
     if (err) throw err
     assert.equal(res.Value, confVal)
     done()
@@ -271,7 +276,7 @@ apiClients['a'].config.set(confKey, confVal, function (err, res) {
 
 ```js
 this.timeout(10000)
-apiClients['c'].config.show(function (err, res) {
+apiClients['c'].config.show((err, res) => {
   if (err) {
     throw err
   }
@@ -287,7 +292,7 @@ this.timeout(10000)
 if (!isNode) {
   return done()
 }
-apiClients['c'].config.replace(__dirname + '/r-config.json', function (err, res) {
+apiClients['c'].config.replace(__dirname + '/r-config.json', (err, res) => {
   if (err) {
     throw err
   }
@@ -304,7 +309,7 @@ checks the version.
 
 ```js
 this.timeout(10000)
-apiClients['a'].version(function (err, res) {
+apiClients['a'].version((err, res) => {
   if (err) {
     throw err
   }
@@ -321,7 +326,7 @@ lists commands.
 
 ```js
 this.timeout(10000)
-apiClients['a'].commands(function (err, res) {
+apiClients['a'].commands((err, res) => {
   if (err) {
     throw err
   }
@@ -336,7 +341,7 @@ apiClients['a'].commands(function (err, res) {
 
 ```js
 this.timeout(1000000)
-apiClients['a'].diag.net(function (err, res) {
+apiClients['a'].diag.net((err, res) => {
   if (err) {
     throw err
   }
@@ -351,9 +356,9 @@ block.put.
 
 ```js
 this.timeout(10000)
-apiClients['a'].block.put(blorb, function (err, res) {
+apiClients['a'].block.put(blorb, (err, res) => {
   if (err) throw err
-  var store = res.Key
+  const store = res.Key
   assert.equal(store, 'QmPv52ekjS75L4JmHpXVeuJ5uX2ecSfSZo88NSyxwA3rAQ')
   done()
 })
@@ -363,15 +368,15 @@ block.get.
 
 ```js
 this.timeout(10000)
-apiClients['a'].block.get(blorbKey, function (err, res) {
+apiClients['a'].block.get(blorbKey, (err, res) => {
   if (err) throw err
-  if (typeof res === 'string') {
+  if (!res.on) {
     // Just  a string
-    assert.equal(res, 'blorb')
+    assert.equal(res.toString(), 'blorb')
     done()
     return
   }
-  var buf = ''
+  let buf = ''
   res
     .on('data', function (data) { buf += data })
     .on('end', function () {
@@ -386,9 +391,9 @@ apiClients['a'].block.get(blorbKey, function (err, res) {
 object.put.
 
 ```js
-apiClients['a'].object.put(testObject, 'json', function (err, res) {
+apiClients['a'].object.put(testObject, 'json', (err, res) => {
   if (err) throw err
-  var obj = res
+  const obj = res
   assert.equal(obj.Hash, testObjectHash)
   assert.equal(obj.Links.length, 0)
   done()
@@ -398,11 +403,11 @@ apiClients['a'].object.put(testObject, 'json', function (err, res) {
 object.get.
 
 ```js
-apiClients['a'].object.get(testObjectHash, function (err, res) {
+apiClients['a'].object.get(testObjectHash, (err, res) => {
   if (err) {
     throw err
   }
-  var obj = res
+  const obj = res
   assert.equal(obj.Data, 'testdata')
   assert.equal(obj.Links.length, 0)
   done()
@@ -413,19 +418,19 @@ object.data.
 
 ```js
 this.timeout(10000)
-apiClients['a'].object.data(testObjectHash, function (err, res) {
+apiClients['a'].object.data(testObjectHash, (err, res) => {
   if (err) throw err
-  if (typeof res === 'string') {
+  if (!res.on) {
     // Just  a string
-    assert.equal(res, 'testdata')
+    assert.equal(res.toString(), 'testdata')
     done()
     return
   }
-  var buf = ''
+  let buf = ''
   res
-    .on('error', function (err) { throw err })
-    .on('data', function (data) { buf += data })
-    .on('end', function () {
+    .on('error', err => { throw err })
+    .on('data', data => buf += data)
+    .on('end', () => {
       assert.equal(buf, 'testdata')
       done()
     })
@@ -436,7 +441,7 @@ object.stat.
 
 ```js
 this.timeout(10000)
-apiClients['a'].object.stat(testObjectHash, function (err, res) {
+apiClients['a'].object.stat(testObjectHash, (err, res) => {
   if (err) {
     throw err
   }
@@ -456,7 +461,7 @@ object.links.
 
 ```js
 this.timeout(10000)
-apiClients['a'].object.links(testObjectHash, function (err, res) {
+apiClients['a'].object.links(testObjectHash, (err, res) => {
   if (err) {
     throw err
   }
@@ -472,11 +477,11 @@ object.patch.
 
 ```js
 this.timeout(10000)
-apiClients['a'].object.put(testPatchObject, 'json', function (err, res) {
+apiClients['a'].object.put(testPatchObject, 'json', (err, res) => {
   if (err) {
     throw err
   }
-  apiClients['a'].object.patch(testObjectHash, ['add-link', 'next', testPatchObjectHash], function (err, res) {
+  apiClients['a'].object.patch(testObjectHash, ['add-link', 'next', testPatchObjectHash], (err, res) => {
     if (err) {
       throw err
     }
@@ -484,7 +489,7 @@ apiClients['a'].object.put(testPatchObject, 'json', function (err, res) {
       Hash: 'QmZFdJ3CQsY4kkyQtjoUo8oAzsEs5BNguxBhp8sjQMpgkd',
       Links: null
     })
-    apiClients['a'].object.get(res.Hash, function (err, res2) {
+    apiClients['a'].object.get(res.Hash, (err, res2) => {
       if (err) {
         throw err
       }
@@ -508,7 +513,7 @@ apiClients['a'].object.put(testPatchObject, 'json', function (err, res) {
 
 ```js
 this.timeout(5000)
-apiClients['a'].swarm.peers(function (err, res) {
+apiClients['a'].swarm.peers((err, res) => {
   if (err) {
     throw err
   }
@@ -529,11 +534,11 @@ done()
 ping another peer.
 
 ```js
-apiClients['b'].id(function (err, id) {
+apiClients['b'].id((err, id) => {
   if (err) {
     throw err
   }
-  apiClients['a'].ping(id.ID, function (err, res) {
+  apiClients['a'].ping(id.ID, (err, res) => {
     if (err) {
       throw err
     }
@@ -550,9 +555,9 @@ id.
 
 ```js
 this.timeout(10000)
-apiClients['a'].id(function (err, res) {
+apiClients['a'].id((err, res) => {
   if (err) throw err
-  var id = res
+  const id = res
   assert(id.ID)
   assert(id.PublicKey)
   done()
@@ -565,7 +570,7 @@ apiClients['a'].id(function (err, res) {
 
 ```js
 this.timeout(5000)
-apiClients['b'].pin.add('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {recursive: false}, function (err, res) {
+apiClients['b'].pin.add('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {recursive: false}, (err, res) => {
   if (err) {
     throw err
   }
@@ -578,7 +583,7 @@ apiClients['b'].pin.add('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {recur
 
 ```js
 this.timeout(5000)
-apiClients['b'].pin.list(function (err, res) {
+apiClients['b'].pin.list((err, res) => {
   if (err) {
     throw err
   }
@@ -591,12 +596,12 @@ apiClients['b'].pin.list(function (err, res) {
 
 ```js
 this.timeout(5000)
-apiClients['b'].pin.remove('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {recursive: false}, function (err, res) {
+apiClients['b'].pin.remove('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {recursive: false}, (err, res) => {
   if (err) {
     throw err
   }
   assert(res)
-  apiClients['b'].pin.list('direct', function (err, res) {
+  apiClients['b'].pin.list('direct', (err, res) => {
     if (err) {
       throw err
     }
@@ -614,7 +619,7 @@ apiClients['b'].pin.remove('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {re
 .name.publish.
 
 ```js
-apiClients['a'].name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', function (err, res) {
+apiClients['a'].name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
   if (err) {
     throw err
   }
@@ -627,7 +632,7 @@ apiClients['a'].name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', f
 .name.resolve.
 
 ```js
-apiClients['a'].name.resolve(name.Name, function (err, res) {
+apiClients['a'].name.resolve(name.Name, (err, res) => {
   if (err) {
     throw err
   }
@@ -646,23 +651,32 @@ if (!isNode) {
   return done()
 }
 this.timeout(10000)
-apiClients['a'].refs(folder, {'format': '<src> <dst> <linkname>'}, function (err, objs) {
+apiClients['a'].refs(folder, {'format': '<src> <dst> <linkname>'}, (err, objs) => {
   if (err) {
     throw err
   }
-  var result = [{
-    Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmaeuuKLHzirbVoTjb3659fyyV381amjaGrU2pecHEWPrN add.js',
-    Err: '' },
-    { Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmTQhTtDWeaaP9pttDd1CuoVTLQm1w51ABfjgmGUbCUF6i cat.js',
-    Err: '' },
-    { Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmTYFLz5vsdMpq4XXw1a1pSxujJc9Z5V3Aw1Qg64d849Zy files',
-    Err: '' },
-    { Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmTjXxUemcuMAZ2KNN3iJGWHwrkMsW8SWEwkYVSBi1nFD9 ipfs-add.js',
-    Err: '' },
-    { Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmXYUXDFNNh1wgwtX5QDG7MsuhAAcE9NzDYnz8SjnhvQrK ls.js',
-    Err: '' },
-    { Ref: 'QmaMTzaGBmdLrispnPRTESta4yDQdK4uKSVcQez2No4h6q QmUmDmH4hZgN5THnVP1VjJ1YWh5kWuhLGUihch8nFiD9iy version.js',
-    Err: '' } ]
+  const result = [{
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmcUYKmQxmTcFom4R4UZP7FWeQzgJkwcFn51XrvsMy7PE9 add.js',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmNeHxDfQfjVFyYj2iruvysLH9zpp78v3cu1s3BZq1j5hY cat.js',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmTYFLz5vsdMpq4XXw1a1pSxujJc9Z5V3Aw1Qg64d849Zy files',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmU7wetVaAqc3Meurif9hcYBHGvQmL5QdpPJYBoZizyTNL ipfs-add.js',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmctZfSuegbi2TMFY2y3VQjxsH5JbRBu7XmiLfHNvshhio ls.js',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmTDH2RXGn8XyDAo9YyfbZAUXwL1FCr44YJCN9HBZmL9Gj test-folder',
+    Err: ''
+  }, {
+    Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmbkMNB6rwfYAxRvnG9CWJ6cKKHEdq2ZKTozyF5FQ7H8Rs version.js',
+    Err: ''
+  }]
   assert.deepEqual(objs, result)
   done()
 })
@@ -674,7 +688,7 @@ returns an error when getting a non-existent key from the DHT.
 
 ```js
 this.timeout(20000)
-apiClients['a'].dht.get('non-existent', {timeout: '100ms'}, function (err, value) {
+apiClients['a'].dht.get('non-existent', {timeout: '100ms'}, (err, value) => {
   assert(err)
   done()
 })
@@ -684,14 +698,14 @@ puts and gets a key value pair in the DHT.
 
 ```js
 this.timeout(20000)
-apiClients['a'].dht.put('scope', 'interplanetary', function (err, res) {
+apiClients['a'].dht.put('scope', 'interplanetary', (err, res) => {
   if (err) {
     throw err
   }
   return done()
   // non ipns or pk hashes fail to fetch, known bug
   // bug: https://github.com/ipfs/go-ipfs/issues/1923#issuecomment-152932234
-  // apiClients['a'].dht.get('scope', function (err, value) {
+  // apiClients['a'].dht.get('scope', (err, value) => {
   //  console.log('->>', err, value)
   //  if (err) {
   //    throw err
@@ -705,7 +719,7 @@ apiClients['a'].dht.put('scope', 'interplanetary', function (err, res) {
 .dht.findprovs.
 
 ```js
-apiClients['a'].dht.findprovs('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', function (err, res) {
+apiClients['a'].dht.findprovs('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
   if (err) {
     throw err
   }
