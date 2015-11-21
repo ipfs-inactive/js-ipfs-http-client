@@ -1,3 +1,5 @@
+
+
 <a name="IpfsAPI"></a>
 ## IpfsAPI
 **Kind**: global class  
@@ -29,4 +31,5 @@ name value will only be set if you are actually sending a file.
 | files |  | 
 | opts | <code>object</code> | 
 | cb | <code>function</code> | 
+
 
