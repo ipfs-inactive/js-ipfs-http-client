@@ -105,8 +105,24 @@ let buf = new Buffer(testfile)
 apiClients['a'].add(buf, (err, res) => {
   if (err) throw err
   // assert.equal(res.length, 1)
-  const added = res[0] != null ? res[0] : res
+  const added = res[0] !== null ? res[0] : res
   assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+  done()
+})
+```
+
+add BIG buffer.
+
+```js
+if (!isNode) {
+  return done()
+}
+this.timeout(10000)
+apiClients['a'].add(testfileBig, (err, res) => {
+  if (err) throw err
+  // assert.equal(res.length, 1)
+  const added = res[0] !== null ? res[0] : res
+  assert.equal(added.Hash, 'Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq')
   done()
 })
 ```
@@ -181,12 +197,6 @@ apiClients['a'].cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res)
   if (err) {
     throw err
   }
-  if (!res.on) {
-    // Just  a string
-    assert.equal(res.toString(), testfile)
-    done()
-    return
-  }
   let buf = ''
   res
     .on('error', err => { throw err })
@@ -195,6 +205,27 @@ apiClients['a'].cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res)
       assert.equal(buf, testfile)
       done()
     })
+})
+```
+
+cat BIG file.
+
+```js
+if (!isNode) {
+  return done()
+}
+this.timeout(1000000)
+apiClients['a'].cat('Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq', (err, res) => {
+  if (err) {
+    throw err
+  }
+  testfileBig = require('fs').createReadStream(__dirname + '/15mb.random', { bufferSize: 128 })
+  // Do not blow out the memory of nodejs :)
+  streamEqual(res, testfileBig, (err, equal) => {
+    if (err) throw err
+    assert(equal)
+    done()
+  })
 })
 ```
 
@@ -296,7 +327,7 @@ apiClients['c'].config.replace(__dirname + '/r-config.json', (err, res) => {
   if (err) {
     throw err
   }
-  assert.equal(res, '')
+  assert.equal(res, null)
   done()
 })
 ```
@@ -350,6 +381,20 @@ apiClients['a'].diag.net((err, res) => {
 })
 ```
 
+.diag.sys.
+
+```js
+apiClients['a'].diag.sys((err, res) => {
+  if (err) {
+    throw err
+  }
+  assert(res)
+  assert(res.memory)
+  assert(res.diskinfo)
+  done()
+})
+```
+
 <a name="ipfs-nodejs-api-wrapper-tests-block"></a>
 ## .block
 block.put.
@@ -370,12 +415,6 @@ block.get.
 this.timeout(10000)
 apiClients['a'].block.get(blorbKey, (err, res) => {
   if (err) throw err
-  if (!res.on) {
-    // Just  a string
-    assert.equal(res.toString(), 'blorb')
-    done()
-    return
-  }
   let buf = ''
   res
     .on('data', function (data) { buf += data })
@@ -420,12 +459,6 @@ object.data.
 this.timeout(10000)
 apiClients['a'].object.data(testObjectHash, (err, res) => {
   if (err) throw err
-  if (!res.on) {
-    // Just  a string
-    assert.equal(res.toString(), 'testdata')
-    done()
-    return
-  }
   let buf = ''
   res
     .on('error', err => { throw err })
@@ -614,6 +647,22 @@ apiClients['b'].pin.remove('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {re
 
 <a name="ipfs-nodejs-api-wrapper-tests-log"></a>
 ## .log
+.log.tail.
+
+```js
+this.timeout(20000)
+apiClients['a'].log.tail((err, res) => {
+  if (err) {
+    throw err
+  }
+  res.once('data', obj => {
+    assert(obj)
+    assert.equal(typeof obj, 'object')
+    done()
+  })
+})
+```
+
 <a name="ipfs-nodejs-api-wrapper-tests-name"></a>
 ## .name
 .name.publish.
@@ -702,6 +751,7 @@ apiClients['a'].dht.put('scope', 'interplanetary', (err, res) => {
   if (err) {
     throw err
   }
+  assert.equal(typeof res, 'object')
   return done()
   // non ipns or pk hashes fail to fetch, known bug
   // bug: https://github.com/ipfs/go-ipfs/issues/1923#issuecomment-152932234
@@ -723,6 +773,7 @@ apiClients['a'].dht.findprovs('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', 
   if (err) {
     throw err
   }
+  assert.equal(typeof res, 'object')
   assert(res)
   done()
 })
