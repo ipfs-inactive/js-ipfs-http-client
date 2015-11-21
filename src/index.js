@@ -6,8 +6,14 @@ const getRequestAPI = require('./request-api')
 const Wreck = require('wreck')
 const ndjson = require('ndjson')
 
-exports = module.exports = IpfsAPI
+module.exports = IpfsAPI
 
+/**
+ * Create a ipfs api
+ * @constructor
+ * @param {string} host_or_multiaddr
+ * @param {number} port
+ */
 function IpfsAPI (host_or_multiaddr, port) {
   const self = this
   const config = getConfig()
@@ -35,8 +41,7 @@ function IpfsAPI (host_or_multiaddr, port) {
 
   const requestAPI = getRequestAPI(config)
 
-  // -- Internal
-
+  /** @private */
   function command (name) {
     return (opts, cb) => {
       if (typeof (opts) === 'function') {
@@ -47,6 +52,7 @@ function IpfsAPI (host_or_multiaddr, port) {
     }
   }
 
+  /** @private */
   function argCommand (name) {
     return (arg, opts, cb) => {
       if (typeof (opts) === 'function') {
@@ -59,9 +65,19 @@ function IpfsAPI (host_or_multiaddr, port) {
 
   // -- Interface
 
+  /** @public */
   self.send = requestAPI
 
-  self.add = (files, opts, cb) => {
+  /**
+   * Add a file/many files to IPFS returning the hash and name. The
+   * name value will only be set if you are actually sending a file.
+   *
+   * @public
+   * @param {} files
+   * @param {object} opts
+   * @param {function} cb
+   */
+  this.add = (files, opts, cb) => {
     if (typeof (opts) === 'function' && cb === undefined) {
       cb = opts
       opts = {}
