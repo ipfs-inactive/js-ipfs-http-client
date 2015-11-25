@@ -54,11 +54,14 @@ gulp.task('mocha', () => {
 })
 
 gulp.task('mocha:docs', function () {
-  return gulp.src('test/tests.js')
-    .pipe($.spawnMocha({
-      reporter: 'markdown',
-      output: 'API.md'
-    }))
+  return gulp.src([
+    'test/setup.js',
+    'test/**/*.spec.js'
+  ]).pipe($.spawnMocha({
+    timeout: config.webpack.dev.timeout,
+    reporter: 'markdown',
+    output: 'API.md'
+  }))
 })
 
 gulp.task('karma', done => {

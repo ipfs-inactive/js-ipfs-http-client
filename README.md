@@ -64,14 +64,18 @@ ipfs daemon
 
 ## API
 
-### Level 1 Commands
-Level 1 commands are simple commands
+You can find more detailed documentation with examples at [API.md](/API.md).
+
+
+
+
+-----------------------------------------------------------------------------
+
+### Previous API Docs
 
 #### add
 
-Add a file (where file is any data) to ipfs returning the hash and name. The
-name value will only be set if you are actually sending a file. A single or
-array of files can be used.
+Add a file (where file is any data) to ipfs returning the hash and name. The name value will only be set if you are actually sending a file. A single or array of files can be used.
 
 **Usage**
 ```javascript
@@ -84,8 +88,7 @@ ipfs.add(files, function(err, res) {
     })
 })
 ```
-`files` can be a mixed array of filenames or buffers of data. A single value is
-also acceptable.
+`files` can be a mixed array of filenames or buffers of data. A single value is also acceptable.
 
 Example
 ```js
@@ -184,9 +187,6 @@ curl "http://localhost:5001/api/v0/ls?arg=<hash>&stream-channels=true"
 **version**
 
 **commands**
-
-### Level 2 Commands
-Level 2 commands are simply named spaced wrapped commands
 
 #### Config
 
