@@ -20,13 +20,11 @@ if (isNode) {
   // testfileBig = require('raw!../100mb.random')
 }
 
-describe('.add', function () {
-  it('add file', function (done) {
+describe('.add', () => {
+  it('add file', done => {
     if (!isNode) {
       return done()
     }
-
-    this.timeout(10000)
 
     const file = new File({
       cwd: path.dirname(testfilePath),
@@ -36,102 +34,87 @@ describe('.add', function () {
     })
 
     apiClients['a'].add(file, (err, res) => {
-      if (err) throw err
+      expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
-      assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
-      assert.equal(added.Name, path.basename(testfilePath))
+      expect(added).to.have.property('Hash', 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+      expect(added).to.have.property('Name', path.basename(testfilePath))
       done()
     })
   })
 
-  it('add buffer', function (done) {
-    this.timeout(10000)
-
+  it('add buffer', done => {
     let buf = new Buffer(testfile)
     apiClients['a'].add(buf, (err, res) => {
-      if (err) throw err
-
-      // assert.equal(res.length, 1)
-      const added = res[0] !== null ? res[0] : res
-      assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+      expect(err).to.not.exist
+      expect(res).to.have.length(1)
+      expect(res[0]).to.have.property('Hash', 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
       done()
     })
   })
 
-  it('add BIG buffer', function (done) {
+  it('add BIG buffer', done => {
     if (!isNode) {
       return done()
     }
-    this.timeout(10000)
 
     apiClients['a'].add(testfileBig, (err, res) => {
-      if (err) throw err
-
-      // assert.equal(res.length, 1)
-      const added = res[0] !== null ? res[0] : res
-      assert.equal(added.Hash, 'Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq')
+      expect(err).to.not.exist
+      expect(res).to.have.length(1)
+      expect(res[0]).to.have.a.property('Hash', 'Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq')
       done()
     })
   })
 
-  it('add path', function (done) {
+  it('add path', done => {
     if (!isNode) {
       return done()
     }
 
-    this.timeout(10000)
-
     apiClients['a'].add(testfilePath, (err, res) => {
-      if (err) throw err
+      expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
-      assert.equal(added.Hash, 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+      expect(added).to.have.property('Hash', 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
       done()
     })
   })
 
-  it('add a nested dir', function (done) {
-    this.timeout(10000)
-
+  it('add a nested dir', done => {
     apiClients['a'].add(__dirname + '/../test-folder', { recursive: true }, (err, res) => {
       if (isNode) {
-        if (err) throw err
+        expect(err).to.not.exist
 
         const added = res[res.length - 1]
-        assert.equal(added.Hash, 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg')
+        expect(added).to.have.property('Hash', 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg')
         done()
       } else {
-        assert.equal(err.message, 'Recursive uploads are not supported in the browser')
+        expect(err.message).to.be.equal('Recursive uploads are not supported in the browser')
         done()
       }
     })
   })
 
-  it('add stream', function (done) {
-    this.timeout(10000)
-
+  it('add stream', done => {
     const stream = new Readable()
     stream.push('Hello world')
     stream.push(null)
     apiClients['a'].add(stream, (err, res) => {
-      if (err) throw err
+      expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
-      assert.equal(added.Hash, 'QmNRCQWfgze6AbBCaT1rkrkV5tJ2aP4oTNPb5JZcXYywve')
+      expect(added).to.have.a.property('Hash', 'QmNRCQWfgze6AbBCaT1rkrkV5tJ2aP4oTNPb5JZcXYywve')
       done()
     })
   })
 
-  it('add url', function (done) {
-    this.timeout(10000)
-
+  it('add url', done => {
     const url = 'https://raw.githubusercontent.com/ipfs/js-ipfs-api/2a9cc63d7427353f2145af6b1a768a69e67c0588/README.md'
     apiClients['a'].add(url, (err, res) => {
-      if (err) throw err
+      expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
-      assert.equal(added.Hash, 'QmZmHgEX9baxUn3qMjsEXQzG6DyNcrVnwieQQTrpDdrFvt')
+      expect(added).to.have.a.property('Hash', 'QmZmHgEX9baxUn3qMjsEXQzG6DyNcrVnwieQQTrpDdrFvt')
       done()
     })
   })

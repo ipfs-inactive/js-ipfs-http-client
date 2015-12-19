@@ -1,31 +1,26 @@
 'use strict'
 
-describe('.block', function () {
+describe('.block', () => {
   const blorbKey = 'QmPv52ekjS75L4JmHpXVeuJ5uX2ecSfSZo88NSyxwA3rAQ'
   const blorb = Buffer('blorb')
 
-  it('block.put', function (done) {
-    this.timeout(10000)
-
+  it('block.put', done => {
     apiClients['a'].block.put(blorb, (err, res) => {
-      if (err) throw err
-      const store = res.Key
-      assert.equal(store, 'QmPv52ekjS75L4JmHpXVeuJ5uX2ecSfSZo88NSyxwA3rAQ')
+      expect(err).to.not.exist
+      expect(res).to.have.a.property('Key', 'QmPv52ekjS75L4JmHpXVeuJ5uX2ecSfSZo88NSyxwA3rAQ')
       done()
     })
   })
 
-  it('block.get', function (done) {
-    this.timeout(10000)
-
+  it('block.get', done => {
     apiClients['a'].block.get(blorbKey, (err, res) => {
-      if (err) throw err
+      expect(err).to.not.exist
 
       let buf = ''
       res
         .on('data', function (data) { buf += data })
         .on('end', function () {
-          assert.equal(buf, 'blorb')
+          expect(buf).to.be.equal('blorb')
           done()
         })
     })

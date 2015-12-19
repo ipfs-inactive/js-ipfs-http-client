@@ -1,19 +1,15 @@
 'use strict'
 
-describe('.swarm', function () {
-  it('.swarm.peers', function (done) {
-    this.timeout(5000)
-
+describe('.swarm', () => {
+  it('.swarm.peers', done => {
     apiClients['a'].swarm.peers((err, res) => {
-      if (err) {
-        throw err
-      }
+      expect(err).to.not.exist
 
-      assert(res.Strings.length >= 2)
+      expect(res.Strings).to.have.length.above(1)
       done()
     })
   })
-  it('.swarm.connect', function (done) {
+  it('.swarm.connect', done => {
     // Done in the 'before' segment
     done()
   })

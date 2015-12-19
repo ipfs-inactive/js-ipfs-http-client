@@ -9,6 +9,10 @@ module.exports = send => {
     mkdir: argCommand(send, 'files/mkdir'),
     stat: argCommand(send, 'files/stat'),
     rm: function (path, opts, cb) {
+      if (typeof opts === 'function' && !cb) {
+        cb = opts
+        opts = {}
+      }
       return send('files/rm', path, opts, null, cb)
     },
     read: argCommand(send, 'files/read'),

@@ -1,19 +1,15 @@
 'use strict'
 
-describe('.refs', function () {
+describe('.refs', () => {
   const folder = 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg'
 
-  it('refs', function (done) {
+  it('refs', done => {
     if (!isNode) {
       return done()
     }
 
-    this.timeout(10000)
-
     apiClients['a'].refs(folder, {'format': '<src> <dst> <linkname>'}, (err, objs) => {
-      if (err) {
-        throw err
-      }
+      expect(err).to.not.exist
 
       const result = [{
         Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmcUYKmQxmTcFom4R4UZP7FWeQzgJkwcFn51XrvsMy7PE9 add.js',
@@ -37,7 +33,7 @@ describe('.refs', function () {
         Ref: 'QmSzLpCVbWnEm3XoTWnv6DT6Ju5BsVoLhzvxKXZeQ2cmdg QmbkMNB6rwfYAxRvnG9CWJ6cKKHEdq2ZKTozyF5FQ7H8Rs version.js',
         Err: ''
       }]
-      assert.deepEqual(objs, result)
+      expect(objs).to.eql(result)
 
       done()
     })

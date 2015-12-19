@@ -1,13 +1,11 @@
 'use strict'
 
-describe('.id', function () {
-  it('id', function (done) {
-    this.timeout(10000)
+describe('.id', () => {
+  it('id', done => {
     apiClients['a'].id((err, res) => {
-      if (err) throw err
-      const id = res
-      assert(id.ID)
-      assert(id.PublicKey)
+      expect(err).to.not.exist
+      expect(res).to.have.a.property('ID')
+      expect(res).to.have.a.property('PublicKey')
       done()
     })
   })

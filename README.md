@@ -33,11 +33,11 @@ var ipfs = ipfsAPI({host: 'localhost', port: '5001', procotol: 'http'})
 
 ### In the Browser through browserify
 
-Same as in Node.js, you just have to [browserify](https://github.com/substack/js-browserify) the code before serving it. See the browserify repo for how to do that.
+Same as in Node.js, you just have to [browserify](http://browserify.org) the code before serving it. See the browserify repo for how to do that.
 
 ### In the Browser through `<script>` tag
 
-Make the [ipfsapi.min.js](/ipfsapi.min.js) available through your server and load it using a normal `<script>` tag, this will export the `ipfsAPI` constructor on the `window` object, such that:
+Make the [ipfsapi.min.js](https://github.com/ipfs/js-ipfs-api/blob/master/dist/ipfsapi.min.js) available through your server and load it using a normal `<script>` tag, this will export the `ipfsAPI` constructor on the `window` object, such that:
 
 ```
 var ipfs = window.ipfsAPI('localhost', '5001')
@@ -55,11 +55,10 @@ When using the api from script tag for things that require buffers (`ipfs.add`, 
 
 ## CORS
 
-If are using this module in a browser with something like browserify, then you will get an error saying that the origin is not allowed. This would be a CORS ("Cross Origin Resource Sharing") failure. The ipfs server rejects requests from unknown domains by default. You can whitelist the domain that you are calling from by exporting `API_ORIGIN` and restarting the daemon, like:
+If are using this module in a browser with something like browserify, then you will get an error saying that the origin is not allowed. This would be a CORS ("Cross Origin Resource Sharing") failure. The ipfs server rejects requests from unknown domains by default. You can whitelist the domain that you are calling from by changing your ipfs config like this:
 
 ```bash
-export API_ORIGIN="http://localhost:8080"
-ipfs daemon
+$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"http://example.com\"]"
 ```
 
 ## API
