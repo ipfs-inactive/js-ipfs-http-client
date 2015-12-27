@@ -231,8 +231,6 @@ curl 'http://localhost:5001/api/v0/object/get?arg=QmYEqnfCZp7a39Gxrgyv3qRS4MoCTG
 ipfs.files.mkdir(<folderName>, function (err) {})
 ```
 
-<<<<<<< b7595adb6e402164a28c2ec8193249182e62b592
-<<<<<<< 4308ddc1ef008e123922a46bad67f5ad758e66fb
 ##### cp
 
 ```JavaScript
@@ -326,12 +324,7 @@ ipfs.files.read(<path>, function (err, res) {
 ##### write
 
 ##### mv
-<<<<<<< b7595adb6e402164a28c2ec8193249182e62b592
 curl "http://localhost:5001/api/v0/files/mkdir?arg=%2Ffolder4"
->>>>>>> files api tests
-=======
 
 ```JavaScript
 ipfs.files.mv([<pathSrc>, <pathDst>], function (err) {})
-```
->>>>>>> add readme documentation for files
