@@ -26,6 +26,15 @@ gulp.task('test:node', done => {
   )
 })
 
+gulp.task('docs', done => {
+  runSequence(
+    'daemons:start',
+    'mocha:docs',
+    'daemons:stop',
+    done
+  )
+})
+
 gulp.task('test:browser', done => {
   runSequence(
     'daemons:start',
@@ -39,10 +48,20 @@ gulp.task('mocha', () => {
   return gulp.src([
     'test/setup.js',
     'test/**/*.spec.js'
-  ])
-    .pipe($.mocha({
-      timeout: config.webpack.dev.timeout
-    }))
+  ]).pipe($.spawnMocha({
+    timeout: config.webpack.dev.timeout
+  }))
+})
+
+gulp.task('mocha:docs', function () {
+  return gulp.src([
+    'test/setup.js',
+    'test/**/*.spec.js'
+  ]).pipe($.spawnMocha({
+    timeout: config.webpack.dev.timeout,
+    reporter: 'markdown',
+    output: 'API.md'
+  }))
 })
 
 gulp.task('karma', done => {
