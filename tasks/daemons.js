@@ -70,11 +70,13 @@ function startDisposableDaemons (callback) {
               throw err
             }
 
-            ipfsNodes[key].startDaemon((err, ignore) => {
+            ipfsNodes[key].startDaemon((err, daemon) => {
               if (err) {
                 throw err
               }
-
+              daemon.add('test/test-folder', {r: true}, (e, r) => {
+                if (e) throw e
+              })
               apiAddrs[key] = ipfsNodes[key].apiAddr
               cb()
             })
