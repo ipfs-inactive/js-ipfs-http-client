@@ -35,12 +35,6 @@ function getType () {
   return 'patch'
 }
 
-gulp.task('release:build', ['build'], () => {
-  return gulp.src('./dist')
-    .pipe($.git.add())
-    .pipe($.git.commit('chore: build', {args: '-n'}))
-})
-
 gulp.task('release:bump', () => {
   const type = getType()
   const newVersion = semver.inc(getCurrentVersion(), type)
@@ -84,7 +78,6 @@ gulp.task('release', (done) => {
   runSequence(
     'lint',
     'test',
-    'release:build',
     'release:bump',
     'release:push',
     'release:publish',

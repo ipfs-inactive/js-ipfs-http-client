@@ -8,32 +8,47 @@ const runSequence = require('run-sequence')
 
 const config = require('./config')
 
-gulp.task('clean', (done) => {
+gulp.task('clean:browser', (done) => {
   rimraf('./dist', done)
 })
 
-gulp.task('build:nonminified', () => {
-  config.webpack.dev.output.filename = 'ipfsapi.js'
-
-  return gulp.src('src/index.js')
-    .pipe(webpack(config.webpack.dev))
-    .pipe($.size())
-    .pipe(gulp.dest('dist/'))
+gulp.task('clean:node', (done) => {
+  rimraf('./lib', done)
 })
 
-gulp.task('build:minified', () => {
-  config.webpack.prod.output.filename = 'ipfsapi.min.js'
+gulp.task('build:browser:nonminified', () => {
+  const c = Object.assign({}, config.webpack.dev)
+  c.output.filename = 'ipfsapi.js'
 
   return gulp.src('src/index.js')
-    .pipe(webpack(config.webpack.prod))
+    .pipe(webpack(c))
     .pipe($.size())
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist'))
 })
 
-gulp.task('build', ['clean'], (done) => {
+gulp.task('build:browser:minified', () => {
+  const c = Object.assign({}, config.webpack.prod)
+  c.output.filename = 'ipfsapi.min.js'
+
+  return gulp.src('src/index.js')
+    .pipe(webpack(c))
+    .pipe($.size())
+    .pipe(gulp.dest('dist'))
+})
+
+gulp.task('build:browser', ['clean:browser'], (done) => {
   runSequence(
-    'build:nonminified',
-    'build:minified',
+    'build:browser:nonminified',
+    'build:browser:minified',
     done
   )
 })
+
+gulp.task('build:node', ['clean:node'], () => {
+  return gulp.src('src/**/*.js')
+    .pipe($.babel(config.babel))
+    .pipe($.size())
+    .pipe(gulp.dest('lib'))
+})
+
+gulp.task('build', ['build:browser', 'build:node'])

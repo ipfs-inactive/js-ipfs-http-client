@@ -2,6 +2,11 @@
 
 const webpack = require('webpack')
 
+const babel = {
+  presets: ['es2015'],
+  plugins: ['transform-runtime']
+}
+
 const shared = {
   output: {
     filename: 'ipfsapi.js',
@@ -21,18 +26,12 @@ const shared = {
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel',
-      query: {
-        presets: ['es2015'],
-        plugins: ['transform-runtime']
-      }
+      query: babel
     }, {
       test: /\.js$/,
       include: /node_modules\/(hoek|qs|wreck|boom)/,
       loader: 'babel',
-      query: {
-        presets: ['es2015'],
-        plugins: ['transform-runtime']
-      }
+      query: babel
     }, {
       test: /\.json$/,
       loader: 'json'
@@ -66,5 +65,6 @@ module.exports = {
   webpack: {
     dev,
     prod
-  }
+  },
+  babel
 }
