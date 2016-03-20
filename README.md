@@ -37,7 +37,13 @@ Same as in Node.js, you just have to [browserify](http://browserify.org) the cod
 
 ### In the Browser through `<script>` tag
 
-Make the [ipfsapi.min.js](https://github.com/ipfs/js-ipfs-api/blob/master/dist/ipfsapi.min.js) available through your server and load it using a normal `<script>` tag, this will export the `ipfsAPI` constructor on the `window` object, such that:
+You can use [npmcdn](https://npmcdn.com/) to get the latest built version, like this
+
+```html
+<script src="https://npmcdn.com/ipfs-api/dist/ipfsapi.min.js"></script>
+```
+
+This will export the `ipfsAPI` constructor on the `window` object, such that:
 
 ```
 var ipfs = window.ipfsAPI('localhost', '5001')
@@ -48,10 +54,6 @@ If you omit the host and port, the api will parse `window.host`, and use this in
 ```
 var ipfs = window.ipfsAPI()
 ```
-
-#### Gotchas
-
-When using the api from script tag for things that require buffers (`ipfs.add`, for example), you will have to use either the exposed `ipfs.Buffer`, that works just like a node buffer, or use this [browser buffer](https://github.com/feross/buffer).
 
 ## CORS
 
