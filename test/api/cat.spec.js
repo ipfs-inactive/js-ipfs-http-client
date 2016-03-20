@@ -1,4 +1,9 @@
+/* eslint-env mocha */
+/* globals apiClients */
 'use strict'
+
+const expect = require('chai').expect
+const isNode = require('detect-node')
 
 const path = require('path')
 const streamEqual = require('stream-equal')
@@ -15,14 +20,14 @@ if (isNode) {
 
 describe('.cat', () => {
   it('cat', (done) => {
-    apiClients['a']
+    apiClients.a
       .cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
         expect(err).to.not.exist
 
         let buf = ''
         res
-          .on('error', (err) => {
-            throw err
+          .on('error', (err1) => {
+            expect(err1).to.not.exist
           })
           .on('data', (data) => {
             buf += data
@@ -39,14 +44,14 @@ describe('.cat', () => {
       return done()
     }
 
-    apiClients['a'].cat('Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq', (err, res) => {
+    apiClients.a.cat('Qme79tX2bViL26vNjPsF3DP1R9rMKMvnPYJiKTTKPrXJjq', (err, res) => {
       expect(err).to.not.exist
 
       testfileBig = require('fs').createReadStream(path.join(__dirname, '/../15mb.random'), { bufferSize: 128 })
 
       // Do not blow out the memory of nodejs :)
-      streamEqual(res, testfileBig, (err, equal) => {
-        expect(err).to.not.exist
+      streamEqual(res, testfileBig, (err1, equal) => {
+        expect(err1).to.not.exist
         expect(equal).to.be.true
         done()
       })
@@ -55,7 +60,7 @@ describe('.cat', () => {
 
   describe('promise', () => {
     it('cat', (done) => {
-      return apiClients['a'].cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+      return apiClients.a.cat('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
         .then((res) => {
           let buf = ''
           res

@@ -10,11 +10,21 @@ const config = require('./config')
 
 require('./daemons')
 
+// Workaround gulp not exiting if there are some
+// resources not freed
+const exitOnFail = (err) => {
+  if (err) {
+    process.exit(1)
+  } else {
+    process.exit(0)
+  }
+}
+
 gulp.task('test', (done) => {
   runSequence(
     'test:node',
     'test:browser',
-    done
+    exitOnFail
   )
 })
 
@@ -23,7 +33,7 @@ gulp.task('test:node', (done) => {
     'daemons:start',
     'mocha',
     'daemons:stop',
-    done
+    exitOnFail
   )
 })
 
@@ -32,7 +42,7 @@ gulp.task('test:browser', (done) => {
     'daemons:start',
     'karma',
     'daemons:stop',
-    done
+    exitOnFail
   )
 })
 
@@ -50,5 +60,7 @@ gulp.task('karma', (done) => {
   new Server({
     configFile: path.join(__dirname, '/../karma.conf.js'),
     singleRun: true
-  }, done).start()
+  }, (code) => {
+    done(code > 0 ? 'Some tests are failing' : undefined)
+  }).start()
 })
