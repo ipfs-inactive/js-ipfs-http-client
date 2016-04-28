@@ -30,7 +30,7 @@
     "pre-commit": "^1.1.2",
     "raw-loader": "^0.5.1",
     "stream-equal": "^0.1.8",
-    "stream-http": "^2.2.0"
+    "stream-http": "^2.3.0"
   },
   "scripts": {
     "test": "gulp test",
