@@ -5,6 +5,7 @@
 const expect = require('chai').expect
 const isNode = require('detect-node')
 const fs = require('fs')
+const bl = require('bl')
 
 const path = require('path')
 const streamEqual = require('stream-equal')
@@ -24,59 +25,40 @@ describe('.get', () => {
     apiClients.a
       .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
         expect(err).to.not.exist
-
-        let buf = ''
-        res
-          .on('error', (err) => {
-            expect(err).to.not.exist
-          })
-          .on('data', (data) => {
-            buf += data
-          })
-          .on('end', () => {
-            expect(buf).to.contain(testfile.toString())
-            done()
-          })
+        res.pipe(bl((err, bldata) => {
+          expect(err).to.not.exist
+          expect(bldata.toString()).to.contain(testfile.toString())
+          done()
+        }))
       })
   })
 
   it('get with archive true', (done) => {
     apiClients.a
-      .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', true, (err, res) => {
+      .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {archive: true}, (err, res) => {
         expect(err).to.not.exist
+        res.pipe(bl((err, bldata) => {
+          expect(err).to.not.exist
+          expect(bldata.toString()).to.contain(testfile.toString())
+          done()
+        }))
+      })
+  })
 
-        let buf = ''
-        res
-          .on('error', (err) => {
-            expect(err).to.not.exist
-          })
-          .on('data', (data) => {
-            buf += data
-          })
-          .on('end', () => {
-            expect(buf).to.contain(testfile.toString())
-            done()
-          })
+  it('get err with out of range compression level', (done) => {
+    apiClients.a
+      .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {compress: true, 'compression-level': 10}, (err, res) => {
+        expect(err).to.exist
+        expect(err.toString()).to.equal('Error: Compression level must be between 1 and 9')
+        done()
       })
   })
 
   it('get with compression level', (done) => {
     apiClients.a
-      .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', true, 1, (err, res) => {
+      .get('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', {compress: true, 'compression-level': 1}, (err, res) => {
         expect(err).to.not.exist
-
-        let buf = ''
-        res
-          .on('error', (err) => {
-            expect(err).to.not.exist
-          })
-          .on('data', (data) => {
-            buf += data
-          })
-          .on('end', () => {
-            expect(buf).to.contain(testfile.toString())
-            done()
-          })
+        done()
       })
   })
 
