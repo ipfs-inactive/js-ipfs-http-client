@@ -12,6 +12,7 @@ function requireCommands () {
     diag: require('./api/diag'),
     id: require('./api/id'),
     files: require('./api/files'),
+    get: require('./api/get'),
     log: require('./api/log'),
     ls: require('./api/ls'),
     mount: require('./api/mount'),
