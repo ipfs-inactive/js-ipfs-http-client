@@ -34,7 +34,7 @@ describe('.add', () => {
       content: new Buffer(testfile)
     }
 
-    apiClients.a.add([file], (err, res) => {
+    apiClients.a.files.add([file], (err, res) => {
       expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
@@ -47,7 +47,7 @@ describe('.add', () => {
 
   it('add buffer', (done) => {
     let buf = new Buffer(testfile)
-    apiClients.a.add(buf, (err, res) => {
+    apiClients.a.files.add(buf, (err, res) => {
       expect(err).to.not.exist
 
       expect(res).to.have.length(1)
@@ -63,7 +63,7 @@ describe('.add', () => {
       return done()
     }
 
-    apiClients.a.add(testfileBig, (err, res) => {
+    apiClients.a.files.add(testfileBig, (err, res) => {
       expect(err).to.not.exist
 
       expect(res).to.have.length(1)
@@ -79,7 +79,7 @@ describe('.add', () => {
       return done()
     }
 
-    apiClients.a.addFiles(testfilePath, (err, res) => {
+    apiClients.a.util.addFiles(testfilePath, (err, res) => {
       expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
@@ -91,7 +91,7 @@ describe('.add', () => {
   })
 
   it('local fs: add nested dir (follow symlinks)', (done) => {
-    apiClients.a.addFiles(path.join(__dirname, '/../test-folder'), { recursive: true }, (err, res) => {
+    apiClients.a.util.addFiles(path.join(__dirname, '/../test-folder'), { recursive: true }, (err, res) => {
       if (isNode) {
         expect(err).to.not.exist
 
@@ -109,7 +109,7 @@ describe('.add', () => {
   })
 
   it('local fs: add nested dir (don\'t follow symlinks)', (done) => {
-    apiClients.a.addFiles(path.join(__dirname, '/../test-folder'), { recursive: true, followSymlinks: false }, (err, res) => {
+    apiClients.a.util.addFiles(path.join(__dirname, '/../test-folder'), { recursive: true, followSymlinks: false }, (err, res) => {
       if (isNode) {
         expect(err).to.not.exist
 
@@ -148,7 +148,7 @@ describe('.add', () => {
       }
     ]
 
-    apiClients.a.add(dirs, { recursive: true }, (err, res) => {
+    apiClients.a.files.add(dirs, { recursive: true }, (err, res) => {
       expect(err).to.not.exist
 
       const added = res[res.length - 1]
@@ -164,7 +164,7 @@ describe('.add', () => {
     stream.push('Hello world')
     stream.push(null)
 
-    apiClients.a.add(stream, (err, res) => {
+    apiClients.a.files.add(stream, (err, res) => {
       expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
@@ -177,7 +177,7 @@ describe('.add', () => {
 
   it('add url', (done) => {
     const url = 'https://raw.githubusercontent.com/ipfs/js-ipfs-api/2a9cc63d7427353f2145af6b1a768a69e67c0588/README.md'
-    apiClients.a.addUrl(url, (err, res) => {
+    apiClients.a.util.addUrl(url, (err, res) => {
       expect(err).to.not.exist
 
       const added = res[0] != null ? res[0] : res
@@ -191,7 +191,7 @@ describe('.add', () => {
   describe('promise', () => {
     it('add buffer', () => {
       let buf = new Buffer(testfile)
-      return apiClients.a.add(buf)
+      return apiClients.a.files.add(buf)
         .then((res) => {
           const added = res[0] != null ? res[0] : res
           const mh = bs58.encode(added.multihash()).toString()
