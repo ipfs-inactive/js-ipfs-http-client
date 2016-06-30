@@ -25,7 +25,8 @@ function onRes (buffer, cb) {
 
     const stream = Boolean(res.headers['x-stream-output'])
     const chunkedObjects = Boolean(res.headers['x-chunked-output'])
-    const isJson = res.headers['content-type'] && res.headers['content-type'].indexOf('application/json') === 0
+    const isJson = res.headers['content-type'] &&
+                   res.headers['content-type'].indexOf('application/json') === 0
 
     if (res.statusCode >= 400 || !res.statusCode) {
       const error = new Error(`Server responded with ${res.statusCode}`)
@@ -84,7 +85,7 @@ function requestAPI (config, path, args, qs, files, buffer, cb) {
   const port = config.port ? `:${config.port}` : ''
 
   const opts = {
-    method: files ? 'POST' : 'GET',
+    method: 'POST',
     uri: `${config.protocol}://${config.host}${port}${config['api-path']}${path}?${Qs.stringify(qs, {arrayFormat: 'repeat'})}`,
     headers: {}
   }
@@ -100,7 +101,6 @@ function requestAPI (config, path, args, qs, files, buffer, cb) {
     }
 
     opts.headers['Content-Type'] = `multipart/form-data; boundary=${stream.boundary}`
-    opts.downstreamRes = stream
     opts.payload = stream
   }
 

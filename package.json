@@ -32,6 +32,7 @@
     "ndjson": "^1.4.3",
     "promisify-es6": "^1.0.1",
     "qs": "^6.1.0",
+    "streamifier": "^0.1.1",
     "wreck": "^7.0.2"
   },
   "engines": {
@@ -45,7 +46,7 @@
     "aegir": "^3.2.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "interface-ipfs-core": "^0.3.0",
+    "interface-ipfs-core": "^0.4.2",
     "ipfsd-ctl": "^0.14.0",
     "pre-commit": "^1.1.2",
     "stream-equal": "^0.1.8",
