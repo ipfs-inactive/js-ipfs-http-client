@@ -1,4 +1,5 @@
-# js-ipfs-api
+ipfs-api
+========
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
@@ -9,7 +10,9 @@
 [![Travis CI](https://travis-ci.org/ipfs/js-ipfs-api.svg?branch=master)](https://travis-ci.org/ipfs/js-ipfs-api)
 [![Circle CI](https://circleci.com/gh/ipfs/js-ipfs-api.svg?style=svg)](https://circleci.com/gh/ipfs/js-ipfs-api)
 
-> A client library for the IPFS HTTP API, implemented in JavaScript.
+> A client library for the IPFS HTTP API, implemented in JavaScript. This client library implements the [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core) enabling applications to change between a embebed js-ipfs node and any remove IPFS node without having to change the code. In addition, this client library implements a set of utility functions.
+
+![](https://github.com/ipfs/interface-ipfs-core/raw/master/img/badge.png)
 
 ## Table of Contents
 
@@ -20,7 +23,7 @@
   - [In the Browser through `<script>` tag](#in-the-browser-through-script-tag)
   - [CORS](#cors)
 - [Usage](#usage)
-  - [Callbacks and promises](#callbacks-and-promises)
+  - [Callbacks and Promises](#callbacks-and-promises)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -99,7 +102,7 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"http://exam
 
 ## Usage
 
-See [API.md](API.md) and [`tests/api`](test/api) for details on available methods.
+See [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core) for the standard IPFS API. In addition, this module implements a set of utility functions.
 
 ### Callbacks and promises
 
@@ -118,9 +121,40 @@ ipfs.id()
 This relies on a global `Promise` object. If you are in an environment where that is not
 yet available you need to bring your own polyfill.
 
+### Utility functions
+
+These utility functions are scoped behind the `ipfs.util`.
+
+#### Add files or entire directories from the FileSystem to IPFS
+
+> `ipfs.util.fsAdd(path, callback)`
+
+Reads path from disk, if it is a directory, will add it recursively, if not, will add the file.
+
+```JavaScript
+```
+
+#### Add a file from a URL to IPFS
+
+> `ipfs.util.urlAdd(url, callback)`
+
+```JavaScript
+```
+
+#### Add a file from a stream to IPFS
+
+> `ipfs.util.streamAdd(stream, callback)`
+
+This is very similar to `ipfs.files.add({path:'', content: stream})`. It is like the reverse of cat
+
+```JavaScript
+```
+
+
+
 ## Contribute
 
-The js-ipfs API is a work in progress. As such, there's a few things you can do right now to help out:
+The js-ipfs-api is a work in progress. As such, there's a few things you can do right now to help out:
 
 * **[Check out the existing issues](https://github.com/ipfs/js-ipfs-api/issues)**!
 * **Perform code reviews**. More eyes will help a) speed the project along b) ensure quality and c) reduce possible future bugs.
@@ -130,6 +164,10 @@ The js-ipfs API is a work in progress. As such, there's a few things you can do 
 **Want to hack on IPFS?**
 
 [![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/contributing.md)
+
+## Historical context
+
+This module started as a direct mapping from the go-ipfs cli to a JavaScript implementation, although this was useful and familiar to a lot of developers that were coming to IPFS for the first time, it also created some confusion on how to operate the core of IPFS and have access to the full capacity of the protocol. After much consideration, we decided to create `interface-ipfs-core` with the goal of standardizing the interface of a core implementation of IPFS, and keep the utility functions the IPFS community learned to use and love, such as reading files from disk and storing them directly to IPFS.
 
 ## License
 
