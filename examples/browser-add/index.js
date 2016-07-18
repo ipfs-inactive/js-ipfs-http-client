@@ -15,13 +15,25 @@ function store () {
 }
 
 function display (hash) {
-  ipfs.cat(hash, function(err, res) {
-    if(err || !res) return console.error("ipfs cat error", err, res);
-    if(res.readable) {
-      console.error('unhandled: cat result is a pipe', res);
+  ipfs.cat(hash, function (err, stream) {
+    if(err || !stream) return console.error("ipfs cat error", err, stream);
+    var res = '';
+
+    if(!stream.readable) {
+      console.error('unhandled: cat result is a pipe', stream);
     } else {
-      document.getElementById('hash').innerText=hash;
-      document.getElementById('content').innerText=res;
+      stream.on('data', function (chunk) {
+        res += chunk.toString();
+      })
+
+      stream.on('error', function (err) {
+        console.error('Oh nooo', err);
+      })
+
+      stream.on('end', function () {
+        document.getElementById('hash').innerText = hash;
+        document.getElementById('content').innerText = res;
+      })
     }
   });
 }
