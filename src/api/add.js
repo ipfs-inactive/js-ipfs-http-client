@@ -16,6 +16,6 @@ module.exports = (send) => {
 
     const sendWithTransform = send.withTransform(addToDagNodesTransform)
 
-    sendWithTransform('add', null, {}, files, callback)
+    sendWithTransform('add', null, {progress: false}, files, callback)
   })
 }
