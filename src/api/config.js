@@ -1,10 +1,19 @@
 'use strict'
 
-const argCommand = require('../cmd-helpers').argCommand
-
 module.exports = (send) => {
   return {
-    get: argCommand(send, 'config'),
+    get: (key, callback) => {
+      if (typeof key === 'function') {
+        callback = key
+        key = undefined
+      }
+
+      if (!key) {
+        return send('config/show', null, null, null, true, callback)
+      }
+
+      return send('config', key, null, null, callback)
+    },
     set (key, value, opts, cb) {
       if (typeof (opts) === 'function') {
         cb = opts
@@ -20,9 +29,6 @@ module.exports = (send) => {
       }
 
       return send('config', [key, value], opts, null, cb)
-    },
-    show (cb) {
-      return send('config/show', null, null, null, true, cb)
     },
     replace (file, cb) {
       return send('config/replace', null, null, file, cb)
