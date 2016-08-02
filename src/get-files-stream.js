@@ -44,7 +44,7 @@ function loadPaths (opts, file) {
   }
 
   if (stats.isDirectory() && opts.recursive) {
-    const mg = new glob.sync.GlobSync(`${file}/**/*`, {
+    const mg = new glob.sync.GlobSync(`${file}/**`, {
       follow: followSymlinks
     })
 
