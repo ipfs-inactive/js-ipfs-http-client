@@ -11,8 +11,8 @@ function store () {
     }
 
     res.forEach(function (file) {
-      console.log('successfully stored', file.Hash)
-      display(file.Hash)
+      console.log('successfully stored', file)
+      display(file.path)
     })
   })
 }
