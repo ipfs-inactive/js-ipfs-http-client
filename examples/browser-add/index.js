@@ -31,4 +31,6 @@ function display (hash) {
   })
 }
 
-document.getElementById('store').onclick = store
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('store').onclick = store
+})
