@@ -33,7 +33,7 @@
     "aegir": "^6.0.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "hapi": "^14.1.0",
+    "hapi": "^14.2.0",
     "interface-ipfs-core": "^0.8.0",
     "ipfsd-ctl": "^0.14.0",
     "passthrough-counter": "^1.0.0",
