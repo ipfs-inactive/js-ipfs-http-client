@@ -1,6 +1,7 @@
 'use strict'
 
-const Wreck = require('wreck')
+// const Wreck = require('wreck')
+const fetch = require('fetch-ponyfill')
 const addToDagNodesTransform = require('./../../add-to-dagnode-transform')
 
 const promisify = require('promisify-es6')
@@ -28,7 +29,7 @@ module.exports = (send) => {
 
     const sendWithTransform = send.withTransform(addToDagNodesTransform)
 
-    Wreck.request('GET', url, null, (err, res) => {
+    fetch('GET', url, null, (err, res) => {
       if (err) {
         return callback(err)
       }

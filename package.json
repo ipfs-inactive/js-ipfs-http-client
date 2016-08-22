@@ -17,11 +17,13 @@
     "coverage-publish": "aegir-coverage publish"
   },
   "dependencies": {
+    "arraybuffer-to-buffer": "0.0.4",
     "async": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "bl": "^1.1.2",
     "bs58": "^3.0.0",
     "detect-node": "^2.0.3",
+    "fetch-ponyfill": "^1.0.0",
     "flatmap": "0.0.3",
     "glob": "^7.0.5",
     "ipfs-merkle-dag": "^0.6.0",
@@ -32,8 +34,7 @@
     "ndjson": "^1.4.3",
     "promisify-es6": "^1.0.1",
     "qs": "^6.2.1",
-    "tar-stream": "^1.5.2",
-    "wreck": "^9.0.0"
+    "tar-stream": "^1.5.2"
   },
   "engines": {
     "node": ">=4.2.2"

@@ -1,6 +1,6 @@
 'use strict'
 
-const DAGNode = require('ipfs-merkle-dag').DAGNode
+const DAGNode = require('ipfs-merkle-dag/lib/dag-node')
 const bl = require('bl')
 const parallel = require('async/parallel')
 

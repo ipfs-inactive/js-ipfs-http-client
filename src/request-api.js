@@ -1,69 +1,85 @@
 'use strict'
 
-const Wreck = require('wreck')
+require('throw-rejects')()
+const fetch = require('fetch-ponyfill')()
 const Qs = require('qs')
-const ndjson = require('ndjson')
+const toBuffer = require('arraybuffer-to-buffer')
+const Readable = require('stream').Readable
 const getFilesStream = require('./get-files-stream')
 
 const isNode = require('detect-node')
 
 // -- Internal
 
-function parseChunkedJson (res, cb) {
-  const parsed = []
-  res
-    .pipe(ndjson.parse())
-    .on('data', (obj) => {
-      parsed.push(obj)
-    })
-    .on('end', () => {
-      cb(null, parsed)
-    })
-}
-
-function onRes (buffer, cb, uri) {
-  return (err, res) => {
-    if (err) {
-      return cb(err)
-    }
-
-    const stream = Boolean(res.headers['x-stream-output'])
-    const chunkedObjects = Boolean(res.headers['x-chunked-output'])
-    const isJson = res.headers['content-type'] &&
-                   res.headers['content-type'].indexOf('application/json') === 0
-
-    if (res.statusCode >= 400 || !res.statusCode) {
-      const error = new Error(`Server responded with ${res.statusCode}`)
-
-      return Wreck.read(res, {json: true}, (err, payload) => {
-        if (err) {
-          return cb(err)
-        }
-        if (payload) {
-          error.code = payload.Code
-          error.message = payload.Message || payload.toString()
-        }
-        cb(error)
-      })
-    }
-
-    if (stream && !buffer) {
-      return cb(null, res)
-    }
-
-    if (chunkedObjects) {
-      if (isJson) {
-        return parseChunkedJson(res, cb)
-      }
-
-      return Wreck.read(res, null, cb)
-    }
-
-    Wreck.read(res, {json: isJson}, cb)
+// node-fetch has res.buffer
+// window.fetch has res.arrayBuffer
+function bufferReturn (res) {
+  if (res.buffer) {
+    return res.buffer()
+  } else if (res.arrayBuffer) {
+    return res.arrayBuffer().then(toBuffer)
+  } else {
+    return res.text().then(Buffer)
   }
 }
 
-function requestAPI (config, options, callback) {
+
+function onRes (buffer) {
+  return (res) => {
+    const stream = Boolean(res.headers.get('x-stream-output'))
+    const chunkedObjects = Boolean(res.headers.get('x-chunked-output'))
+    const isJson = res.headers.has('content-type') &&
+                   res.headers.get('content-type').indexOf('application/json') === 0
+
+    if (!res.ok) {
+      const error = new Error(`Server responded with ${res.statusCode}`)
+
+      return res.json()
+        .then((payload) => {
+          if (payload) {
+            error.code = payload.Code
+            error.message = payload.Message || payload.toString()
+          }
+
+          throw error
+        })
+    }
+
+    if (stream && !buffer) {
+      return bufferReturn(res)
+        .then((raw) => {
+          // this makes me sad
+          const s = new Readable()
+          s.push(raw)
+          s.push(null)
+          return s
+        })
+    }
+
+    if (chunkedObjects) {
+      if (!isJson) {
+        return bufferReturn(res)
+      }
+
+      return bufferReturn(res)
+        .then((raw) => {
+          return raw
+            .toString()
+            .split('\n')
+            .map(JSON.parse)
+        })
+    }
+
+    // Can't use res.json() as it throws on empty responses
+    return res.text().then((raw) => {
+      if (raw) {
+        return JSON.parse(raw)
+      }
+    })
+  }
+}
+
+function requestAPI (config, options) {
   options.qs = options.qs || {}
 
   if (Array.isArray(options.files)) {
@@ -114,14 +130,20 @@ function requestAPI (config, options, callback) {
 
   if (options.files) {
     if (!stream.boundary) {
-      return callback(new Error('No boundary in multipart stream'))
+      return Promise.reject(new Error('No boundary in multipart stream'))
     }
 
     opts.headers['Content-Type'] = `multipart/form-data; boundary=${stream.boundary}`
-    opts.payload = stream
+    opts.body = stream
   }
 
-  return Wreck.request(opts.method, opts.uri, opts, onRes(options.buffer, callback, opts.uri))
+  return fetch(opts.uri, {
+    headers: opts.headers,
+    method: opts.method,
+    mode: 'cors',
+    body: opts.body
+  })
+    .then(onRes(options.buffer))
 }
 
 //
@@ -142,7 +164,9 @@ exports = module.exports = function getRequestAPI (config) {
       return callback(new Error('no options were passed'))
     }
 
-    return requestAPI(config, options, callback)
+    return requestAPI(config, options)
+      .then((res) => callback(null, res))
+      .catch((err) => callback(err))
   }
 
   // Wraps the 'send' function such that an asynchronous

@@ -6,7 +6,7 @@ const isNode = require('detect-node')
 const ipfsAPI = require('./../../src/index.js')
 const noop = () => {}
 
-describe('ipfsAPI request tests', () => {
+describe.skip('ipfsAPI request tests', () => {
   describe('requestAPI', () => {
     const apiAddrs = require('./../setup/tmp-disposable-nodes-addrs.json')
     const apiAddr = apiAddrs.a.split('/')

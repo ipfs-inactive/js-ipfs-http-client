@@ -1,7 +1,7 @@
 'use strict'
 
-const DAGNode = require('ipfs-merkle-dag').DAGNode
-const DAGLink = require('ipfs-merkle-dag').DAGLink
+const DAGNode = require('ipfs-merkle-dag/lib/dag-node')
+const DAGLink = require('ipfs-merkle-dag/lib/dag-link')
 const promisify = require('promisify-es6')
 const bs58 = require('bs58')
 const bl = require('bl')
