@@ -1,28 +1,17 @@
 'use strict'
 
-require('throw-rejects')()
+// require('throw-rejects')()
 const fetch = require('fetch-ponyfill')()
 const Qs = require('qs')
-const toBuffer = require('arraybuffer-to-buffer')
-const Readable = require('stream').Readable
-const getFilesStream = require('./get-files-stream')
-
+const toReadStream = require('streamifier').createReadStream
 const isNode = require('detect-node')
+const bl = require('bl')
+const toArrayBuffer = require('to-arraybuffer')
+
+const getFilesStream = require('./get-files-stream')
+const bufferReturn = require('./buffer-return')
 
 // -- Internal
-
-// node-fetch has res.buffer
-// window.fetch has res.arrayBuffer
-function bufferReturn (res) {
-  if (res.buffer) {
-    return res.buffer()
-  } else if (res.arrayBuffer) {
-    return res.arrayBuffer().then(toBuffer)
-  } else {
-    return res.text().then(Buffer)
-  }
-}
-
 
 function onRes (buffer) {
   return (res) => {
@@ -46,14 +35,7 @@ function onRes (buffer) {
     }
 
     if (stream && !buffer) {
-      return bufferReturn(res)
-        .then((raw) => {
-          // this makes me sad
-          const s = new Readable()
-          s.push(raw)
-          s.push(null)
-          return s
-        })
+      return bufferReturn(res).then(toReadStream)
     }
 
     if (chunkedObjects) {
@@ -63,10 +45,15 @@ function onRes (buffer) {
 
       return bufferReturn(res)
         .then((raw) => {
-          return raw
-            .toString()
-            .split('\n')
-            .map(JSON.parse)
+          const parts = raw.toString().split('\n').filter(Boolean)
+          try {
+            return parts
+              .map(JSON.parse)
+          } catch (err) {
+            console.error(parts)
+            console.error(err.stack)
+            throw err
+          }
         })
     }
 
@@ -137,12 +124,23 @@ function requestAPI (config, options) {
     opts.body = stream
   }
 
-  return fetch(opts.uri, {
-    headers: opts.headers,
-    method: opts.method,
-    mode: 'cors',
-    body: opts.body
-  })
+  return Promise.resolve(opts.body)
+    .then((body) => {
+      if (!body || !body.pipe || isNode) return body
+
+      return new Promise((resolve, reject) => {
+        body.pipe(bl((err, buf) => {
+          if (err) return reject(err)
+          resolve(toArrayBuffer(buf))
+        }))
+      })
+    })
+    .then((body) => fetch(opts.uri, {
+      headers: opts.headers,
+      method: opts.method,
+      mode: 'cors',
+      body: body
+    }))
     .then(onRes(options.buffer))
 }
 

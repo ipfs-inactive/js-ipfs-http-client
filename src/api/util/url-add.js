@@ -1,8 +1,8 @@
 'use strict'
 
-// const Wreck = require('wreck')
-const fetch = require('fetch-ponyfill')
+const fetch = require('fetch-ponyfill')()
 const addToDagNodesTransform = require('./../../add-to-dagnode-transform')
+const bufferReturn = require('../../buffer-return')
 
 const promisify = require('promisify-es6')
 
@@ -29,16 +29,21 @@ module.exports = (send) => {
 
     const sendWithTransform = send.withTransform(addToDagNodesTransform)
 
-    fetch('GET', url, null, (err, res) => {
-      if (err) {
-        return callback(err)
-      }
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch: ${url}`)
+        }
 
-      sendWithTransform({
-        path: 'add',
-        qs: opts,
-        files: res
-      }, callback)
-    })
+        return bufferReturn(res)
+      })
+      .then((content) => {
+        sendWithTransform({
+          path: 'add',
+          qs: opts,
+          files: content
+        }, callback)
+      })
+      .catch(callback)
   })
 }
