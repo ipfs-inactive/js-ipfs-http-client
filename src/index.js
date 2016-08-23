@@ -1,5 +1,6 @@
 'use strict'
 
+require('isomorphic-fetch')
 const multiaddr = require('multiaddr')
 const loadCommands = require('./load-commands')
 const getConfig = require('./default-config')

@@ -1,7 +1,6 @@
+/* globals fetch:false */
 'use strict'
 
-// require('throw-rejects')()
-const fetch = require('fetch-ponyfill')()
 const Qs = require('qs')
 const toReadStream = require('streamifier').createReadStream
 const isNode = require('detect-node')

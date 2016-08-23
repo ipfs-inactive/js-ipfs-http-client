@@ -1,6 +1,6 @@
+/* globals fetch:false */
 'use strict'
 
-const fetch = require('fetch-ponyfill')()
 const addToDagNodesTransform = require('./../../add-to-dagnode-transform')
 const bufferReturn = require('../../buffer-return')
 
