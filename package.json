@@ -32,7 +32,11 @@
     "multiaddr": "^2.0.2",
     "multipart-stream": "^2.0.1",
     "promisify-es6": "^1.0.1",
+    "pull-split": "^0.2.0",
+    "pull-stream": "^3.4.3",
+    "pull-stream-to-stream": "^1.3.0",
     "qs": "^6.2.1",
+    "stream-to-pull-stream": "^1.7.0",
     "streamifier": "^0.1.1",
     "tar-stream": "^1.5.2",
     "to-arraybuffer": "^1.0.1"

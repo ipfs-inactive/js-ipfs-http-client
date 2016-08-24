@@ -2,17 +2,73 @@
 'use strict'
 
 const Qs = require('qs')
-const toReadStream = require('streamifier').createReadStream
 const isNode = require('detect-node')
 const bl = require('bl')
 const toArrayBuffer = require('to-arraybuffer')
+const pull = require('pull-stream')
+const toStream = require('pull-stream-to-stream')
+const toPull = require('stream-to-pull-stream')
+const toBuffer = require('arraybuffer-to-buffer')
+const split = require('pull-split')
 
 const getFilesStream = require('./get-files-stream')
 const bufferReturn = require('./buffer-return')
 
 // -- Internal
 
-function onRes (buffer) {
+function streamReturn (res, ndjson) {
+  let stream
+  if (res.body && res.body.getReader) {
+    // Chrome implements ReadbleStream
+    const reader = res.body.getReader()
+    let ended = false
+    stream = (end, cb) => {
+      if (end) ended = end
+      if (ended) {
+        reader.cancel()
+        return cb(ended)
+      }
+
+      reader.read()
+        .then((result) => {
+          console.log('got result', result)
+          if (result.done) ended = true
+          if (ended) return cb(ended)
+
+          const val = result.value
+          cb(null, Buffer.isBuffer(val) ? val : toBuffer(val))
+        })
+        .catch((err) => {
+          ended = err
+          cb(ended)
+        })
+    }
+  }
+
+  // node-fetch has PassThrough stream as body
+  if (res.body && res.body.readable) {
+    if (!ndjson) {
+      return res.body
+    }
+
+    stream = toPull.source(res.body)
+  }
+
+  if (stream) {
+    if (ndjson) {
+      return toStream.source(pull(
+        stream,
+        split('\n', JSON.parse)
+      ))
+    } else {
+      return toStream.source(stream)
+    }
+  }
+
+  throw new Error('Streaming is not supported by our browser')
+}
+
+function onRes (buffer, ndjson) {
   return (res) => {
     const stream = Boolean(res.headers.get('x-stream-output'))
     const chunkedObjects = Boolean(res.headers.get('x-chunked-output'))
@@ -34,7 +90,7 @@ function onRes (buffer) {
     }
 
     if (stream && !buffer) {
-      return bufferReturn(res).then(toReadStream)
+      return streamReturn(res, ndjson)
     }
 
     if (chunkedObjects) {
@@ -49,8 +105,6 @@ function onRes (buffer) {
             return parts
               .map(JSON.parse)
           } catch (err) {
-            console.error(parts)
-            console.error(err.stack)
             throw err
           }
         })
@@ -140,7 +194,7 @@ function requestAPI (config, options) {
       mode: 'cors',
       body: body
     }))
-    .then(onRes(options.buffer))
+    .then(onRes(options.buffer, options.ndjson))
 }
 
 //

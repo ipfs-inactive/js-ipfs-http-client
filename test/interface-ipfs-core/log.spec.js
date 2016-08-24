@@ -12,7 +12,7 @@ const isPhantom = !isNode && typeof navigator !== 'undefined' && navigator.userA
 if (!isPhantom) {
   // How did this work before
   // our polyfill didn't have real streaming support
-  describe.skip('.log', () => {
+  describe('.log', () => {
     let ipfs
     let fc
 
@@ -36,6 +36,7 @@ if (!isPhantom) {
         expect(req).to.exist
 
         res.once('data', (obj) => {
+          res.end()
           expect(obj).to.be.an('object')
           done()
         })
@@ -47,6 +48,7 @@ if (!isPhantom) {
         return ipfs.log.tail()
           .then((res) => {
             res.once('data', (obj) => {
+              res.end()
               expect(obj).to.be.an('object')
             })
           })
