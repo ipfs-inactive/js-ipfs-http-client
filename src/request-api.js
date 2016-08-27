@@ -1,69 +1,125 @@
+/* globals fetch:false */
 'use strict'
 
-const Wreck = require('wreck')
 const Qs = require('qs')
-const ndjson = require('ndjson')
-const getFilesStream = require('./get-files-stream')
-
 const isNode = require('detect-node')
+const bl = require('bl')
+const toArrayBuffer = require('to-arraybuffer')
+const pull = require('pull-stream')
+const toStream = require('pull-stream-to-stream')
+const toPull = require('stream-to-pull-stream')
+const toBuffer = require('arraybuffer-to-buffer')
+const split = require('pull-split')
+
+const getFilesStream = require('./get-files-stream')
+const bufferReturn = require('./buffer-return')
 
 // -- Internal
 
-function parseChunkedJson (res, cb) {
-  const parsed = []
-  res
-    .pipe(ndjson.parse())
-    .on('data', (obj) => {
-      parsed.push(obj)
-    })
-    .on('end', () => {
-      cb(null, parsed)
-    })
-}
+function streamReturn (res, ndjson) {
+  let stream
+  if (res.body && res.body.getReader) {
+    // Chrome implements ReadbleStream
+    const reader = res.body.getReader()
+    let ended = false
+    stream = (end, cb) => {
+      if (end) ended = end
+      if (ended) {
+        reader.cancel()
+        return cb(ended)
+      }
 
-function onRes (buffer, cb, uri) {
-  return (err, res) => {
-    if (err) {
-      return cb(err)
+      reader.read()
+        .then((result) => {
+          console.log('got result', result)
+          if (result.done) ended = true
+          if (ended) return cb(ended)
+
+          const val = result.value
+          cb(null, Buffer.isBuffer(val) ? val : toBuffer(val))
+        })
+        .catch((err) => {
+          ended = err
+          cb(ended)
+        })
+    }
+  }
+
+  // node-fetch has PassThrough stream as body
+  if (res.body && res.body.readable) {
+    if (!ndjson) {
+      return res.body
     }
 
-    const stream = Boolean(res.headers['x-stream-output'])
-    const chunkedObjects = Boolean(res.headers['x-chunked-output'])
-    const isJson = res.headers['content-type'] &&
-                   res.headers['content-type'].indexOf('application/json') === 0
+    stream = toPull.source(res.body)
+  }
 
-    if (res.statusCode >= 400 || !res.statusCode) {
+  if (stream) {
+    if (ndjson) {
+      return toStream.source(pull(
+        stream,
+        split('\n', JSON.parse)
+      ))
+    } else {
+      return toStream.source(stream)
+    }
+  }
+
+  throw new Error('Streaming is not supported by our browser')
+}
+
+function onRes (buffer, ndjson) {
+  return (res) => {
+    const stream = Boolean(res.headers.get('x-stream-output'))
+    const chunkedObjects = Boolean(res.headers.get('x-chunked-output'))
+    const isJson = res.headers.has('content-type') &&
+                   res.headers.get('content-type').indexOf('application/json') === 0
+
+    if (!res.ok) {
       const error = new Error(`Server responded with ${res.statusCode}`)
 
-      return Wreck.read(res, {json: true}, (err, payload) => {
-        if (err) {
-          return cb(err)
-        }
-        if (payload) {
-          error.code = payload.Code
-          error.message = payload.Message || payload.toString()
-        }
-        cb(error)
-      })
+      return res.json()
+        .then((payload) => {
+          if (payload) {
+            error.code = payload.Code
+            error.message = payload.Message || payload.toString()
+          }
+
+          throw error
+        })
     }
 
     if (stream && !buffer) {
-      return cb(null, res)
+      return streamReturn(res, ndjson)
     }
 
     if (chunkedObjects) {
-      if (isJson) {
-        return parseChunkedJson(res, cb)
+      if (!isJson) {
+        return bufferReturn(res)
       }
 
-      return Wreck.read(res, null, cb)
+      return bufferReturn(res)
+        .then((raw) => {
+          const parts = raw.toString().split('\n').filter(Boolean)
+          try {
+            return parts
+              .map(JSON.parse)
+          } catch (err) {
+            throw err
+          }
+        })
     }
 
-    Wreck.read(res, {json: isJson}, cb)
+    // Can't use res.json() as it throws on empty responses
+    return res.text().then((raw) => {
+      if (raw) {
+        return JSON.parse(raw)
+      }
+    })
   }
 }
 
-function requestAPI (config, options, callback) {
+function requestAPI (config, options) {
   options.qs = options.qs || {}
 
   if (Array.isArray(options.files)) {
@@ -114,14 +170,31 @@ function requestAPI (config, options, callback) {
 
   if (options.files) {
     if (!stream.boundary) {
-      return callback(new Error('No boundary in multipart stream'))
+      return Promise.reject(new Error('No boundary in multipart stream'))
     }
 
     opts.headers['Content-Type'] = `multipart/form-data; boundary=${stream.boundary}`
-    opts.payload = stream
+    opts.body = stream
   }
 
-  return Wreck.request(opts.method, opts.uri, opts, onRes(options.buffer, callback, opts.uri))
+  return Promise.resolve(opts.body)
+    .then((body) => {
+      if (!body || !body.pipe || isNode) return body
+
+      return new Promise((resolve, reject) => {
+        body.pipe(bl((err, buf) => {
+          if (err) return reject(err)
+          resolve(toArrayBuffer(buf))
+        }))
+      })
+    })
+    .then((body) => fetch(opts.uri, {
+      headers: opts.headers,
+      method: opts.method,
+      mode: 'cors',
+      body: body
+    }))
+    .then(onRes(options.buffer, options.ndjson))
 }
 
 //
@@ -142,7 +215,9 @@ exports = module.exports = function getRequestAPI (config) {
       return callback(new Error('no options were passed'))
     }
 
-    return requestAPI(config, options, callback)
+    return requestAPI(config, options)
+      .then((res) => callback(null, res))
+      .catch((err) => callback(err))
   }
 
   // Wraps the 'send' function such that an asynchronous
