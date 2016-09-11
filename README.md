@@ -187,6 +187,33 @@ ipfs.id()
 This relies on a global `Promise` object. If you are in an environment where that is not
 yet available you need to bring your own polyfill.
 
+### Publish/Subscribe (experimental)
+
+js-ipfs-api supports the up-and-coming feature publish/subscribe. This requires you
+to use a development build of go-ipfs from the `feat/floodsub` branch (issue for tracking here: https://github.com/ipfs/go-ipfs/pull/3202).
+
+Usage:
+
+```js
+const subscription = ipfsApi.pubsub.subscribe('my-topic')
+subscription.on('data', (msg) => {
+  console.log('message', msg.data)
+  // => 'Hello there!'
+})
+setTimeout(() => {
+  // Stop subscription after 10 seconds
+  subscription.cancel()
+}, 1000 * 10)
+
+ipfsApi.pubsub.publish('my-topic', 'Hello there!', (err, successful) => {
+  if (err) {
+    console.log('Something went wrong publishing a message')
+    throw err
+  }
+  // successful = true/false
+})
+```
+
 ## Development
 
 ### Testing
