@@ -22,6 +22,7 @@ function requireCommands () {
     object: require('./api/object'),
     pin: require('./api/pin'),
     ping: require('./api/ping'),
+    pubsub: require('./api/pubsub'),
     refs: require('./api/refs'),
     repo: require('./api/repo'),
     swarm: require('./api/swarm'),
@@ -53,12 +54,12 @@ function requireCommands () {
   return cmds
 }
 
-function loadCommands (send) {
+function loadCommands (send, config) {
   const files = requireCommands()
   const cmds = {}
 
   Object.keys(files).forEach((file) => {
-    cmds[file] = files[file](send)
+    cmds[file] = files[file](send, config)
   })
 
   return cmds
