@@ -4,6 +4,9 @@
   "description": "A client library for the IPFS HTTP API. Follows interface-ipfs-core spec",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
+  "browser": {
+    "glob": false
+  },
   "scripts": {
     "test": "PHANTOM=off node --max_old_space_size=4096 node_modules/.bin/gulp test:node",
     "test:node": "gulp test:node",
