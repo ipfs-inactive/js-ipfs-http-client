@@ -24,7 +24,7 @@
     "detect-node": "^2.0.3",
     "flatmap": "0.0.3",
     "glob": "^7.0.5",
-    "ipfs-block": "^0.3.0",
+    "ipfs-block": "^0.4.0",
     "ipfs-merkle-dag": "^0.7.1",
     "is-ipfs": "^0.2.0",
     "isstream": "^0.1.2",
