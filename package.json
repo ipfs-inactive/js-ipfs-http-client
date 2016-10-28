@@ -17,7 +17,7 @@
     "coverage-publish": "aegir-coverage publish"
   },
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^2.1.0",
     "babel-runtime": "^6.11.6",
     "bl": "^1.1.2",
     "bs58": "^3.0.0",
