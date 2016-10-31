@@ -40,7 +40,7 @@
     "peer-info": "^0.7.1",
     "promisify-es6": "^1.0.2",
     "qs": "^6.3.0",
-    "stream-http": "^2.4.0",
+    "stream-http": "^2.4.1",
     "streamifier": "^0.1.1",
     "tar-stream": "^1.5.2",
     "wreck": "^10.0.0"
@@ -53,11 +53,11 @@
     "url": "https://github.com/ipfs/js-ipfs-api"
   },
   "devDependencies": {
-    "aegir": "^9.0.0",
+    "aegir": "^9.0.1",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "hapi": "^15.2.0",
-    "interface-ipfs-core": "^0.16.1",
+    "interface-ipfs-core": "^0.16.6",
     "ipfsd-ctl": "^0.17.0",
     "pre-commit": "^1.1.3",
     "socket.io": "^1.5.1",
