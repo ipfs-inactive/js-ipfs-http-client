@@ -70,7 +70,8 @@ function spawnEphemeralNode (callback) {
       (cb) => {
         const headers = {
           HTTPHeaders: {
-            'Access-Control-Allow-Origin': ['*']
+            'Access-Control-Allow-Origin': ['*'],
+            'Access-Control-Allow-Credentials': 'true'
           }
         }
         node.setConfig('API', JSON.stringify(headers), cb)

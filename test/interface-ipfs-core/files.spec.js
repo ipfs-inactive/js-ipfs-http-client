@@ -8,7 +8,14 @@ const path = require('path')
 const test = require('interface-ipfs-core')
 const fs = require('fs')
 const FactoryClient = require('../factory/factory-client')
-const testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+
+let testfile
+
+if (isNode) {
+  testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+} else {
+  testfile = require('file!../data/testfile.txt')
+}
 
 // add, cat, get and ls tests from interface-ipfs-core
 let fc

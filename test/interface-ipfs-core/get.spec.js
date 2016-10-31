@@ -12,7 +12,13 @@ const streamEqual = require('stream-equal')
 const path = require('path')
 const FactoryClient = require('../factory/factory-client')
 
-const testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+let testfile
+
+if (isNode) {
+  testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+} else {
+  testfile = require('file!../data/testfile.txt')
+}
 
 let testfileBig
 let tfbPath

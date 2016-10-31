@@ -5,8 +5,15 @@
 const expect = require('chai').expect
 const fs = require('fs')
 const path = require('path')
+const isNode = require('detect-node')
 
-const testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+let testfile
+
+if (isNode) {
+  testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
+} else {
+  testfile = require('file!../data/testfile.txt')
+}
 
 describe('.name', () => {
   let name
