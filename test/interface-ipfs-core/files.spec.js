@@ -4,18 +4,12 @@
 
 const expect = require('chai').expect
 const isNode = require('detect-node')
-const path = require('path')
 const test = require('interface-ipfs-core')
-const fs = require('fs')
+const loadFixture = require('aegir/fixtures')
+
 const FactoryClient = require('../factory/factory-client')
 
-let testfile
-
-if (isNode) {
-  testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
-} else {
-  testfile = require('file!../data/testfile.txt')
-}
+const testfile = loadFixture(__dirname, '../fixtures/testfile.txt')
 
 // add, cat, get and ls tests from interface-ipfs-core
 let fc

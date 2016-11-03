@@ -24,7 +24,7 @@ describe('ls', function () {
       (cb) => fc.spawnNode(cb),
       (node, cb) => {
         ipfs = node
-        const filesPath = path.join(__dirname, '../data/test-folder')
+        const filesPath = path.join(__dirname, '../fixtures/test-folder')
         ipfs.util.addFromFs(filesPath, { recursive: true }, cb)
       },
       (hashes, cb) => {

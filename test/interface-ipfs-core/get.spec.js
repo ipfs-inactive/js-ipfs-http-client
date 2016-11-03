@@ -10,20 +10,15 @@ const concat = require('concat-stream')
 const through = require('through2')
 const streamEqual = require('stream-equal')
 const path = require('path')
+const loadFixture = require('aegir/fixtures')
 const FactoryClient = require('../factory/factory-client')
 
-let testfile
-
-if (isNode) {
-  testfile = fs.readFileSync(path.join(__dirname, '/../data/testfile.txt'))
-} else {
-  testfile = require('file!../data/testfile.txt')
-}
+const testfile = loadFixture(__dirname, '../fixtures/testfile.txt')
 
 let testfileBig
 let tfbPath
 if (isNode) {
-  tfbPath = path.join(__dirname, '/../data/15mb.random')
+  tfbPath = path.join(__dirname, '/../fixtures/15mb.random')
   testfileBig = fs.createReadStream(tfbPath, { bufferSize: 128 })
 }
 
