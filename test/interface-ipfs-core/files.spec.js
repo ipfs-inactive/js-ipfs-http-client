@@ -9,7 +9,12 @@ const loadFixture = require('aegir/fixtures')
 
 const FactoryClient = require('../factory/factory-client')
 
-const testfile = loadFixture(__dirname, '../fixtures/testfile.txt')
+let testfile
+if (isNode) {
+  testfile = loadFixture(__dirname, '../fixtures/testfile.txt')
+} else {
+  testfile = loadFixture(__dirname, 'fixtures/testfile.txt')
+}
 
 // add, cat, get and ls tests from interface-ipfs-core
 let fc
