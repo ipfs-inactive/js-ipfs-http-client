@@ -9,6 +9,10 @@ ipfs-api
 [![Dependency Status](https://david-dm.org/ipfs/js-ipfs-api.svg?style=flat-square)](https://david-dm.org/ipfs/js-ipfs-api)
 [![Travis CI](https://travis-ci.org/ipfs/js-ipfs-api.svg?branch=master)](https://travis-ci.org/ipfs/js-ipfs-api)
 [![Circle CI](https://circleci.com/gh/ipfs/js-ipfs-api.svg?style=svg)](https://circleci.com/gh/ipfs/js-ipfs-api)
+![](https://img.shields.io/badge/npm-%3E%3D3.0.0-orange.svg?style=flat-square)
+![](https://img.shields.io/badge/Node.js-%3E%3D4.0.0-orange.svg?style=flat-square)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/js-ipfs-api.svg)](https://saucelabs.com/u/ipfs-js-api)
 
 > **Note: If you see CI red, that is due a failing test when adding nested directories in the browser, all the other features work as expect, if this is something you also need, please consider helping us identifying the solution for it, join the discussion at: https://github.com/ipfs/js-ipfs-api/issues/339**
 
