@@ -99,7 +99,7 @@ If are using this module in a browser with something like browserify, then you w
 
 ```bash
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"http://example.com\"]"
-$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "\"true\""
+$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "[\"true\"]"
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"POST\", \"GET\"]"
 ```
 

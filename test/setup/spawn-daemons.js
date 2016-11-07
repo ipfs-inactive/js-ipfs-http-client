@@ -26,7 +26,7 @@ function startDisposableDaemons (callback) {
       console.log('  ipfs init done - (bootstrap and mdns off) - ' + key)
 
       const configValues = {
-        // Bootstrap: [],
+        Bootstrap: [],
         Discovery: {},
         'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
         'HTTPHeaders.Access-Control-Allow-Credentials': 'true',

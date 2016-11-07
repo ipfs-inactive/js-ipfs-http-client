@@ -72,7 +72,7 @@ function spawnEphemeralNode (callback) {
     series([
       (cb) => {
         const configValues = {
-          // Bootstrap: [],
+          Bootstrap: [],
           Discovery: {},
           'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
           'HTTPHeaders.Access-Control-Allow-Credentials': 'true',
