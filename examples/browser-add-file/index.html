@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>JS IPFS API - Example - Browser - Add</title>
+    <script src="https://wzrd.in/standalone/buffer"></script> <!-- feross buffer -->
+    <script src="https://npmcdn.com/ipfs-api/dist/index.js"></script>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <div>
+      <h1>Add text - <i>works</i></h1>
+      <textarea id="source">
+      </textarea>
+      <button id="storeText">create in ipfs</button>
+    </div>
+    <div>
+      <h1>Add buffer - <i>does not work</i></h1>
+      <input type="file" id="filePicker">
+      <button id="storeBuffer">create in ipfs</button>
+    </div>
+    <div>
+      <h1>Response from ipfs - <i>stream res unhandled</i></h1>
+      <div id="hash">[ipfs hash]</div>
+      <div id="content">[ipfs content]</div>
+    </div>
+  </body>
+</html>

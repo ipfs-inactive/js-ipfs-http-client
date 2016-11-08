@@ -11,8 +11,8 @@ function store () {
     }
 
     res.forEach(function (file) {
-      console.log('successfully stored', file.Hash)
-      display(file.Hash)
+      console.log('successfully stored', file)
+      display(file.path)
     })
   })
 }
@@ -31,4 +31,6 @@ function display (hash) {
   })
 }
 
-document.getElementById('store').onclick = store
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('store').onclick = store
+})
