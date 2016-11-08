@@ -20,13 +20,14 @@ function store () {
 }
 
 function display (hash) {
+  // buffer: true results in the returned result being a buffer rather than a stream
   ipfs.cat(hash, {buffer: true}, function (err, res) {
     if (err || !res) {
       return console.error('ipfs cat error', err, res)
     }
 
     document.getElementById('hash').innerText = hash
-    document.getElementById('content').innerText = res
+    document.getElementById('content').innerText = res.toString()
   })
 }
 
