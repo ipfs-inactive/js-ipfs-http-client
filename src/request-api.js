@@ -73,15 +73,15 @@ function onRes (buffer, cb) {
       return cb(null, res)
     }
 
-    if (chunkedObjects) {
-      if (isJson) {
-        return parseChunkedJson(res, cb)
-      }
-
-      return parseRaw(res, cb)
+    if (chunkedObjects && isJson) {
+      return parseChunkedJson(res, cb)
     }
 
-    parseJson(res, cb)
+    if (isJson) {
+      return parseJson(res, cb)
+    }
+
+    parseRaw(res, cb)
   }
 }
 
