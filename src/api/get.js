@@ -5,6 +5,12 @@ const cleanMultihash = require('../clean-multihash')
 const TarStreamToObjects = require('../tar-stream-to-objects')
 
 module.exports = (send) => {
+  /**
+   * @alias get
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((path, opts, callback) => {
     if (typeof opts === 'function' &&
         !callback) {

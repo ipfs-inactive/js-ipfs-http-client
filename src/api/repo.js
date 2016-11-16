@@ -4,6 +4,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias repo.gc
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     gc: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -14,6 +20,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias repo.stat
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     stat: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts

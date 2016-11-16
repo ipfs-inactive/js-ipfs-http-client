@@ -8,6 +8,12 @@ const streamToValue = require('../stream-to-value')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias block.get
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     get: promisify((args, opts, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api
       if (CID.isCID(args)) {
@@ -43,6 +49,13 @@ module.exports = (send) => {
 
       send.andTransform(request, transform, callback)
     }),
+
+    /**
+     * @alias block.stat
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     stat: promisify((args, opts, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api
       if (args && CID.isCID(args)) {
@@ -70,6 +83,13 @@ module.exports = (send) => {
 
       send.andTransform(request, transform, callback)
     }),
+
+    /**
+     * @alias block.put
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     put: promisify((block, cid, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api
       if (typeof cid === 'function') {

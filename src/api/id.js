@@ -3,6 +3,12 @@
 const promisify = require('promisify-es6')
 
 module.exports = (send) => {
+  /**
+   * @alias id
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((opts, callback) => {
     if (typeof opts === 'function') {
       callback = opts

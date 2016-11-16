@@ -19,7 +19,8 @@
     "release-minor": "gulp release --type minor",
     "release-major": "gulp release --type major",
     "coverage": "gulp coverage",
-    "coverage-publish": "aegir-coverage publish"
+    "coverage-publish": "aegir-coverage publish",
+    "docs": "aegir-docs"
   },
   "dependencies": {
     "async": "^2.1.4",

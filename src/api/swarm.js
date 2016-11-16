@@ -7,6 +7,12 @@ const PeerInfo = require('peer-info')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias swarm.peers
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     peers: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -64,6 +70,13 @@ module.exports = (send) => {
         }
       })
     }),
+
+    /**
+     * @alias swarm.connect
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     connect: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -75,6 +88,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias swarm.disconnect
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     disconnect: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -86,6 +106,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias swarm.addrs
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     addrs: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -111,6 +138,13 @@ module.exports = (send) => {
         callback(null, peers)
       })
     }),
+
+    /**
+     * @alias swarm.localAddrs
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     localAddrs: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts

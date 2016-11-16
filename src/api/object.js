@@ -16,6 +16,12 @@ const cache = LRU(lruOptions)
 
 module.exports = (send) => {
   const api = {
+    /**
+     * @alias object.get
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     get: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
         callback = options
@@ -60,6 +66,12 @@ module.exports = (send) => {
       })
     }),
 
+    /**
+     * @alias object.put
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     put: promisify((obj, options, callback) => {
       if (typeof options === 'function') {
         callback = options
@@ -158,6 +170,13 @@ module.exports = (send) => {
         }
       })
     }),
+
+    /**
+     * @alias object.data
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     data: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
         callback = options
@@ -194,6 +213,13 @@ module.exports = (send) => {
         }
       })
     }),
+
+    /**
+     * @alias object.links
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     links: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
         callback = options
@@ -233,6 +259,13 @@ module.exports = (send) => {
         callback(null, links)
       })
     }),
+
+    /**
+     * @alias object.stat
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     stat: promisify((multihash, opts, callback) => {
       if (typeof opts === 'function') {
         callback = opts
@@ -253,6 +286,12 @@ module.exports = (send) => {
         args: multihash
       }, callback)
     }),
+    /**
+     * @alias object.new
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     new: promisify((template, callback) => {
       if (typeof template === 'function') {
         callback = template
@@ -292,6 +331,13 @@ module.exports = (send) => {
         })
       })
     }),
+
+    /**
+     * @alias object.patch
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     patch: {
       addLink: promisify((multihash, dLink, opts, callback) => {
         if (typeof opts === 'function') {
@@ -322,6 +368,13 @@ module.exports = (send) => {
           api.get(result.Hash, { enc: 'base58' }, callback)
         })
       }),
+
+      /**
+       * @alias object.rmLink
+       * @method
+       * @returns {Promise|undefined}
+       * @memberof Api#
+       */
       rmLink: promisify((multihash, dLink, opts, callback) => {
         if (typeof opts === 'function') {
           callback = opts
@@ -350,6 +403,13 @@ module.exports = (send) => {
           api.get(result.Hash, { enc: 'base58' }, callback)
         })
       }),
+
+      /**
+       * @alias object.setData
+       * @method
+       * @returns {Promise|undefined}
+       * @memberof Api#
+       */
       setData: promisify((multihash, data, opts, callback) => {
         if (typeof opts === 'function') {
           callback = opts
@@ -376,6 +436,13 @@ module.exports = (send) => {
           api.get(result.Hash, { enc: 'base58' }, callback)
         })
       }),
+
+      /**
+       * @alias object.appendData
+       * @method
+       * @returns {Promise|undefined}
+       * @memberof Api#
+       */
       appendData: promisify((multihash, data, opts, callback) => {
         if (typeof opts === 'function') {
           callback = opts

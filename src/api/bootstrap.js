@@ -4,6 +4,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias bootstrap.add
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     add: promisify((args, opts, callback) => {
       if (typeof opts === 'function' &&
           !callback) {
@@ -30,6 +36,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias bootstrap.rm
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     rm: promisify((args, opts, callback) => {
       if (typeof opts === 'function' &&
           !callback) {
@@ -56,6 +69,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias bootstrap.list
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     list: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts

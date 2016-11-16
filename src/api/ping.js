@@ -4,6 +4,12 @@ const promisify = require('promisify-es6')
 const streamToValue = require('../stream-to-value')
 
 module.exports = (send) => {
+  /**
+   * @alias ping
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((id, callback) => {
     const request = {
       path: 'ping',

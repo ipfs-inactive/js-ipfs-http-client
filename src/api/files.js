@@ -4,6 +4,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias files.cp
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     cp: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -15,6 +21,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.ls
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     ls: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -26,6 +39,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.mkdir
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     mkdir: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -37,6 +57,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.stat
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     stat: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -48,6 +75,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.rm
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     rm: promisify((path, opts, callback) => {
       if (typeof opts === 'function' &&
           !callback) {
@@ -69,6 +103,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.read
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     read: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
@@ -80,6 +121,13 @@ module.exports = (send) => {
         qs: opts
       }, callback)
     }),
+
+    /**
+     * @alias files.write
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     write: promisify((pathDst, files, opts, callback) => {
       if (typeof opts === 'function' &&
           !callback) {
@@ -102,6 +150,13 @@ module.exports = (send) => {
         files: files
       }, callback)
     }),
+
+    /**
+     * @alias files.mv
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     mv: promisify((args, opts, callback) => {
       if (typeof opts === 'function' &&
           callback === undefined) {

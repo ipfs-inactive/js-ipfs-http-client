@@ -5,6 +5,23 @@ const promisify = require('promisify-es6')
 const DAGNodeStream = require('../dagnode-stream')
 
 module.exports = (send) => {
+  /**
+   * Add content to IPFS.
+   *
+   * @alias add
+   * @method
+   * @param {(Buffer|Stream|Array)} files - The content to add.
+   * @param {function=} callback
+   * @returns {Promise}
+   *
+   * @memberof Api#
+   *
+   * @example
+   * api.add(new Buffer('hello world')).then((res) => {
+   *   console.log('saved with hash %s', res.hash)
+   * })
+   *
+   */
   return promisify((files, callback) => {
     const ok = Buffer.isBuffer(files) ||
                isStream.isReadable(files) ||

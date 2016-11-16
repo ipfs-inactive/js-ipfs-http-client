@@ -5,6 +5,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias config.get
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     get: promisify((key, callback) => {
       if (typeof key === 'function') {
         callback = key
@@ -30,6 +36,12 @@ module.exports = (send) => {
         callback(null, response.Value)
       })
     }),
+    /**
+     * @alias config.set
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     set: promisify((key, value, opts, callback) => {
       if (typeof opts === 'function') {
         callback = opts
@@ -63,6 +75,12 @@ module.exports = (send) => {
         buffer: true
       }, callback)
     }),
+    /**
+     * @alias config.replace
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     replace: promisify((config, callback) => {
       if (typeof config === 'object') {
         config = streamifier.createReadStream(new Buffer(JSON.stringify(config)))

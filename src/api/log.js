@@ -6,6 +6,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias log.tail
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     tail: promisify((callback) => {
       return send({
         path: 'log/tail'

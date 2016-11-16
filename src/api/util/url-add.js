@@ -7,6 +7,12 @@ const request = require('../../request')
 const DAGNodeStream = require('../../dagnode-stream')
 
 module.exports = (send) => {
+  /**
+   * @alias util.addFromUrl
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((url, opts, callback) => {
     if (typeof (opts) === 'function' &&
         callback === undefined) {

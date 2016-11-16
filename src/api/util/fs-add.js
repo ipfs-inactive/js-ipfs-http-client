@@ -5,6 +5,12 @@ const promisify = require('promisify-es6')
 const DAGNodeStream = require('../../dagnode-stream')
 
 module.exports = (send) => {
+  /**
+   * @alias util.addFromFs
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((path, opts, callback) => {
     if (typeof opts === 'function' &&
         callback === undefined) {

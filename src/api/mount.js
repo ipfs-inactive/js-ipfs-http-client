@@ -3,6 +3,12 @@
 const promisify = require('promisify-es6')
 
 module.exports = (send) => {
+  /**
+   * @alias mount
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((ipfs, ipns, callback) => {
     if (typeof ipfs === 'function') {
       callback = ipfs

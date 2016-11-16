@@ -4,6 +4,12 @@ const promisify = require('promisify-es6')
 
 module.exports = (send) => {
   return {
+    /**
+     * @alias pin.add
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     add: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {
         callback = opts
@@ -20,6 +26,13 @@ module.exports = (send) => {
         callback(null, res.Pins)
       })
     }),
+
+    /**
+     * @alias pin.rm
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     rm: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {
         callback = opts
@@ -36,6 +49,13 @@ module.exports = (send) => {
         callback(null, res.Pins)
       })
     }),
+
+    /**
+     * @alias pin.ls
+     * @method
+     * @returns {Promise|undefined}
+     * @memberof Api#
+     */
     ls: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {
         callback = opts

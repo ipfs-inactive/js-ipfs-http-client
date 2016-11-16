@@ -7,6 +7,12 @@ const promisify = require('promisify-es6')
 module.exports = (send) => {
   const add = addCmd(send)
 
+  /**
+   * @alias createAddStream
+   * @method
+   * @returns {Promise|undefined}
+   * @memberof Api#
+   */
   return promisify((callback) => {
     const tuples = []
 
