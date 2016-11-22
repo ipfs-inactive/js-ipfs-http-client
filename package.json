@@ -39,7 +39,7 @@
     "ndjson": "^1.4.3",
     "once": "^1.4.0",
     "peer-id": "^0.8.0",
-    "peer-info": "^0.8.0",
+    "peer-info": "^0.8.1",
     "promisify-es6": "^1.0.2",
     "qs": "^6.3.0",
     "readable-stream": "^1.1.14",
