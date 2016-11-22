@@ -22,7 +22,7 @@
     "coverage-publish": "aegir-coverage publish"
   },
   "dependencies": {
-    "async": "^2.1.2",
+    "async": "^2.1.4",
     "bl": "^1.1.2",
     "bs58": "^3.0.0",
     "concat-stream": "^1.5.2",
