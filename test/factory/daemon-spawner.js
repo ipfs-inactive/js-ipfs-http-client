@@ -1,7 +1,7 @@
 'use strict'
 
 // const defaultConfig = require('./default-config.json')
-const ipfsd = require('ipfsd-ctl')
+const ipfsd = require('@haad/ipfsd-ctl')
 const series = require('async/series')
 const eachSeries = require('async/eachSeries')
 const once = require('once')
@@ -73,17 +73,19 @@ function spawnEphemeralNode (callback) {
       (cb) => {
         const configValues = {
           Bootstrap: [],
-          Discovery: {},
-          'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
-          'HTTPHeaders.Access-Control-Allow-Credentials': 'true',
-          'HTTPHeaders.Access-Control-Allow-Methods': ['PUT', 'POST', 'GET']
+          // Discovery: {},
+          API: {
+            'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
+            'HTTPHeaders.Access-Control-Allow-Credentials': 'true',
+            'HTTPHeaders.Access-Control-Allow-Methods': ['PUT', 'POST', 'GET']
+          }
         }
 
         eachSeries(Object.keys(configValues), (configKey, cb) => {
-          node.setConfig(`API.${configKey}`, JSON.stringify(configValues[configKey]), cb)
+          node.setConfig(`${configKey}`, JSON.stringify(configValues[configKey]), cb)
         }, cb)
       },
-      (cb) => node.startDaemon(cb)
+      (cb) => node.startDaemon(['--enable-pubsub-experiment'], cb)
     ], (err) => {
       if (err) {
         return callback(err)
