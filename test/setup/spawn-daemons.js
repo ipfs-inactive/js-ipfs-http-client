@@ -5,7 +5,7 @@
 const gulp = require('gulp')
 const fs = require('fs')
 const path = require('path')
-const ipfsd = require('ipfsd-ctl')
+const ipfsd = require('@haad/ipfsd-ctl')
 const eachSeries = require('async/eachSeries')
 const parallel = require('async/parallel')
 
@@ -40,7 +40,7 @@ function startDisposableDaemons (callback) {
           return cb(err)
         }
 
-        nodes[key].startDaemon(cb)
+        nodes[key].startDaemon(['--enable-pubsub-experiment'], cb)
       })
     })
   }
