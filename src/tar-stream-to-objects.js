@@ -1,38 +1,45 @@
 'use strict'
 
 const tar = require('tar-stream')
-const Readable = require('readable-stream')
+const ReadableStream = require('readable-stream').Readable
+/*
+  Transform tar stream into a stream of objects:
 
-// transform tar stream into readable stream of
-// { path: 'string', content: Readable }
-module.exports = (err, res, send, done) => {
-  if (err) {
-    return done(err)
+  Output format:
+  { path: 'string', content: Readable }
+*/
+class TarStreamToObjects extends ReadableStream {
+  constructor (options) {
+    const opts = Object.assign(options || {}, { objectMode: true })
+    super(opts)
   }
 
-  const objStream = new Readable({ objectMode: true })
-  objStream._read = function noop () {}
+  static from (inputStream, callback) {
+    let outputStream = new TarStreamToObjects()
 
-  res
-    .pipe(tar.extract())
-    .on('entry', (header, stream, next) => {
-      stream.on('end', next)
+    inputStream
+      .pipe(tar.extract())
+      .on('entry', (header, stream, next) => {
+        stream.on('end', next)
 
-      if (header.type !== 'directory') {
-        objStream.push({
-          path: header.name,
-          content: stream
-        })
-      } else {
-        objStream.push({
-          path: header.name
-        })
-        stream.resume()
-      }
-    })
-    .on('finish', () => {
-      objStream.push(null)
-    })
+        if (header.type !== 'directory') {
+          outputStream.push({
+            path: header.name,
+            content: stream
+          })
+        } else {
+          outputStream.push({
+            path: header.name
+          })
+          stream.resume()
+        }
+      })
+      .on('finish', () => outputStream.push(null))
 
-  done(null, objStream)
+    callback(null, outputStream)
+  }
+
+  _read () {}
 }
+
+module.exports = TarStreamToObjects
