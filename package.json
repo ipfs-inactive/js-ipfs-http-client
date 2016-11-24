@@ -42,7 +42,7 @@
     "peer-info": "^0.8.0",
     "promisify-es6": "^1.0.2",
     "qs": "^6.3.0",
-    "readable-stream": "^1.1.14",
+    "readable-stream": "^2.2.0",
     "stream-http": "^2.5.0",
     "streamifier": "^0.1.1",
     "tar-stream": "^1.5.2"
