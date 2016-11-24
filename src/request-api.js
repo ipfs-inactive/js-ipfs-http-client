@@ -1,50 +1,28 @@
 'use strict'
 
 const Qs = require('qs')
-const ndjson = require('ndjson')
 const isNode = require('detect-node')
+const ndjson = require('ndjson')
 const once = require('once')
-const concat = require('concat-stream')
-
 const getFilesStream = require('./get-files-stream')
+const streamToValue = require('./stream-to-value')
+const streamToJsonValue = require('./stream-to-json-value')
 const request = require('./request')
 
 // -- Internal
 
-function parseChunkedJson (res, cb) {
-  res
-    .pipe(ndjson.parse())
-    .once('error', cb)
-    .pipe(concat((data) => cb(null, data)))
-}
-
-function parseRaw (res, cb) {
-  res
-    .once('error', cb)
-    .pipe(concat((data) => cb(null, data)))
-}
-
-function parseJson (res, cb) {
-  res
-    .once('error', cb)
-    .pipe(concat((data) => {
-      if (!data || data.length === 0) {
-        return cb()
-      }
-
-      if (Buffer.isBuffer(data)) {
-        data = data.toString()
-      }
-
-      let res
-      try {
-        res = JSON.parse(data)
-      } catch (err) {
-        return cb(err)
-      }
-
-      cb(null, res)
-    }))
+function parseError (res, cb) {
+  const error = new Error(`Server responded with ${res.statusCode}`)
+  streamToJsonValue(res, (err, payload) => {
+    if (err) {
+      return cb(err)
+    }
+    if (payload) {
+      error.code = payload.Code
+      error.message = payload.Message || payload.toString()
+    }
+    cb(error)
+  })
 }
 
 function onRes (buffer, cb) {
@@ -55,33 +33,26 @@ function onRes (buffer, cb) {
                    res.headers['content-type'].indexOf('application/json') === 0
 
     if (res.statusCode >= 400 || !res.statusCode) {
-      const error = new Error(`Server responded with ${res.statusCode}`)
-
-      parseJson(res, (err, payload) => {
-        if (err) {
-          return cb(err)
-        }
-        if (payload) {
-          error.code = payload.Code
-          error.message = payload.Message || payload.toString()
-        }
-        cb(error)
-      })
+      return parseError(res, cb)
     }
 
+    // Return the response stream directly
     if (stream && !buffer) {
       return cb(null, res)
     }
 
+    // Return a stream of JSON objects
     if (chunkedObjects && isJson) {
-      return parseChunkedJson(res, cb)
+      return cb(null, res.pipe(ndjson.parse()))
     }
 
+    // Return a JSON object
     if (isJson) {
-      return parseJson(res, cb)
+      return streamToJsonValue(res, cb)
     }
 
-    parseRaw(res, cb)
+    // Return a value
+    return streamToValue(res, cb)
   }
 }
 
@@ -163,7 +134,7 @@ function requestAPI (config, options, callback) {
 //
 // -- Module Interface
 
-exports = module.exports = function getRequestAPI (config) {
+exports = module.exports = (config) => {
   /*
    * options: {
    *   path:   // API path (like /add or /config) - type: string
@@ -173,7 +144,7 @@ exports = module.exports = function getRequestAPI (config) {
    *   buffer: // buffer the request before sending it - type: bool
    * }
    */
-  const send = function (options, callback) {
+  const send = (options, callback) => {
     if (typeof options !== 'object') {
       return callback(new Error('no options were passed'))
     }
@@ -181,25 +152,13 @@ exports = module.exports = function getRequestAPI (config) {
     return requestAPI(config, options, callback)
   }
 
-  // Wraps the 'send' function such that an asynchronous
-  // transform may be applied to its result before
-  // passing it on to either its callback or promise.
-  send.withTransform = function (transform) {
-    return function (options, callback) {
-      if (typeof options !== 'object') {
-        return callback(new Error('no options were passed'))
+  send.andTransform = (options, transform, callback) => {
+    return send(options, (err, res) => {
+      if (err) {
+        return callback(err)
       }
-
-      send(options, wrap(callback))
-
-      function wrap (func) {
-        if (func) {
-          return function (err, res) {
-            transform(err, res, send, func)
-          }
-        }
-      }
-    }
+      transform(res, callback)
+    })
   }
 
   return send
