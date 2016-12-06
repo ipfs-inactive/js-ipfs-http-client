@@ -7,11 +7,13 @@ module.exports = (send) => {
     /**
      * Show blocks currently on the wantlist.
      *
+     * Print out all blocks currently on the bitswap wantlist for the local peer.
+     *
      * @alias bitswap.wantlist
      * @method
-     * @param {Function} [callback]
+     * @param {function(Error, Array<string>)} [callback]
      *
-     * @returns {Promise}
+     * @returns {Promise<Array<string>>|undefined}
      * @memberof Api#
      */
     wantlist: promisify((callback) => {
@@ -19,14 +21,15 @@ module.exports = (send) => {
         path: 'bitswap/wantlist'
       }, callback)
     }),
+
     /**
      * Show some diagnostic information on the bitswap agent.
      *
      * @alias bitswap.stat
      * @method
-     * @param {Function} [callback]
+     * @param {function(Error, Object)} [callback]
      *
-     * @returns {Promise}
+     * @returns {Promise<Object>|undefined}
      * @memberof Api#
      */
     stat: promisify((callback) => {
@@ -34,26 +37,27 @@ module.exports = (send) => {
         path: 'bitswap/stat'
       }, callback)
     }),
+
     /**
      * Remove a given block from your wantlist.
      *
      * @alias bitswap.unwant
      * @method
-     * @param {*} args
-     * @param {Object} opts
-     * @param {Function} [callback]
+     * @param {string|Array<string>} key - The `base58` encoded multihashes of the blocks to unwant.
+     * @param {Object} [opts={}]
+     * @param {function(Error)} [callback]
      *
-     * @returns {Promise}
+     * @returns {Promise<undefined>|undefined}
      * @memberof Api#
      */
-    unwant: promisify((args, opts, callback) => {
+    unwant: promisify((key, opts, callback) => {
       if (typeof (opts) === 'function') {
         callback = opts
         opts = {}
       }
       send({
         path: 'bitswap/unwant',
-        args: args,
+        args: key,
         qs: opts
       }, callback)
     })

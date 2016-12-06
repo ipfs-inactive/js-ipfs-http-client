@@ -10,9 +10,9 @@ module.exports = (send) => {
    *
    * @alias add
    * @method
-   * @param {(Buffer|Stream|Array)} files - The content to add.
-   * @param {function=} callback
-   * @returns {Promise}
+   * @param {(Buffer|Stream|Array<Buffer|Stream>)} files - The content to add.
+   * @param {function(Error, {hash: string})} [callback]
+   * @returns {Promise<{hash: string}>|undefined}
    *
    * @memberof Api#
    *
