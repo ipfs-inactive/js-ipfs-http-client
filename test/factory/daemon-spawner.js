@@ -73,7 +73,9 @@ function spawnEphemeralNode (callback) {
       (cb) => {
         const configValues = {
           Bootstrap: [],
-          // Discovery: {},
+          // Do not use discovery to avoid connecting to
+          // other nodes by mistake
+          Discovery: {},
           API: {
             'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
             'HTTPHeaders.Access-Control-Allow-Credentials': 'true',
