@@ -30,7 +30,7 @@
     "flatmap": "0.0.3",
     "glob": "^7.1.1",
     "glob-escape": "0.0.2",
-    "ipfs-block": "^0.5.1",
+    "ipfs-block": "^0.5.3",
     "ipld-dag-pb": "^0.9.3",
     "is-ipfs": "^0.2.1",
     "isstream": "^0.1.2",
