@@ -34,13 +34,13 @@ class PubsubMessageUtils {
     const senderId = Base58.encode(obj.from)
     const payload = Base64.decode(obj.data)
     const seqno = Base64.decode(obj.seqno)
-    const topics = obj.topicIDs
+    const topics = obj.topicIDs || obj.topicCIDs
 
     return PubsubMessageUtils.create(senderId, payload, seqno, topics)
   }
 
   static _isPubsubMessage (obj) {
-    return obj && obj.from && obj.seqno && obj.data && obj.topicIDs
+    return obj && obj.from && obj.seqno && obj.data && (obj.topicIDs || obj.topicCIDs)
   }
 }
 
