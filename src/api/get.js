@@ -33,6 +33,6 @@ module.exports = (send) => {
     }
 
     // Convert the response stream to TarStream objects
-    send.andTransform(request, TarStreamToObjects.from, callback)
+    send.andTransform(request, TarStreamToObjects, callback)
   })
 }
