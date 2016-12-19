@@ -5,7 +5,8 @@ const streamToValue = require('./stream-to-value')
 const getDagNode = require('./get-dagnode')
 
 /*
-  Transforms a stream of objects to DAGNodes and outputs them as objects.
+  Transforms a stream of {Name, Hash} objects to include size
+  of the DAG object.
 
   Usage: inputStream.pipe(DAGNodeStream({ send: send }))
 
