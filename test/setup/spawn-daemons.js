@@ -29,7 +29,7 @@ function startDisposableDaemons (callback) {
         Bootstrap: [],
         Discovery: {},
         'API.HTTPHeaders.Access-Control-Allow-Origin': ['*'],
-        'API.HTTPHeaders.Access-Control-Allow-Credentials': 'true',
+        'API.HTTPHeaders.Access-Control-Allow-Credentials': ['true'],
         'API.HTTPHeaders.Access-Control-Allow-Methods': ['PUT', 'POST', 'GET']
       }
 

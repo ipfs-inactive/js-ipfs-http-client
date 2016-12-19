@@ -16,13 +16,16 @@ class PubsubMessageStream extends TransformStream {
   }
 
   _transform (obj, enc, callback) {
+    let msg
     try {
-      const message = PubsubMessage.deserialize(obj, 'base64')
-      this.push(message)
+      msg = PubsubMessage.deserialize(obj, 'base64')
     } catch (e) {
       // Not a valid pubsub message
       // go-ipfs returns '{}' as the very first object atm, we skip that
+      return callback()
     }
+
+    this.push(msg)
     callback()
   }
 }
