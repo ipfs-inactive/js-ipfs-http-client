@@ -41,13 +41,13 @@ class DAGNodeStream extends TransformStream {
         return callback(err)
       }
 
-      const dag = {
+      const result = {
         path: obj.Name,
         hash: obj.Hash,
         size: node.size
       }
 
-      this.push(dag)
+      this.push(result)
       callback(null)
     })
   }
