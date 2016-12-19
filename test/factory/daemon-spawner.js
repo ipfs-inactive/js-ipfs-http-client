@@ -78,7 +78,7 @@ function spawnEphemeralNode (callback) {
           Discovery: {},
           API: {
             'HTTPHeaders.Access-Control-Allow-Origin': ['*'],
-            'HTTPHeaders.Access-Control-Allow-Credentials': 'true',
+            'HTTPHeaders.Access-Control-Allow-Credentials': ['true'],
             'HTTPHeaders.Access-Control-Allow-Methods': ['PUT', 'POST', 'GET']
           }
         }
