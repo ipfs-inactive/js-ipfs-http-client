@@ -6,12 +6,12 @@ const eos = require('end-of-stream')
 const PubsubMessageStream = require('../pubsub-message-stream')
 const stringlistToArray = require('../stringlist-to-array')
 
-/* Internal subscriptions state and functions */
-const ps = new EventEmitter()
-const subscriptions = {}
-
 /* Public API */
 module.exports = (send) => {
+  /* Internal subscriptions state and functions */
+  const ps = new EventEmitter()
+  const subscriptions = {}
+  ps.id = Math.random()
   return {
     subscribe: (topic, options, handler, callback) => {
       const defaultOptions = {
@@ -44,9 +44,16 @@ module.exports = (send) => {
       subscribe(topic, options, handler, callback)
     },
     unsubscribe (topic, handler) {
+      if (ps.listenerCount(topic) === 0 || !subscriptions[topic]) {
+        throw new Error(`Not subscribed to '${topic}'`)
+      }
+
       ps.removeListener(topic, handler)
+
+      // Drop the request once we are actualy done
       if (ps.listenerCount(topic) === 0) {
         subscriptions[topic].abort()
+        subscriptions[topic] = null
       }
     },
     publish: promisify((topic, data, callback) => {
@@ -85,7 +92,6 @@ module.exports = (send) => {
 
   function subscribe (topic, options, handler, callback) {
     ps.on(topic, handler)
-
     if (subscriptions[topic]) {
       return callback()
     }
@@ -104,6 +110,7 @@ module.exports = (send) => {
     subscriptions[topic] = send.andTransform(request, PubsubMessageStream.from, (err, stream) => {
       if (err) {
         subscriptions[topic] = null
+        ps.removeListener(topic, handler)
         return callback(err)
       }
 
@@ -121,6 +128,7 @@ module.exports = (send) => {
         }
 
         subscriptions[topic] = null
+        ps.removeListener(topic, handler)
       })
 
       callback()
