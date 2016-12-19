@@ -3,6 +3,7 @@
 const Qs = require('qs')
 const isNode = require('detect-node')
 const ndjson = require('ndjson')
+const pump = require('pump')
 const once = require('once')
 const getFilesStream = require('./get-files-stream')
 const streamToValue = require('./stream-to-value')
@@ -43,7 +44,8 @@ function onRes (buffer, cb) {
 
     // Return a stream of JSON objects
     if (chunkedObjects && isJson) {
-      return cb(null, res.pipe(ndjson.parse()))
+      const outputStream = pump(res, ndjson.parse())
+      return cb(null, outputStream)
     }
 
     // Return a JSON object
