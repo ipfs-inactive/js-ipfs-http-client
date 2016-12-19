@@ -1,5 +1,6 @@
 'use strict'
 
+const pump = require('pump')
 const TransformStream = require('readable-stream').Transform
 const streamToValue = require('./stream-to-value')
 const getDagNode = require('./get-dagnode')
@@ -31,7 +32,9 @@ class DAGNodeStream extends TransformStream {
   }
 
   static streamToValue (send, inputStream, callback) {
-    const outputStream = inputStream.pipe(new DAGNodeStream({ send: send }))
+    const outputStream = pump(inputStream, new DAGNodeStream({ send: send }), (err) => {
+      if (err) callback(err)
+    })
     streamToValue(outputStream, callback)
   }
 

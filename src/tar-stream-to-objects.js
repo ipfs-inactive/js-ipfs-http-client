@@ -1,5 +1,6 @@
 'use strict'
 
+const pump = require('pump')
 const tar = require('tar-stream')
 const ReadableStream = require('readable-stream').Readable
 
@@ -9,7 +10,7 @@ class ObjectsStreams extends ReadableStream {
     super(opts)
   }
 
-  _read ()  {}
+  _read () {}
 }
 
 /*
@@ -20,9 +21,9 @@ class ObjectsStreams extends ReadableStream {
 */
 const TarStreamToObjects = (inputStream, callback) => {
   let outputStream = new ObjectsStreams()
+  let extractStream = tar.extract()
 
-  inputStream
-    .pipe(tar.extract())
+  extractStream
     .on('entry', (header, stream, next) => {
       stream.on('end', next)
 
@@ -40,6 +41,7 @@ const TarStreamToObjects = (inputStream, callback) => {
     })
     .on('finish', () => outputStream.push(null))
 
+  pump(inputStream, extractStream)
   callback(null, outputStream)
 }
 
