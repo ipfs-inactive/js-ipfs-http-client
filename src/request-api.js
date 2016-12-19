@@ -152,6 +152,10 @@ exports = module.exports = (config) => {
     return requestAPI(config, options, callback)
   }
 
+  // Send a HTTP request and pass via a transform function
+  // to convert the response data to wanted format before
+  // returning it to the callback.
+  // Eg. send.andTransform({}, (e) => JSON.parse(e), (err, res) => ...)
   send.andTransform = (options, transform, callback) => {
     return send(options, (err, res) => {
       if (err) {
