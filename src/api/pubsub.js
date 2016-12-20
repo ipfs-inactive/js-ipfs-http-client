@@ -74,10 +74,6 @@ module.exports = (send) => {
       send.andTransform(request, stringlistToArray, callback)
     }),
     peers: promisify((topic, callback) => {
-      if (!subscriptions[topic]) {
-        return callback(new Error(`Not subscribed to '${topic}'`))
-      }
-
       const request = {
         path: 'pubsub/peers',
         args: [topic]
