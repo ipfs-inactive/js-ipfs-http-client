@@ -57,11 +57,13 @@ module.exports = (send) => {
       }
     },
     publish: promisify((topic, data, callback) => {
-      const buf = Buffer.isBuffer(data) ? data : new Buffer(data)
+      if (!Buffer.isBuffer(data)) {
+        return callback(new Error('data must be a Buffer'))
+      }
 
       const request = {
         path: 'pubsub/pub',
-        args: [topic, buf]
+        args: [topic, data]
       }
 
       send(request, callback)
