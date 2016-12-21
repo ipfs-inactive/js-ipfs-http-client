@@ -33,7 +33,9 @@ class DAGNodeStream extends TransformStream {
 
   static streamToValue (send, inputStream, callback) {
     const outputStream = pump(inputStream, new DAGNodeStream({ send: send }), (err) => {
-      if (err) callback(err)
+      if (err) {
+        callback(err)
+      }
     })
     streamToValue(outputStream, callback)
   }
