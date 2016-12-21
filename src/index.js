@@ -40,7 +40,26 @@ function IpfsAPI (hostOrMultiaddr, port, opts) {
   cmds.send = requestAPI
   cmds.Buffer = Buffer
 
+  cmds.version(function (err, res) {
+    if (err) console.log(err)
+    var dotSplit = res.version.split('.')
+    if (dotSplit[0] === 0) {
+      if (dotSplit[1] < 4) {
+        throw new DaemonVersionError(res)
+      }
+    }
+  })
+
   return cmds
+}
+
+function DaemonVersionError (daemonVersion) {
+  this.daemonVersion = daemonVersion
+  this.expectedMinVersion = '0.4.4'
+  this.message = 'The running daemon is version ' + daemonVersion.version + ' and should be at least ' + this.expectedMinVersion
+  this.toString = function () {
+    return this.message
+  }
 }
 
 exports = module.exports = IpfsAPI
