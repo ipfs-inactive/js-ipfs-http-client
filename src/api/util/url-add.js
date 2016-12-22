@@ -11,7 +11,7 @@ module.exports = (send) => {
    * @alias util.addFromUrl
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((url, opts, callback) => {
     if (typeof (opts) === 'function' &&

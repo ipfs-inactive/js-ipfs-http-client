@@ -20,7 +20,7 @@ module.exports = (send) => {
      * @alias object.get
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     get: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
@@ -70,7 +70,7 @@ module.exports = (send) => {
      * @alias object.put
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     put: promisify((obj, options, callback) => {
       if (typeof options === 'function') {
@@ -175,7 +175,7 @@ module.exports = (send) => {
      * @alias object.data
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     data: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
@@ -218,7 +218,7 @@ module.exports = (send) => {
      * @alias object.links
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     links: promisify((multihash, options, callback) => {
       if (typeof options === 'function') {
@@ -264,7 +264,7 @@ module.exports = (send) => {
      * @alias object.stat
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     stat: promisify((multihash, opts, callback) => {
       if (typeof opts === 'function') {
@@ -290,7 +290,7 @@ module.exports = (send) => {
      * @alias object.new
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     new: promisify((template, callback) => {
       if (typeof template === 'function') {
@@ -336,7 +336,7 @@ module.exports = (send) => {
      * @alias object.patch
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     patch: {
       addLink: promisify((multihash, dLink, opts, callback) => {
@@ -373,7 +373,7 @@ module.exports = (send) => {
        * @alias object.rmLink
        * @method
        * @returns {Promise|undefined}
-       * @memberof Api#
+       * @memberof IpfsApi#
        */
       rmLink: promisify((multihash, dLink, opts, callback) => {
         if (typeof opts === 'function') {
@@ -408,7 +408,7 @@ module.exports = (send) => {
        * @alias object.setData
        * @method
        * @returns {Promise|undefined}
-       * @memberof Api#
+       * @memberof IpfsApi#
        */
       setData: promisify((multihash, data, opts, callback) => {
         if (typeof opts === 'function') {
@@ -441,7 +441,7 @@ module.exports = (send) => {
        * @alias object.appendData
        * @method
        * @returns {Promise|undefined}
-       * @memberof Api#
+       * @memberof IpfsApi#
        */
       appendData: promisify((multihash, data, opts, callback) => {
         if (typeof opts === 'function') {

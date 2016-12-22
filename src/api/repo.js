@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias repo.gc
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     gc: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -25,7 +25,7 @@ module.exports = (send) => {
      * @alias repo.stat
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     stat: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {

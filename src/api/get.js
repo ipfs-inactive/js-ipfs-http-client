@@ -9,7 +9,7 @@ module.exports = (send) => {
    * @alias get
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((path, opts, callback) => {
     if (typeof opts === 'function' &&

@@ -7,7 +7,7 @@ module.exports = (send) => {
    * @alias mount
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((ipfs, ipns, callback) => {
     if (typeof ipfs === 'function') {

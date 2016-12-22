@@ -14,7 +14,7 @@ module.exports = (send) => {
    * @param {function(Error, {hash: string})} [callback]
    * @returns {Promise<{hash: string}>|undefined}
    *
-   * @memberof Api#
+   * @memberof IpfsApi#
    *
    * @example
    * api.add(new Buffer('hello world')).then((res) => {

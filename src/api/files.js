@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias files.cp
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     cp: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -26,7 +26,7 @@ module.exports = (send) => {
      * @alias files.ls
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     ls: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -44,7 +44,7 @@ module.exports = (send) => {
      * @alias files.mkdir
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     mkdir: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -62,7 +62,7 @@ module.exports = (send) => {
      * @alias files.stat
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     stat: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -80,7 +80,7 @@ module.exports = (send) => {
      * @alias files.rm
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     rm: promisify((path, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -108,7 +108,7 @@ module.exports = (send) => {
      * @alias files.read
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     read: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -126,7 +126,7 @@ module.exports = (send) => {
      * @alias files.write
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     write: promisify((pathDst, files, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -155,7 +155,7 @@ module.exports = (send) => {
      * @alias files.mv
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     mv: promisify((args, opts, callback) => {
       if (typeof opts === 'function' &&

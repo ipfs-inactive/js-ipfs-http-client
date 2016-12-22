@@ -8,7 +8,7 @@ module.exports = (send) => {
    * @alias ping
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((id, callback) => {
     const request = {

@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias diag.net
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     net: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -26,7 +26,7 @@ module.exports = (send) => {
      * @alias diag.sys
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     sys: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -44,7 +44,7 @@ module.exports = (send) => {
      * @alias diag.cmds
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     cmds: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {

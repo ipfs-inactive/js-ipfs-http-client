@@ -8,7 +8,7 @@ module.exports = (send) => {
    * @alias refs
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   const refs = promisify((args, opts, callback) => {
     if (typeof (opts) === 'function') {
@@ -29,7 +29,7 @@ module.exports = (send) => {
    * @alias refs.local
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   refs.local = promisify((opts, callback) => {
     if (typeof (opts) === 'function') {

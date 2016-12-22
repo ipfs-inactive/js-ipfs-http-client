@@ -10,7 +10,7 @@ module.exports = (send) => {
      * @alias log.tail
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     tail: promisify((callback) => {
       return send({

@@ -9,7 +9,7 @@ module.exports = (send) => {
      * @alias config.get
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     get: promisify((key, callback) => {
       if (typeof key === 'function') {
@@ -40,7 +40,7 @@ module.exports = (send) => {
      * @alias config.set
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     set: promisify((key, value, opts, callback) => {
       if (typeof opts === 'function') {
@@ -79,7 +79,7 @@ module.exports = (send) => {
      * @alias config.replace
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     replace: promisify((config, callback) => {
       if (typeof config === 'object') {

@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias name.publish
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     publish: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -26,7 +26,7 @@ module.exports = (send) => {
      * @alias name.resolve
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     resolve: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {

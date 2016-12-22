@@ -11,7 +11,7 @@ module.exports = (send) => {
      * @alias swarm.peers
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     peers: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -75,7 +75,7 @@ module.exports = (send) => {
      * @alias swarm.connect
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     connect: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -93,7 +93,7 @@ module.exports = (send) => {
      * @alias swarm.disconnect
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     disconnect: promisify((args, opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -111,7 +111,7 @@ module.exports = (send) => {
      * @alias swarm.addrs
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     addrs: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -143,7 +143,7 @@ module.exports = (send) => {
      * @alias swarm.localAddrs
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     localAddrs: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {

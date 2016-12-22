@@ -1,17 +1,26 @@
 'use strict'
 
 const multiaddr = require('multiaddr')
+
 const getConfig = require('./default-config')
 const getRequestAPI = require('./request-api')
 
 /**
- * Create a Api
+ * Create a new IpfsApi.
  *
- * @constructor Api
- * @param {string} hostOrMultiaddr
- * @param {number} port
- * @param {object} opts
- * @returns {Api}
+ * > `js-ipfs-api` follows the spec defined by
+ * > [`interface-ipfs-core`](https://github.com/ipfs/interface-ipfs-core), which
+ * > concerns the interface to expect from IPFS implementations. This interface is a
+ * > currently active endeavor. You can use it today to consult the methods available.
+ *
+ * @constructor IpfsApi
+ * @param {string|Multiaddr} [hostOrMultiaddr='localhost'] - The host to connect to.
+ * @param {number|string} [port=5001] - The port to use to connect to the api.
+ * @param {Object} [opts={}]
+ * @param {string} [host]
+ * @param {number|string} [opts.port]
+ * @param {string} [opts.protocol='http'] - Can be either `http` or `https`.
+ * @returns {IpfsApi}
  *
  * @example
  * const ipfsAPI = require('ipfs-api')
@@ -26,9 +35,9 @@ const getRequestAPI = require('./request-api')
  * // or using options
  * const ipfs = ipfsAPI({host: 'localhost', port: '5001', procotol: 'http'})
  */
-function Api (hostOrMultiaddr, port, opts) {
-  if (!(this instanceof Api)) {
-    return new Api(hostOrMultiaddr, port, opts)
+function IpfsApi (hostOrMultiaddr, port, opts) {
+  if (!(this instanceof IpfsApi)) {
+    return new IpfsApi(hostOrMultiaddr, port, opts)
   }
 
   const config = getConfig()
@@ -64,6 +73,8 @@ function Api (hostOrMultiaddr, port, opts) {
 
   /**
    * Send a request
+   *
+   * @private
    */
   this.send = requestAPI
 
@@ -115,4 +126,4 @@ function Api (hostOrMultiaddr, port, opts) {
   }
 }
 
-module.exports = exports = Api
+module.exports = exports = IpfsApi

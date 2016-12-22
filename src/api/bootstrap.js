@@ -12,7 +12,7 @@ module.exports = (send) => {
      * @param {Object} [opts={}]
      * @param {function(Error)} [callback]
      * @returns {Promise<undefined>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     add: promisify((peers, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -50,7 +50,7 @@ module.exports = (send) => {
      * @param {Object} [opts={}]
      * @param {function(Error)} [callback]
      * @returns {Promise<undefined>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     rm: promisify((peers, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -87,7 +87,7 @@ module.exports = (send) => {
      * @param {Object} [opts={}]
      * @param {function(Error, Array<string>)} [callback]
      * @returns {Promise<Array<string>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     list: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {

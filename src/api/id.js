@@ -7,7 +7,7 @@ module.exports = (send) => {
    * @alias id
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((opts, callback) => {
     if (typeof opts === 'function') {

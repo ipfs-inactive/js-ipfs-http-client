@@ -11,7 +11,7 @@ module.exports = (send) => {
    * @alias createAddStream
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((callback) => {
     const tuples = []

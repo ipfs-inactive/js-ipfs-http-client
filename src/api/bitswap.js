@@ -14,7 +14,7 @@ module.exports = (send) => {
      * @param {function(Error, Array<string>)} [callback]
      *
      * @returns {Promise<Array<string>>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     wantlist: promisify((callback) => {
       send({
@@ -30,7 +30,7 @@ module.exports = (send) => {
      * @param {function(Error, Object)} [callback]
      *
      * @returns {Promise<Object>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     stat: promisify((callback) => {
       send({
@@ -48,7 +48,7 @@ module.exports = (send) => {
      * @param {function(Error)} [callback]
      *
      * @returns {Promise<undefined>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     unwant: promisify((key, opts, callback) => {
       if (typeof (opts) === 'function') {

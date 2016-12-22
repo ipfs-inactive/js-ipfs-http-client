@@ -9,7 +9,7 @@ module.exports = (send) => {
      * @alias dht.findprovs
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     findprovs: promisify((args, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -39,7 +39,7 @@ module.exports = (send) => {
      * @alias dht.get
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     get: promisify((key, opts, callback) => {
       if (typeof opts === 'function' &&
@@ -91,7 +91,7 @@ module.exports = (send) => {
      * @alias dht.put
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     put: promisify((key, value, opts, callback) => {
       if (typeof opts === 'function' &&

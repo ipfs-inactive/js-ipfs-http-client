@@ -17,7 +17,7 @@ module.exports = (send) => {
      * @param {Object} [opts={}]
      * @param {function(Error, Block)} [callback]
      * @returns {Promise<Block>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     get: promisify((args, opts, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api
@@ -64,7 +64,7 @@ module.exports = (send) => {
      * @param {Object} [opts={}]
      * @param {function(Error, {key: string, size: string})} [callback]
      * @returns {Promise<{key: string, size: string}>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     stat: promisify((key, opts, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api
@@ -104,7 +104,7 @@ module.exports = (send) => {
      * @param {CID} [cid]
      * @param {function(Error, Block)} [callback]
      * @returns {Promise<Block>|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     put: promisify((block, cid, callback) => {
       // TODO this needs to be adjusted with the new go-ipfs http-api

@@ -7,7 +7,7 @@ module.exports = (send) => {
    * @alias commands
    * @method
    * @returns {Promise|undefined}
-   * @memberof Api#
+   * @memberof IpfsApi#
    */
   return promisify((callback) => {
     send({

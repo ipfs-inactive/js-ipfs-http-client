@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias pin.add
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     add: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {
@@ -31,7 +31,7 @@ module.exports = (send) => {
      * @alias pin.rm
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     rm: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {
@@ -54,7 +54,7 @@ module.exports = (send) => {
      * @alias pin.ls
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     ls: promisify((hash, opts, callback) => {
       if (typeof opts === 'function') {

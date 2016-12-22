@@ -8,7 +8,7 @@ module.exports = (send) => {
      * @alias update.apply
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     apply: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -25,7 +25,7 @@ module.exports = (send) => {
      * @alias update.check
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     check: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
@@ -42,7 +42,7 @@ module.exports = (send) => {
      * @alias update.log
      * @method
      * @returns {Promise|undefined}
-     * @memberof Api#
+     * @memberof IpfsApi#
      */
     log: promisify((opts, callback) => {
       if (typeof (opts) === 'function') {
