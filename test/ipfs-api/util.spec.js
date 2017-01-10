@@ -42,40 +42,52 @@ describe('.util', () => {
     })
   })
 
-  it('.fsAdd a directory', (done) => {
-    const filesPath = path.join(__dirname, '../fixtures/test-folder')
-    ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
-      expect(err).to.not.exist
-      expect(result.length).to.be.above(8)
-      done()
+  describe('.fsAdd should add', () => {
+    it('a directory', (done) => {
+      const filesPath = path.join(__dirname, '../fixtures/test-folder')
+      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+        expect(err).to.not.exist
+        expect(result.length).to.be.above(8)
+        done()
+      })
     })
-  })
 
-  it('.fsAdd a directory with an odd name', (done) => {
-    const filesPath = path.join(__dirname, '../fixtures/weird name folder [v0]')
-    ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
-      expect(err).to.not.exist
-      expect(result.length).to.be.above(8)
-      done()
+    it('a directory with an odd name', (done) => {
+      const filesPath = path.join(__dirname, '../fixtures/weird name folder [v0]')
+      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+        expect(err).to.not.exist
+        expect(result.length).to.be.above(8)
+        done()
+      })
     })
-  })
 
-  it('.fsAdd add and ignore a directory', (done) => {
-    const filesPath = path.join(__dirname, '../fixtures/test-folder')
-    ipfs.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
-      expect(err).to.not.exist
-      expect(result.length).to.be.below(9)
-      done()
+    it('add and ignore a directory', (done) => {
+      const filesPath = path.join(__dirname, '../fixtures/test-folder')
+      ipfs.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
+        expect(err).to.not.exist
+        expect(result.length).to.be.below(9)
+        done()
+      })
     })
-  })
 
-  it('.fsAdd a file', (done) => {
-    const filePath = path.join(__dirname, '../fixtures/testfile.txt')
-    ipfs.util.addFromFs(filePath, (err, result) => {
-      expect(err).to.not.exist
-      expect(result.length).to.be.equal(1)
-      expect(result[0].path).to.be.equal('testfile.txt')
-      done()
+    it('a file', (done) => {
+      const filePath = path.join(__dirname, '../fixtures/testfile.txt')
+      ipfs.util.addFromFs(filePath, (err, result) => {
+        expect(err).to.not.exist
+        expect(result.length).to.be.equal(1)
+        expect(result[0].path).to.be.equal('testfile.txt')
+        done()
+      })
+    })
+
+    it('a dotFile in a directory', (done) => {
+      const filesPath = path.join(__dirname, '../fixtures/test-folder')
+      ipfs.util.addFromFs(filesPath, { recursive: true, dot: true }, (err, result) => {
+        expect(err).to.not.exist
+        expect(result.length).to.be.above(10)
+        expect(result.map(object => object.path)).to.include('test-folder/.hiddenTest.txt')
+        done()
+      })
     })
   })
 
