@@ -48,7 +48,7 @@ function loadPaths (opts, file) {
     const globEscapedDir = escape(file) + (file.endsWith('/') ? '' : '/')
     const mg = new glob.sync.GlobSync(`${globEscapedDir}**/*`, {
       follow: followSymlinks,
-      ignore: (opts.ignore || []).map(function(ignoreGlob) {
+      ignore: (opts.ignore || []).map(function (ignoreGlob) {
         return globEscapedDir + ignoreGlob
       })
     })

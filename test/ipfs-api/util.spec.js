@@ -59,10 +59,10 @@ describe('.util', () => {
       done()
     })
   })
-  
+
   it('.fsAdd add and ignore a directory', (done) => {
     const filesPath = path.join(__dirname, '../fixtures/test-folder')
-    ipfs.util.addFromFs(filesPath, { recursive: true , ignore: ['files/**']}, (err, result) => {
+    ipfs.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
       expect(err).to.not.exist
       expect(result.length).to.be.below(9)
       done()
