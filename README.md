@@ -153,7 +153,7 @@ Complete documentation for these methods is coming with: https://github.com/ipfs
 Reads a file or folder from `path` on the filesystem  and adds it to IPFS. Options:
 - **recursive**: If `path` is a directory, use option `{ recursive: true }` to add the directory and all its sub-directories.
   - **ignore**: To exclude fileglobs from the directory, use option `{ ignore: ['ignore/this/folder/**', 'and/this/file'] }`.
-  - **dot**: Dotfiles (files or folders starting with a `.`, for example, `.git/`) are not included by default. To add them, use the option `{ dot: true }`. 
+  - **hidden**: hidden/dot files (files or folders starting with a `.`, for example, `.git/`) are not included by default. To add them, use the option `{ hidden: true }`. 
 
 ```JavaScript
 ipfs.util.addFromFs('path/to/a/folder', { recursive: true , ignore: ['subfolder/to/ignore/**']}, (err, result) => {

@@ -80,12 +80,13 @@ describe('.util', () => {
       })
     })
 
-    it('a dotFile in a directory', (done) => {
+    it('a hidden file in a directory', (done) => {
       const filesPath = path.join(__dirname, '../fixtures/test-folder')
-      ipfs.util.addFromFs(filesPath, { recursive: true, dot: true }, (err, result) => {
+      ipfs.util.addFromFs(filesPath, { recursive: true, hidden: true }, (err, result) => {
         expect(err).to.not.exist
         expect(result.length).to.be.above(10)
         expect(result.map(object => object.path)).to.include('test-folder/.hiddenTest.txt')
+        expect(result.map(object => object.hash)).to.include('QmdbAjVmLRdpFyi8FFvjPfhTGB2cVXvWLuK7Sbt38HXrtt')
         done()
       })
     })
