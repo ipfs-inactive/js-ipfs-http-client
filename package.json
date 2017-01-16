@@ -67,7 +67,7 @@
     "ipfsd-ctl": "^0.17.0",
     "pre-commit": "^1.2.0",
     "socket.io": "^1.7.1",
-    "socket.io-client": "^1.7.1",
+    "socket.io-client": "^1.7.2",
     "stream-equal": "^0.1.12"
   },
   "pre-commit": [
