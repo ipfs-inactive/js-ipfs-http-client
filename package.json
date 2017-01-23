@@ -9,6 +9,9 @@
     "stream": "readable-stream",
     "http": "stream-http"
   },
+  "bin": {
+    "add-from-url": "./bin/add-from-url"
+  },
   "scripts": {
     "test": "gulp test",
     "test:node": "gulp test:node",
