@@ -46,7 +46,7 @@ const requestWithRedirect = (url, opts, send, callback) => {
 
     const redirection = res.headers.location
 
-    if (redirection) {
+    if (res.statusCode >= 300 && res.statusCode < 400 && redirection) {
       if (!validUrl(redirection)) {
         return callback(new Error('redirection url must be an http(s) url'))
       }
