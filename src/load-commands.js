@@ -20,6 +20,7 @@ function requireCommands () {
     mount: require('./api/mount'),
     name: require('./api/name'),
     object: require('./api/object'),
+    dag: require('./api/dag'),
     pin: require('./api/pin'),
     ping: require('./api/ping'),
     refs: require('./api/refs'),
@@ -31,7 +32,7 @@ function requireCommands () {
 
   // TODO: crowding the 'files' namespace temporarily for interface-ipfs-core
   // compatibility, until 'files vs mfs' naming decision is resolved.
-  cmds.files = function (send) {
+  cmds.files = (send) => {
     const files = require('./api/files')(send)
     files.add = require('./api/add')(send)
     files.createAddStream = require('./api/create-add-stream.js')(send)
@@ -41,7 +42,7 @@ function requireCommands () {
     return files
   }
 
-  cmds.util = function (send) {
+  cmds.util = (send) => {
     const util = {
       addFromFs: require('./api/util/fs-add')(send),
       addFromStream: require('./api/add')(send),
