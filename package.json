@@ -65,7 +65,7 @@
     "eslint-plugin-react": "^6.9.0",
     "gulp": "^3.9.1",
     "hapi": "^16.1.0",
-    "interface-ipfs-core": "^0.23.5",
+    "interface-ipfs-core": "^0.23.6",
     "ipfsd-ctl": "^0.18.2",
     "pre-commit": "^1.2.2",
     "socket.io": "^1.7.2",
