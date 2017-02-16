@@ -45,7 +45,7 @@
     "peer-info": "~0.8.3",
     "promisify-es6": "^1.0.2",
     "pump": "^1.0.2",
-    "qs": "^6.3.0",
+    "qs": "^6.3.1",
     "readable-stream": "1.1.14",
     "stream-http": "^2.6.3",
     "streamifier": "^0.1.1",
@@ -62,15 +62,15 @@
   "devDependencies": {
     "aegir": "^10.0.0",
     "chai": "^3.5.0",
-    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-react": "^6.10.0",
     "gulp": "^3.9.1",
     "hapi": "^16.1.0",
     "interface-ipfs-core": "~0.24.1",
-    "ipfsd-ctl": "~0.18.2",
+    "ipfsd-ctl": "~0.19.0",
     "pre-commit": "^1.2.2",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
-    "stream-equal": "^0.1.12"
+    "stream-equal": "^0.1.13"
   },
   "pre-commit": [
     "lint",
