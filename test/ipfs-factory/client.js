@@ -2,6 +2,7 @@
 
 const io = require('socket.io-client')
 const ipfsAPI = require('../../src')
+const Multiaddr = require('multiaddr')
 
 module.exports = Factory
 
@@ -40,8 +41,9 @@ function Factory () {
 
     function spawnNode () {
       ioC.once('fc-node', (apiAddr) => {
-        const ipfs = ipfsAPI(apiAddr)
-        ipfs.apiAddr = apiAddr
+        const addr = new Multiaddr(apiAddr)
+        const ipfs = ipfsAPI(addr)
+        ipfs.apiAddr = addr
         callback(null, ipfs)
       })
       ioC.emit('fs-spawn-node', repoPath, config)
