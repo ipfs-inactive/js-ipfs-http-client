@@ -4,6 +4,7 @@ const pump = require('pump')
 const through = require('through2')
 const promisify = require('promisify-es6')
 const PeerId = require('peer-id')
+const stringlistToArray = require('../stringlist-to-array')
 
 module.exports = (send) => {
   return {
@@ -33,42 +34,32 @@ module.exports = (send) => {
         callback = opts
         opts = {}
       }
-      send({
+      const request = {
         path: 'pubsub/ls',
         qs: opts
-      }, (err, result) => {
-        if (err) {
-          return callback(err)
-        }
-        if (result.Strings) {
-          callback(null, result.Strings.map((topic) => {
-            return topic
-          }))
-        } else {
-          callback(null, [])
-        }
-      })
+      }
+      send.andTransform(request, stringlistToArray, callback)
     }),
-    peers: promisify((opts, callback) => {
-      if (typeof (opts) === 'function') {
+    peers: promisify((topic, opts, callback) => {
+      if (typeof opts === 'function' &&
+          !callback) {
         callback = opts
         opts = {}
       }
-      send({
+
+      // opts is the real callback --
+      // 'callback' is being injected by promisify
+      if (typeof opts === 'function' &&
+          typeof callback === 'function') {
+        callback = opts
+        opts = {}
+      }
+      const request = {
         path: 'pubsub/peers',
+        args: topic,
         qs: opts
-      }, (err, result) => {
-        if (err) {
-          return callback(err)
-        }
-        if (result.Strings) {
-          callback(null, result.Strings.map((topic) => {
-            return topic
-          }))
-        } else {
-          callback(null, [])
-        }
-      })
+      }
+      send.andTransform(request, stringlistToArray, callback)
     }),
     sub: promisify((topic, opts, callback) => {
       if (typeof opts === 'function' &&
