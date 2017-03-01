@@ -49,7 +49,8 @@
     "readable-stream": "1.1.14",
     "stream-http": "^2.6.3",
     "streamifier": "^0.1.1",
-    "tar-stream": "^1.5.2"
+    "tar-stream": "^1.5.2",
+    "through2": "^2.0.3"
   },
   "engines": {
     "node": ">=4.0.0",
