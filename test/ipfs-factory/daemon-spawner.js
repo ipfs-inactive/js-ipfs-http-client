@@ -35,7 +35,7 @@ function Factory () {
 
       nodes.push(node)
 
-      callback(null, node.apiAddr)
+      callback(null, node.apiAddr.toString())
     })
   }
 
