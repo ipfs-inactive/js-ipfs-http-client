@@ -16,9 +16,12 @@ matrix:
 before_install:
   - npm install -g npm
 
-script:
+before_script:
   - npm run lint
-  - npm run test
+
+script:
+  - npm run test:node
+  - npm run test:browser
   - npm run coverage
 
 before_script:

@@ -10,9 +10,9 @@
     "http": "stream-http"
   },
   "scripts": {
-    "test": "gulp test",
-    "test:node": "gulp test:node",
-    "test:browser": "gulp test:browser",
+    "test": "node --max_old_space_size=4096 node_modules/.bin/gulp test",
+    "test:node": "node --max_old_space_size=4096 node_modules/.bin/gulp test:node",
+    "test:browser": "node --max_old_space_size=4096 node_modules/.bin/gulp test:browser",
     "lint": "aegir-lint",
     "build": "gulp build",
     "release": "gulp release",
@@ -66,7 +66,7 @@
     "gulp": "^3.9.1",
     "hapi": "^16.1.0",
     "interface-ipfs-core": "~0.24.1",
-    "ipfsd-ctl": "~0.18.2",
+    "ipfsd-ctl": "~0.19.0",
     "pre-commit": "^1.2.2",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",

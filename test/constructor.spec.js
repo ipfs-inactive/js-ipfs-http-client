@@ -18,15 +18,20 @@ function clientWorks (client, done) {
 
 describe('ipfs-api constructor tests', () => {
   describe('parameter permuations', () => {
-    let apiAddr
     let fc
+    let apiAddr
+    let host
+    let port
 
     before(function (done) {
       this.timeout(20 * 1000) // slow CI
       fc = new FactoryClient()
       fc.spawnNode((err, node) => {
         expect(err).to.not.exist
+        expect(node.apiAddr).to.exist
         apiAddr = node.apiAddr
+        host = apiAddr.nodeAddress().address
+        port = apiAddr.nodeAddress().port
         done()
       })
     })
@@ -34,10 +39,9 @@ describe('ipfs-api constructor tests', () => {
     after((done) => fc.dismantle(done))
 
     it('opts', (done) => {
-      const splitted = apiAddr.split('/')
       clientWorks(ipfsAPI({
-        host: splitted[2],
-        port: splitted[4],
+        host: host,
+        port: port,
         protocol: 'http'
       }), done)
     })
@@ -46,16 +50,16 @@ describe('ipfs-api constructor tests', () => {
       clientWorks(ipfsAPI(apiAddr, { protocol: 'http' }), done)
     })
 
-    it('host, port', (done) => {
-      const splitted = apiAddr.split('/')
+    it('multiaddr (string), opts', (done) => {
+      clientWorks(ipfsAPI(apiAddr.toString(), { protocol: 'http' }), done)
+    })
 
-      clientWorks(ipfsAPI(splitted[2], splitted[4]), done)
+    it('host, port', (done) => {
+      clientWorks(ipfsAPI(host, port), done)
     })
 
     it('host, port, opts', (done) => {
-      const splitted = apiAddr.split('/')
-
-      clientWorks(ipfsAPI(splitted[2], splitted[4], { protocol: 'http' }), done)
+      clientWorks(ipfsAPI(host, port, { protocol: 'http' }), done)
     })
   })
 })
