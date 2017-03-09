@@ -20,6 +20,7 @@ function requireCommands () {
     mount: require('./api/mount'),
     name: require('./api/name'),
     object: require('./api/object'),
+    dag: require('./api/dag'),
     pin: require('./api/pin'),
     ping: require('./api/ping'),
     refs: require('./api/refs'),
