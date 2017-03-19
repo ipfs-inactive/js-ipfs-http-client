@@ -9,23 +9,27 @@ const streamToValue = require('../stream-to-value')
 module.exports = (send) => {
   return {
     get: promisify((args, opts, callback) => {
-      // TODO this needs to be adjusted with the new go-ipfs http-api
-      let cid
-      if (CID.isCID(args)) {
-        cid = args
-        args = multihash.toB58String(args.multihash)
-      } else if (Buffer.isBuffer(args)) {
-        cid = new CID(args)
-        args = multihash.toB58String(args)
-      } else if (typeof args == 'string') {
-        cid = new CID(args)
-      } else {
-        return callback(new Error('invalid argument'))
-      }
-
       if (typeof opts === 'function') {
         callback = opts
         opts = {}
+      }
+
+      // TODO this needs to be adjusted with the new go-ipfs http-api
+      let cid
+      try {
+        if (CID.isCID(args)) {
+          cid = args
+          args = multihash.toB58String(args.multihash)
+        } else if (Buffer.isBuffer(args)) {
+          cid = new CID(args)
+          args = multihash.toB58String(args)
+        } else if (typeof args === 'string') {
+          cid = new CID(args)
+        } else {
+          return callback(new Error('invalid argument'))
+        }
+      } catch (err) {
+        return callback(err)
       }
 
       // Transform the response from Buffer or a Stream to a Block
