@@ -1,3 +1,4 @@
+'use strict'
 const React = require('react')
 const ipfsAPI = require('ipfs-api')
 
@@ -8,9 +9,15 @@ class App extends React.Component {
       added_file_hash: null
     }
     this.ipfsApi = ipfsAPI('localhost', '5001')
+
+    // bind methods
+    this.captureFile = this.captureFile.bind(this)
+    this.saveToIpfs = this.saveToIpfs.bind(this)
+    this.arrayBufferToString = this.arrayBufferToString.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  captureFile = (event) => {
+  captureFile (event) {
     event.stopPropagation()
     event.preventDefault()
     const file = event.target.files[0]
@@ -19,7 +26,7 @@ class App extends React.Component {
     reader.readAsArrayBuffer(file)
   }
 
-  saveToIpfs = (reader) => {
+  saveToIpfs (reader) {
     let ipfsId
     const buffer = Buffer.from(reader.result)
     this.ipfsApi.add(buffer)
@@ -33,11 +40,11 @@ class App extends React.Component {
     })
   }
 
-  arrayBufferToString = (arrayBuffer) => {
+  arrayBufferToString (arrayBuffer) {
     return String.fromCharCode.apply(null, new Uint16Array(arrayBuffer))
   }
 
-  handleSubmit = (event) => {
+  handleSubmit (event) {
     event.preventDefault()
   }
 
