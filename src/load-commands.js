@@ -26,7 +26,8 @@ function requireCommands () {
     repo: require('./api/repo'),
     swarm: require('./api/swarm'),
     update: require('./api/update'),
-    version: require('./api/version')
+    version: require('./api/version'),
+    pubsub: require('./api/pubsub')
   }
 
   // TODO: crowding the 'files' namespace temporarily for interface-ipfs-core
