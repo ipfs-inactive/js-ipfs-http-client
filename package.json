@@ -46,7 +46,7 @@
     "promisify-es6": "^1.0.2",
     "pump": "^1.0.2",
     "qs": "^6.4.0",
-    "readable-stream": "2.2.6",
+    "readable-stream": "1.1.14",
     "stream-http": "^2.6.3",
     "streamifier": "^0.1.1",
     "tar-stream": "^1.5.2"
