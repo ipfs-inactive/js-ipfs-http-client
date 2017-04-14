@@ -103,7 +103,7 @@ module.exports = (send) => {
       }
 
       send.andTransform({
-        path: 'dht/findpeers',
+        path: 'dht/findpeer',
         args: peerId,
         qs: opts
       }, streamToValue, callback)
@@ -147,11 +147,11 @@ module.exports = (send) => {
         opts = {}
       }
 
-      send({
+      send.andTransform({
         path: 'dht/query',
         args: peerId,
         qs: opts
-      }, callback)
+      }, streamToValue, callback)
     })
   }
 }
