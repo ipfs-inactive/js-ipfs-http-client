@@ -71,7 +71,40 @@ module.exports = (send) => {
       }
     }),
     get: promisify((cid, path, options, callback) => {
-      // TODO
+      if (typeof path === 'function') {
+        callback = path
+        path = undefined
+      }
+
+      if (typeof options === 'function') {
+        callback = options
+        options = {}
+      }
+
+      options = options || {}
+
+      if (typeof cid === 'string') {
+        const split = cid.split('/')
+        cid = split[0]
+        split.shift()
+
+        if (split.length > 0) {
+          path = split.join('/')
+        } else {
+          path = '/'
+        }
+      }
+
+      send({
+        path: 'dag/get',
+        args: cid + path,
+        qs: options
+      }, (err, result) => {
+        if (err) {
+          return callback(err)
+        }
+        callback(undefined, {value: result})
+      })
     })
   }
 
