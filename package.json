@@ -22,7 +22,7 @@
     "coverage-publish": "aegir-coverage publish"
   },
   "dependencies": {
-    "async": "^2.4.0",
+    "async": "^2.4.1",
     "bs58": "^4.0.0",
     "cids": "~0.5.0",
     "concat-stream": "^1.6.0",
@@ -61,12 +61,12 @@
   },
   "devDependencies": {
     "aegir": "^11.0.2",
-    "chai": "^3.5.0",
+    "chai": "^4.0.0",
     "dirty-chai": "^1.2.2",
     "eslint-plugin-react": "^7.0.1",
     "gulp": "^3.9.1",
-    "hapi": "^16.1.1",
-    "interface-ipfs-core": "~0.27.2",
+    "hapi": "^16.2.0",
+    "interface-ipfs-core": "~0.28.0",
     "ipfsd-ctl": "~0.21.0",
     "pre-commit": "^1.2.2",
     "socket.io": "^2.0.1",
