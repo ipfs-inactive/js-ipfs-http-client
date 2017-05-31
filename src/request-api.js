@@ -96,7 +96,7 @@ function requestAPI (config, options, callback) {
   // this option is only used internally, not passed to daemon
   delete options.qs.followSymlinks
 
-  const method = 'POST'
+  const method = options.method || 'POST'
   const headers = {}
 
   if (isNode) {

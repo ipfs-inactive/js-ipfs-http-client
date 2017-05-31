@@ -47,6 +47,7 @@ module.exports = (send) => {
       }
 
       const request = {
+        method: 'GET',
         path: 'block/get',
         args: args,
         qs: opts
