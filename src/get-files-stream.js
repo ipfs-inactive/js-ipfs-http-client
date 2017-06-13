@@ -16,6 +16,7 @@ function headers (file) {
   } else if (file.symlink) {
     header['Content-Type'] = 'application/symlink'
   } else {
+    header['Abspath'] = file.absPath
     header['Content-Type'] = 'application/octet-stream'
   }
 
@@ -69,6 +70,7 @@ function loadPaths (opts, file) {
         // files
         if (mg.cache[name] === 'FILE') {
           return {
+            absPath: name,
             path: strip(name, file),
             symlink: false,
             dir: false,
@@ -91,6 +93,7 @@ function loadPaths (opts, file) {
   }
 
   return {
+    absPath: file,
     path: path.basename(file),
     content: fs.createReadStream(file)
   }
@@ -122,6 +125,7 @@ function getFilesStream (files, opts) {
     }
 
     return {
+      absPath: '',
       path: '',
       symlink: false,
       dir: false,
