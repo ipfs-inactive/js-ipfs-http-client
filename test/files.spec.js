@@ -15,6 +15,8 @@ const testfile = isNode
   ? loadFixture(__dirname, '/fixtures/testfile.txt')
   : loadFixture(__dirname, 'fixtures/testfile.txt')
 
+const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
+
 describe('.files (the MFS API part)', () => {
   let ipfs
   let fc
@@ -32,10 +34,19 @@ describe('.files (the MFS API part)', () => {
   after((done) => fc.dismantle(done))
 
   describe('Callback API', () => {
-    it('add file for testing', (done) => {
-      const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-
+    it('files.add', (done) => {
       ipfs.files.add(testfile, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
+        done()
+      })
+    })
+
+    it('files.add with options', (done) => {
+      ipfs.files.add(testfile, { pin: false }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -170,6 +181,24 @@ describe('.files (the MFS API part)', () => {
   })
 
   describe('Promise API', () => {
+    it('files.add', () => {
+      return ipfs.files.add(testfile)
+      .then((res) => {
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
+      })
+    })
+
+    it('files.add with options', () => {
+      return ipfs.files.add(testfile, { pin: false })
+      .then((res) => {
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
+      })
+    })
+
     it('files.mkdir', () => {
       return ipfs.files.mkdir('/test-folder')
     })
