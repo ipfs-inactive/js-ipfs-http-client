@@ -66,7 +66,11 @@ module.exports = (send) => {
           if (err) {
             return callback(err)
           }
-          // TODO handle the result
+          if (result.Cid) {
+            return callback(null, new CID(result.Cid['/']))
+          } else {
+            return callback(result)
+          }
         })
       }
     }),
@@ -83,6 +87,10 @@ module.exports = (send) => {
 
       options = options || {}
 
+      if (CID.isCID(cid)) {
+        cid = cid.toBaseEncodedString()
+      }
+
       if (typeof cid === 'string') {
         const split = cid.split('/')
         cid = split[0]
@@ -97,7 +105,7 @@ module.exports = (send) => {
 
       send({
         path: 'dag/get',
-        args: cid + path,
+        args: cid + '/' + path,
         qs: options
       }, (err, result) => {
         if (err) {
