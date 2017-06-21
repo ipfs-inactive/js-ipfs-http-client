@@ -21,10 +21,14 @@ module.exports = (send) => {
 
         // go-ipfs http api currently returns 3 lines for a ping.
         // they're a little messed, so take the correct values from each lines.
+        const Success = res[1].Success
+        const Time = res[1].Time
+        const Text = res.length > 2 ? res[2].Text : res[1].Text
+
         const pingResult = {
-          Success: res[1].Success,
-          Time: res[1].Time,
-          Text: res[2].Text
+          Success: Success,
+          Time: Time,
+          Text: Text
         }
 
         callback(null, pingResult)
