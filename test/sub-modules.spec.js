@@ -206,4 +206,22 @@ describe('submodules', () => {
     expect(refs).to.be.a('function')
     expect(refs.local).to.be.a('function')
   })
+
+  it('add', () => {
+    const add = require('../src/add')(config)
+
+    expect(add).to.be.a('function')
+  })
+
+  it('get', () => {
+    const get = require('../src/get')(config)
+
+    expect(get).to.be.a('function')
+  })
+
+  it('cat', () => {
+    const cat = require('../src/cat')(config)
+
+    expect(cat).to.be.a('function')
+  })
 })
