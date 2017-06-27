@@ -1,3 +1,3 @@
 'use strict'
 
-const mount = require('../../../../src/mount')('/ip4/127.0.0.1/tcp/5001')
+require('../../../../src/mount')('/ip4/127.0.0.1/tcp/5001')

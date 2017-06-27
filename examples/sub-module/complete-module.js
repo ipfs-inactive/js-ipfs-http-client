@@ -1,3 +1,3 @@
 'use strict'
 
-const ipfs = require('../../src')('/ip4/127.0.0.1/tcp/5001')
+require('../../src')('/ip4/127.0.0.1/tcp/5001')

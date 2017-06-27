@@ -1,3 +1,3 @@
 'use strict'
 
-const add = require('../../../../src/add')('/ip4/127.0.0.1/tcp/5001')
+require('../../../../src/add')('/ip4/127.0.0.1/tcp/5001')
