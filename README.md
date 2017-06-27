@@ -77,7 +77,7 @@ var ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'})
 ```
 ### Importing a sub-module and usage
 ```javascript
-const bitswap = require('ipfs-api/bitswap')('/ip4/127.0.0.1/tcp/5001')
+const bitswap = require('ipfs-api/src/bitswap')('/ip4/127.0.0.1/tcp/5001')
 
 bitswap.unwant(key, (err) => {
   // ...
