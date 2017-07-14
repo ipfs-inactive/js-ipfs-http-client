@@ -27,7 +27,7 @@ module.exports = (send) => {
       args: [
         multihash,
         dLink.name,
-        bs58.encode(dLink.multihash).toString()
+        cleanMultihash(dLink.multihash)
       ]
     }, (err, result) => {
       if (err) {
