@@ -1,7 +1,6 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const bs58 = require('bs58')
 const cleanMultihash = require('../utils/clean-multihash')
 
 module.exports = (send) => {
