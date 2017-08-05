@@ -110,6 +110,7 @@ describe('.util', () => {
 
     it('.urlAdd http with redirection', (done) => {
       ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
+        expect(err).to.not.exist()
         expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')
         done()
       })
