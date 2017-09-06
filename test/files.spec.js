@@ -58,6 +58,16 @@ describe('.files (the MFS API part)', function () {
         expect(res).to.have.length(1)
         expect(res[0].hash).to.equal(expectedHash)
         expect(res[0].path).to.equal(expectedHash)
+      })
+    })
+
+    it('files.add with options', (done) => {
+      ipfs.files.add(testfile, { pin: false }, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
         done()
       })
     })
@@ -189,6 +199,15 @@ describe('.files (the MFS API part)', function () {
   describe('Promise API', function () {
     this.timeout(120 * 1000)
 
+    it('files.add', () => {
+      return ipfs.files.add(testfile)
+      .then((res) => {
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
+      })
+    })
+
     it('files.add with cid-version=1 and raw-leaves=false', () => {
       const expectedHash = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
       const options = { 'cid-version': 1, 'raw-leaves': false }
@@ -199,6 +218,16 @@ describe('.files (the MFS API part)', function () {
           expect(res[0].hash).to.equal(expectedHash)
           expect(res[0].path).to.equal(expectedHash)
         })
+      })
+    })
+
+    it('files.add with options', () => {
+      return ipfs.files.add(testfile, { pin: false })
+      .then((res) => {
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedMultihash)
+        expect(res[0].path).to.equal(expectedMultihash)
+      })
     })
 
     it('files.mkdir', () => {
@@ -207,7 +236,10 @@ describe('.files (the MFS API part)', function () {
 
     it('files.cp', () => {
       return ipfs.files
-        .cp(['/ipfs/Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', '/test-folder/test-file'])
+        .cp([
+          '/ipfs/Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
+          '/test-folder/test-file'
+        ])
     })
 
     it('files.ls', () => {
