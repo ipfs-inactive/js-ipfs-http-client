@@ -30,7 +30,7 @@ module.exports = (send) => {
     }
 
     if (opts['raw-leaves'] != null) {
-      qs['raw-leaves'] = opts['raw-version']
+      qs['raw-leaves'] = opts['raw-leaves']
     } else if (opts.rawLeaves != null) {
       qs['raw-leaves'] = opts.rawLeaves
     }
