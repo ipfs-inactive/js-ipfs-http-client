@@ -41,7 +41,7 @@ module.exports = (send) => {
       qs.hash = opts.hashAlg
     }
 
-    const request = { path: 'add', files: files, qs: qs }
+    const request = { path: 'add', files: files, qs: opts, progress: opts.progress }
 
     // Transform the response stream to DAGNode values
     const transform = (res, callback) => DAGNodeStream.streamToValue(send, res, callback)
