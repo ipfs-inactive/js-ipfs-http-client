@@ -49,15 +49,16 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.add with cid-version=1 and raw-leaves=false', (done) => {
-      const expectedHash = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
+      const expectedCid = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
       const options = { 'cid-version': 1, 'raw-leaves': false }
 
       ipfs.files.add(testfile, options, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
-        expect(res[0].hash).to.equal(expectedHash)
-        expect(res[0].path).to.equal(expectedHash)
+        expect(res[0].hash).to.equal(expectedCid)
+        expect(res[0].path).to.equal(expectedCid)
+        done()
       })
     })
 
