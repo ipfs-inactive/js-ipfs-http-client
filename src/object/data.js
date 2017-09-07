@@ -2,7 +2,7 @@
 
 const promisify = require('promisify-es6')
 const streamToValue = require('../utils/stream-to-value')
-const cleanMultihash = require('../utils/clean-multihash')
+const CID = require('cids')
 const LRU = require('lru-cache')
 const lruOptions = {
   max: 128
@@ -11,7 +11,7 @@ const lruOptions = {
 const cache = LRU(lruOptions)
 
 module.exports = (send) => {
-  return promisify((multihash, options, callback) => {
+  return promisify((hash, options, callback) => {
     if (typeof options === 'function') {
       callback = options
       options = {}
@@ -20,13 +20,16 @@ module.exports = (send) => {
       options = {}
     }
 
+    let cid, b58Hash
+
     try {
-      multihash = cleanMultihash(multihash, options)
+      cid = new CID(hash)
+      b58Hash = cid.toBaseEncodedString()
     } catch (err) {
       return callback(err)
     }
 
-    const node = cache.get(multihash)
+    const node = cache.get(b58Hash)
 
     if (node) {
       return callback(null, node.data)
@@ -34,7 +37,7 @@ module.exports = (send) => {
 
     send({
       path: 'object/data',
-      args: multihash
+      args: b58Hash
     }, (err, result) => {
       if (err) {
         return callback(err)
