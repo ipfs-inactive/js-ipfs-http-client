@@ -21,10 +21,11 @@ module.exports = (send) => {
       return callback(new Error('"files" must be a buffer, readable stream, or array of objects'))
     }
 
-    const request = { path: 'add', files: files, qs: opts }
+    const request = { path: 'add', files: files, qs: opts, progress: opts.progress }
 
     // Transform the response stream to DAGNode values
     const transform = (res, callback) => DAGNodeStream.streamToValue(send, res, callback)
+
     send.andTransform(request, transform, callback)
   })
 }

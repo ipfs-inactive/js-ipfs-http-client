@@ -73,6 +73,15 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
+    it.only('files.add with progress options', (done) => {
+      ipfs.files.add(testfile, {progress: false}, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        done()
+      })
+    })
+
     it('files.mkdir', (done) => {
       ipfs.files.mkdir('/test-folder', done)
     })
