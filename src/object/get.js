@@ -14,7 +14,7 @@ const lruOptions = {
 const cache = LRU(lruOptions)
 
 module.exports = (send) => {
-  return promisify((hash, options, callback) => {
+  return promisify((cid, options, callback) => {
     if (typeof options === 'function') {
       callback = options
       options = {}
@@ -24,16 +24,16 @@ module.exports = (send) => {
       options = {}
     }
 
-    let cid, b58Hash
+    let cidB58Str
 
     try {
-      cid = new CID(hash)
-      b58Hash = cid.toBaseEncodedString()
+      cid = new CID(cid)
+      cidB58Str = cid.toBaseEncodedString()
     } catch (err) {
       return callback(err)
     }
 
-    const node = cache.get(b58Hash)
+    const node = cache.get(cidB58Str)
 
     if (node) {
       return callback(null, node)
@@ -41,7 +41,7 @@ module.exports = (send) => {
 
     send({
       path: 'object/get',
-      args: b58Hash
+      args: cidB58Str
     }, (err, result) => {
       if (err) {
         return callback(err)
@@ -55,7 +55,7 @@ module.exports = (send) => {
         if (err) {
           return callback(err)
         }
-        cache.set(b58Hash, node)
+        cache.set(cidB58Str, node)
         callback(null, node)
       })
     })
