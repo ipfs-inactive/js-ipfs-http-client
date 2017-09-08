@@ -87,6 +87,25 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
+    HASH_ALGS.forEach((name) => {
+      it(`files.add with hash=${name} and raw-leaves=false`, (done) => {
+        const content = String(Math.random() + Date.now())
+        const file = {
+          path: content + '.txt',
+          content: Buffer.from(content)
+        }
+        const options = { hash: name, 'raw-leaves': false }
+
+        ipfs.files.add([file], options, (err, res) => {
+          if (err) return done(err)
+          expect(res).to.have.length(1)
+          const cid = new CID(res[0].hash)
+          expect(mh.decode(cid.multihash).name).to.equal(name)
+          done()
+        })
+      })
+    })
+
     it.only('files.add with progress options', (done) => {
       ipfs.files.add(testfile, {progress: false}, (err, res) => {
         expect(err).to.not.exist()
