@@ -8,6 +8,8 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const isNode = require('detect-node')
 const loadFixture = require('aegir/fixtures')
+const concat = require('concat-stream')
+const through = require('through2')
 
 const FactoryClient = require('./ipfs-factory/client')
 
@@ -70,6 +72,32 @@ describe('.files (the MFS API part)', function () {
         expect(res[0].hash).to.equal(expectedMultihash)
         expect(res[0].path).to.equal(expectedMultihash)
         done()
+      })
+    })
+
+    it.only('files.add with onlyHash', (done) => {
+      const content = String(Math.random() + Date.now())
+      const inputFile = {
+        path: content + '.txt',
+        content: Buffer.from(content)
+      }
+
+      ipfs.files.add([inputFile], { onlyHash: true }, (err, res) => {
+        expect(err).to.not.exist()
+
+        const hash = res[0].hash
+
+        ipfs.get(hash, (err, res) => {
+          expect(err).to.not.exist()
+
+          res.pipe(through.obj((file, enc, next) => {
+            file.content.pipe(concat((ret) => {
+              // console.log(content.toString, content)
+              expect(content).to.equal()
+              next()
+            }))
+          }, done))
+        })
       })
     })
 
