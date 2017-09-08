@@ -10,7 +10,6 @@ module.exports = function (send, hash, callback) {
   // Until js-ipfs supports object/get and object/data by CID
   // we need to convert our CID or multihash hash into a multihash
   const multihash = mh.toB58String(new CID(hash).multihash)
-
   // Retrieve the object and its data in parallel, then produce a DAGNode
   // instance using this information.
   parallel([

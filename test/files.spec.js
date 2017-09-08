@@ -10,12 +10,21 @@ const isNode = require('detect-node')
 const loadFixture = require('aegir/fixtures')
 const concat = require('concat-stream')
 const through = require('through2')
+const streamToValue = require('../src/utils/stream-to-value')
 
 const FactoryClient = require('./ipfs-factory/client')
 
 const testfile = isNode
   ? loadFixture(__dirname, '/fixtures/testfile.txt')
   : loadFixture(__dirname, 'fixtures/testfile.txt')
+
+function createTestFile (content) {
+  content = content || String(Math.random() + Date.now())
+  return {
+    path: content + '.txt',
+    content: Buffer.from(content)
+  }
+}
 
 describe('.files (the MFS API part)', function () {
   this.timeout(120 * 1000)
@@ -75,28 +84,49 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
-    it.only('files.add with onlyHash', (done) => {
+    it('files.add without only-hash', (done) => {
       const content = String(Math.random() + Date.now())
-      const inputFile = {
-        path: content + '.txt',
-        content: Buffer.from(content)
-      }
+      const inputFile = createTestFile(content)
 
-      ipfs.files.add([inputFile], { onlyHash: true }, (err, res) => {
+      ipfs.files.add([inputFile], { onlyHash: false }, (err, res) => {
         expect(err).to.not.exist()
 
         const hash = res[0].hash
+        let retrievedContent = ''
 
         ipfs.get(hash, (err, res) => {
           expect(err).to.not.exist()
 
-          res.pipe(through.obj((file, enc, next) => {
-            file.content.pipe(concat((ret) => {
-              // console.log(content.toString, content)
-              expect(content).to.equal()
+          res.pipe(through.obj((file, encoding, next) => {
+            file.content.pipe(concat(retrieved => {
+              retrievedContent += retrieved.toString()
               next()
             }))
-          }, done))
+          }, () => {
+            expect(content).to.equal(retrievedContent)
+            done()
+          }))
+        })
+      })
+    })
+
+    it.only('files.add with only-hash', (done) => {
+      const inputFile = createTestFile()
+
+      ipfs.files.add([inputFile], {'only-hash': true}, (err, res) => {
+        expect(err).to.not.exist()
+
+        streamToValue(res, (err, collected) => {
+          expect(err).to.not.exist()
+
+          const hash = collected[0].Hash
+
+          ipfs.files.get(hash, (err, res) => {
+            expect(err).to.exist()
+            const message = `Failed to get block for ${hash}: context canceled`
+            expect(err.message.indexOf(message)).to.be.above(-1)
+          })
+          done()
         })
       })
     })

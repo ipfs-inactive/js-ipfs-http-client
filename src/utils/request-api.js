@@ -147,6 +147,7 @@ function requestAPI (config, options, callback) {
       return qsDefaultEncoder(data)
     }
   })
+
   const req = request(config.protocol)({
     hostname: config.host,
     path: `${config['api-path']}${options.path}?${qs}`,
