@@ -10,7 +10,6 @@ const getFilesStream = require('./get-files-stream')
 const streamToValue = require('./stream-to-value')
 const streamToJsonValue = require('./stream-to-json-value')
 const request = require('./request')
-const Transform = require('readable-stream').Transform
 
 // -- Internal
 
@@ -81,6 +80,9 @@ function requestAPI (config, options, callback) {
   }
   if (options.files && !Array.isArray(options.files)) {
     options.files = [options.files]
+  }
+  if (options.progress) {
+    options.qs.progress = true
   }
 
   if (options.qs.r) {
@@ -161,17 +163,7 @@ function requestAPI (config, options, callback) {
   })
 
   if (options.files) {
-    if (options.progress && typeof options.progress === 'function') {
-      const progressStream = new Transform({
-        transform: (chunk, encoding, cb) => {
-          options.progress(chunk.byteLength)
-          cb(null, chunk)
-        }
-      })
-      stream.pipe(progressStream).pipe(req)
-    } else {
-      stream.pipe(req)
-    }
+    stream.pipe(req)
   } else {
     req.end()
   }

@@ -106,8 +106,19 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
-    it.only('files.add with progress options', (done) => {
-      ipfs.files.add(testfile, {progress: false}, (err, res) => {
+    it('files.add with progress options', (done) => {
+      let progress = 0
+      ipfs.files.add(testfile, { progress: (p) => { progress = p } }, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(progress).to.be.greaterThan(0)
+        done()
+      })
+    })
+
+    it('files.add without progress options', (done) => {
+      ipfs.files.add(testfile, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
