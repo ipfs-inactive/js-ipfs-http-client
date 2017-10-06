@@ -48,7 +48,7 @@ describe('.files (the MFS API part)', function () {
 
   after((done) => fc.dismantle(done))
 
-  describe('Callback API', function () {
+  describe.only('Callback API', function () {
     this.timeout(120 * 1000)
 
     it('add file for testing', (done) => {
@@ -106,13 +106,64 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
-    it('files.add with progress options', (done) => {
-      let progress = 0
-      ipfs.files.add(testfile, { progress: (p) => { progress = p } }, (err, res) => {
+    it('files.add file with progress option', (done) => {
+      let progress
+      let progressCount = 0
+
+      const progressHandler = (p) => {
+        progressCount += 1
+        progress = p
+      }
+
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
-        expect(progress).to.be.greaterThan(0)
+        expect(progress).to.be.equal(100)
+        expect(progressCount).to.be.greaterThan(0)
+
+        done()
+      })
+    })
+
+    it('files.add big file with progress option', (done) => {
+      let progress
+      let progressCount = 0
+
+      const progressHandler = (p) => {
+        progressCount += 1
+        progress = p
+      }
+
+      // TODO: needs to be using a big file
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(progress).to.be.equal(100)
+        expect(progressCount).to.be.greaterThan(0)
+
+        done()
+      })
+    })
+
+    it('files.add directory with progress option', (done) => {
+      let progress
+      let progressCount = 0
+
+      const progressHandler = (p) => {
+        progressCount += 1
+        progress = p
+      }
+
+      // TODO: needs to be using a directory
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(progress).to.be.equal(100)
+        expect(progressCount).to.be.greaterThan(0)
+
         done()
       })
     })
