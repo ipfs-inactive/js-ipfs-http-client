@@ -119,15 +119,15 @@ describe('.files (the MFS API part)', function () {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
-        expect(progress).to.be.equal(100)
-        expect(progressCount).to.be.greaterThan(0)
+        expect(progress).to.be.equal(testfile.byteLength)
+        expect(progressCount).to.be.equal(1)
 
         done()
       })
     })
 
     it('files.add big file with progress option', (done) => {
-      let progress
+      let progress = 0
       let progressCount = 0
 
       const progressHandler = (p) => {
@@ -140,15 +140,15 @@ describe('.files (the MFS API part)', function () {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
-        expect(progress).to.be.equal(100)
-        expect(progressCount).to.be.greaterThan(0)
+        expect(progress).to.be.equal(testfile.byteLength)
+        expect(progressCount).to.be.equal(1)
 
         done()
       })
     })
 
     it('files.add directory with progress option', (done) => {
-      let progress
+      let progress = 0
       let progressCount = 0
 
       const progressHandler = (p) => {
@@ -161,8 +161,8 @@ describe('.files (the MFS API part)', function () {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
-        expect(progress).to.be.equal(100)
-        expect(progressCount).to.be.greaterThan(0)
+        expect(progress).to.be.equal(testfile.byteLength)
+        expect(progressCount).to.be.equal(1)
 
         done()
       })
