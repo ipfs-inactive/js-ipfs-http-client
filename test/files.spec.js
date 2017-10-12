@@ -48,7 +48,7 @@ describe('.files (the MFS API part)', function () {
 
   after((done) => fc.dismantle(done))
 
-  describe.only('Callback API', function () {
+  describe('Callback API', function () {
     this.timeout(120 * 1000)
 
     it('add file for testing', (done) => {
