@@ -48,6 +48,19 @@ function onRes (buffer, cb) {
     // Return a stream of JSON objects
     if (chunkedObjects && isJson) {
       const outputStream = pump(res, ndjson.parse())
+      res.on('end', () => {
+        // if we got an error here, we have to throw
+        // a) we can't `outputStream.destroy(err)` because its already closed
+        // b) the callback has been already called, no point in calling it again
+        let err = res.trailers['x-stream-error']
+        if (err) {
+          err = JSON.parse(err)
+          const error = new Error(`Server responded with 500`)
+          error.code = err.Code
+          error.message = err.Message
+          throw error
+        }
+      })
       return cb(null, outputStream)
     }
 

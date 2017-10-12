@@ -42,11 +42,6 @@ class ProgressStream extends Transform {
       return callback()
     }
 
-    if (typeof chunk.Message !== 'undefined' ||
-      typeof chunk.Code !== 'undefined') {
-      this.emit('error', chunk)
-    }
-
     callback(null, chunk)
   }
 }
