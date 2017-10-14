@@ -48,6 +48,12 @@ function onRes (buffer, cb) {
     // Return a stream of JSON objects
     if (chunkedObjects && isJson) {
       const outputStream = pump(res, ndjson.parse())
+      // TODO: This needs reworking.
+      // this is a chicken and egg problem -
+      // 1) we can't get Trailer headers unless the response ends
+      // 2) we can't propagate the error, because the response stream
+      // is closed
+      // (perhaps we can workaround this using pull-streams)
       res.on('end', () => {
         let err = res.trailers['x-stream-error']
         if (err) {
@@ -55,7 +61,7 @@ function onRes (buffer, cb) {
           const error = new Error(`Server responded with 500`)
           error.code = err.Code
           error.message = err.Message
-          throw error
+          outputStream.destroy(error) // error is not going to be propagated
         }
       })
       return cb(null, outputStream)
