@@ -10,8 +10,12 @@ const getFilesStream = require('./get-files-stream')
 const streamToValue = require('./stream-to-value')
 const streamToJsonValue = require('./stream-to-json-value')
 const request = require('./request')
+const HttpsAgent = require('https').Agent
 
 // -- Internal
+
+// possible agent for client side certs
+var certifiedHttpsAgent
 
 function parseError (res, cb) {
   const error = new Error(`Server responded with ${res.statusCode}`)
@@ -147,13 +151,28 @@ function requestAPI (config, options, callback) {
       return qsDefaultEncoder(data)
     }
   })
-  const req = request(config.protocol)({
+
+  const reqOpts = {
     hostname: config.host,
     path: `${config['api-path']}${options.path}?${qs}`,
     port: config.port,
     method: method,
     headers: headers
-  }, onRes(options.buffer, callback))
+  }
+
+  if (config.key || config.cert || config.pfx || config.ca) {
+    certifiedHttpsAgent = certifiedHttpsAgent || new HttpsAgent()
+    Object.assign(reqOpts, {
+      key: config.key,
+      cert: config.cert,
+      pfx: config.pfx,
+      passphrase: config.passphrase,
+      ca: config.ca,
+      agent: certifiedHttpsAgent
+    })
+  }
+
+  const req = request(config.protocol)(reqOpts, onRes(options.buffer, callback))
 
   req.on('error', (err) => {
     callback(err)
