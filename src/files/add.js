@@ -2,7 +2,7 @@
 
 const isStream = require('is-stream')
 const promisify = require('promisify-es6')
-// const ProgressStream = require('../utils/progress-stream')
+const ProgressStream = require('../utils/progress-stream')
 const converter = require('../utils/converter')
 
 module.exports = (send) => {
@@ -44,11 +44,8 @@ module.exports = (send) => {
 
     const request = { path: 'add', files: files, qs: qs, progress: opts.progress }
 
-    send.andTransform(request, converter, callback)
-    /*
-    const transform = (res, callback) => {
-      converter(send, ProgressStream.fromStream(opts.progress, res), callback)
-    }
-    */
+    send.andTransform(request, (response, cb) => {
+      converter(ProgressStream.fromStream(opts.progress, response), cb)
+    }, callback)
   })
 }
