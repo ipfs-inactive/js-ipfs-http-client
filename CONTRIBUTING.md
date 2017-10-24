@@ -6,7 +6,12 @@ You should have [node.js], [npm] and [gulp] installed.
 
 ## Linting
 
-Linting is done using [eslint] and the rules are based on [standard].
+Linting is done using [eslint] and the rules are based on [standard]. You should have `eslint` and `eslint-plugin-react` globally installed:
+
+```bash
+npm install -g eslint eslint-plugin-react
+```
+
 
 ```bash
 $ gulp lint
