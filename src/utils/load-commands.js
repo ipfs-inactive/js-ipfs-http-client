@@ -7,7 +7,7 @@ function requireCommands () {
     addReadableStream: require('../files/add-readable-stream'),
     addPullStream: require('../files/add-pull-stream'),
     cat: require('../files/cat'),
-    // catReadableStream: require('../files/cat-readable-stream'),
+    catReadableStream: require('../files/cat-readable-stream'),
     // catPullStream: require('../files/cat-pull-stream'),
     get: require('../files/get'),
     // getReadableStream: require('../files/get-readable-stream'),

@@ -10,7 +10,7 @@ module.exports = (arg) => {
     addReadableStream: require('./add-readable-stream')(send),
     addPullStream: require('./add-pull-stream')(send),
     cat: require('./cat')(send),
-    // catReadableStream: require('./cat-readable-stream')(send),
+    catReadableStream: require('./cat-readable-stream')(send),
     // catPullStream: require('./cat-pull-stream')(send),
     get: require('./get')(send),
     // getReadableStream: require('./get-readable-stream')(send),
