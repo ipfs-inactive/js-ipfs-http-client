@@ -4,8 +4,14 @@ function requireCommands () {
   const cmds = {
     // add and createAddStream alias
     add: require('../files/add'),
+    addReadableStream: require('../files/add-readable-stream'),
+    // addPullStream: require('../files/add-pull-stream'),
     cat: require('../files/cat'),
-    createAddStream: require('../files/create-add-stream'),
+    // catReadableStream: require('../files/cat-readable-stream'),
+    // catPullStream: require('../files/add-pull-stream'),
+    get: require('../files/get'),
+    // getReadableStream: require('../files/get-readable-stream'),
+    // getPullStream: require('../files/get-pull-stream'),
     bitswap: require('../bitswap'),
     block: require('../block'),
     bootstrap: require('../bootstrap'),
@@ -15,7 +21,6 @@ function requireCommands () {
     diag: require('../diag'),
     id: require('../id'),
     key: require('../key'),
-    get: require('../files/get'),
     log: require('../log'),
     ls: require('../ls'),
     mount: require('../mount'),
