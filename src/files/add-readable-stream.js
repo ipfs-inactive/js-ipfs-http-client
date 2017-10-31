@@ -1,17 +1,13 @@
 'use strict'
 
 const addCmd = require('./add.js')
-const Duplex = require('stream').Duplex
-const promisify = require('promisify-es6')
+const Duplex = require('readable-stream').Duplex
 
 module.exports = (send) => {
   const add = addCmd(send)
 
-  return promisify((options, callback) => {
-    if (typeof options === 'function') {
-      callback = options
-      options = undefined
-    }
+  return (options) => {
+    options = options || {}
 
     const tuples = []
 
@@ -23,13 +19,13 @@ module.exports = (send) => {
       next()
     }
 
-    ds.end = () => {
-      add(tuples, options, (err, res) => {
-        if (err) { return ds.emit('error', err) }
-        res.forEach((tuple) => ds.push(tuple))
-        ds.push(null)
-      })
-    }
-    callback(null, ds)
-  })
+    ds.end = () => add(tuples, options, (err, res) => {
+      if (err) { return ds.emit('error', err) }
+
+      res.forEach((tuple) => ds.push(tuple))
+      ds.push(null)
+    })
+
+    return ds
+  }
 }
