@@ -8,7 +8,7 @@ module.exports = (arg) => {
   return {
     add: require('./add')(send),
     addReadableStream: require('./add-readable-stream')(send),
-    // addPullStream: require('./add-pull-stream')(send),
+    addPullStream: require('./add-pull-stream')(send),
     cat: require('./cat')(send),
     // catReadableStream: require('./cat-readable-stream')(send),
     // catPullStream: require('./cat-pull-stream')(send),
