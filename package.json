@@ -46,10 +46,12 @@
     "promisify-es6": "^1.0.3",
     "pump": "^1.0.3",
     "pull": "^2.1.1",
+    "pull-defer": "^0.2.2",
     "pull-pushable": "^2.1.1",
     "qs": "^6.5.1",
     "readable-stream": "^2.3.3",
     "stream-http": "^2.7.2",
+    "stream-to-pull-stream": "^1.7.2",
     "streamifier": "^0.1.1",
     "tar-stream": "^1.5.5"
   },
