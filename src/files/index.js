@@ -13,7 +13,7 @@ module.exports = (arg) => {
     catReadableStream: require('./cat-readable-stream')(send),
     catPullStream: require('./cat-pull-stream')(send),
     get: require('./get')(send),
-    // getReadableStream: require('./get-readable-stream')(send),
+    getReadableStream: require('./get-readable-stream')(send),
     // getPullStream: require('./get-pull-stream')(send),
     cp: require('./cp')(send),
     ls: require('./ls')(send),

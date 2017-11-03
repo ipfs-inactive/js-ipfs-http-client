@@ -3,6 +3,7 @@
 const cleanCID = require('../utils/clean-cid')
 const v = require('is-ipfs')
 const Stream = require('readable-stream')
+const pump = require('pump')
 
 module.exports = (send) => {
   return (hash, opts) => {
@@ -21,7 +22,7 @@ module.exports = (send) => {
     send({ path: 'cat', args: hash, buffer: opts.buffer }, (err, stream) => {
       if (err) { return pt.destroy(err) }
 
-      stream.pipe(pt)
+      pump(stream, pt)
     })
 
     return pt

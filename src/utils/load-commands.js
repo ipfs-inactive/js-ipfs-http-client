@@ -10,7 +10,7 @@ function requireCommands () {
     catReadableStream: require('../files/cat-readable-stream'),
     catPullStream: require('../files/cat-pull-stream'),
     get: require('../files/get'),
-    // getReadableStream: require('../files/get-readable-stream'),
+    getReadableStream: require('../files/get-readable-stream'),
     // getPullStream: require('../files/get-pull-stream'),
     bitswap: require('../bitswap'),
     block: require('../block'),
