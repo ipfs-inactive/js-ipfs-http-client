@@ -41,11 +41,11 @@ module.exports = (send) => {
     } else if (opts.hashAlg != null) {
       qs.hash = opts.hashAlg
     }
-    if (opts["only-hash"] != null) {
-      qs["only-hash"] = opts["only-hash"];
+    if (opts['only-hash'] != null) {
+      qs['only-hash'] = opts['only-hash']
     }
     if (opts.pin != null) {
-      qs.pin = opts.pin;
+      qs.pin = opts.pin
     }
 
     const request = { path: 'add', files: files, qs: qs, progress: opts.progress }
