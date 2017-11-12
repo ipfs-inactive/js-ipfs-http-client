@@ -18,7 +18,7 @@ module.exports = (http) => {
   function spawnNode (repoPath, config) {
     ds.spawnNode(repoPath, config, (err, apiAddr) => {
       if (err) {
-        return this.emit('error', err);
+        return this.emit('error', err)
       }
       this.emit('fc-node', apiAddr.toString())
     })
@@ -27,7 +27,7 @@ module.exports = (http) => {
   function dismantle () {
     ds.dismantle((err) => {
       if (err) {
-        return this.emit('error', err);
+        return this.emit('error', err)
       }
       this.emit('fc-nodes-shutdown')
     })
