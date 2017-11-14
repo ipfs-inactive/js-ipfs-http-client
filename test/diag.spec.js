@@ -6,6 +6,14 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
+const os = require('os')
+
+if (os.platform() === 'win32') {
+  describe.skip('.diag', () => {
+    it('NYI on Windows', () => {})
+  })
+  return
+}
 
 describe('.diag', function () {
   this.timeout(50 * 1000)
