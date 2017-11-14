@@ -15,11 +15,13 @@ module.exports = (arg) => {
     get: require('./get')(send),
     getReadableStream: require('./get-readable-stream')(send),
     getPullStream: require('./get-pull-stream')(send),
+
+    // Specific to MFS (for now)
     cp: require('./cp')(send),
-    ls: require('./ls')(send),
     mkdir: require('./mkdir')(send),
     stat: require('./stat')(send),
     rm: require('./rm')(send),
+    ls: require('./ls')(send),
     read: require('./read')(send),
     write: require('./write')(send),
     mv: require('./mv')(send)
