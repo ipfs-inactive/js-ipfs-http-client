@@ -1,6 +1,6 @@
 {
   "name": "ipfs-api",
-  "version": "15.0.1",
+  "version": "15.0.2",
   "description": "A client library for the IPFS HTTP API. Follows interface-ipfs-core spec",
   "main": "src/index.js",
   "browser": {
@@ -84,6 +84,7 @@
   "contributors": [
     "Alan Shaw <alan@tableflip.io>",
     "Alex Mingoia <talk@alexmingoia.com>",
+    "Antonio Tenorio-Fornés <antoniotenorio@ucm.es>",
     "Connor Keenan <ckeenan89@gmail.com>",
     "Danny <dannyid@protonmail.com>",
     "David Braun <David.Braun@Toptal.com>",
