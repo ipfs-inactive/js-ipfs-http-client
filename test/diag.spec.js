@@ -8,15 +8,13 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const os = require('os')
 
-if (os.platform() === 'win32') {
-  describe.skip('.diag', () => {
-    it('NYI on Windows', () => {})
-  })
-  return
-}
-
 describe('.diag', function () {
   this.timeout(50 * 1000)
+
+  if (os.platform() === 'win32') {
+    it('skip these on Windows')
+    return
+  }
 
   let ipfs
   let fc
