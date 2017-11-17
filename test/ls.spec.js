@@ -12,7 +12,7 @@ const path = require('path')
 const FactoryClient = require('./ipfs-factory/client')
 
 describe('.ls', function () {
-  this.timeout(50 * 1000)
+  this.timeout(40 * 1000)
 
   if (!isNode) { return }
 
@@ -39,33 +39,19 @@ describe('.ls', function () {
 
   after((done) => fc.dismantle(done))
 
-  describe('Callback API', () => {
-    it('should correctly handle a nonexist()ing hash', function (done) {
-      ipfs.ls('surelynotavalidhashheh?', (err, res) => {
-        expect(err).to.exist()
-        expect(res).to.not.exist()
-        done()
-      })
-    })
-
-    it('should correctly handle a nonexist()ing path', function (done) {
-      ipfs.ls('QmRNjDeKStKGTQXnJ2NFqeQ9oW/folder_that_isnt_there', (err, res) => {
-        expect(err).to.exist()
-        expect(res).to.not.exist()
-        done()
-      })
+  it('should correctly handle a nonexist()ing hash', function (done) {
+    ipfs.ls('surelynotavalidhashheh?', (err, res) => {
+      expect(err).to.exist()
+      expect(res).to.not.exist()
+      done()
     })
   })
 
-  describe('Promises API', () => {
-    it('should correctly handle a nonexist()ing hash', () => {
-      return ipfs.ls('surelynotavalidhashheh?')
-        .catch((err) => expect(err).to.exist())
-    })
-
-    it('should correctly handle a nonexist()ing path', () => {
-      return ipfs.ls('QmRNjDeKStKGTQXnJ3NFqeQ9oW/folder_that_isnt_there')
-        .catch((err) => expect(err).to.exist())
+  it('should correctly handle a nonexist()ing path', function (done) {
+    ipfs.ls('QmRNjDeKStKGTQXnJ2NFqeQ9oW/folder_that_isnt_there', (err, res) => {
+      expect(err).to.exist()
+      expect(res).to.not.exist()
+      done()
     })
   })
 })
