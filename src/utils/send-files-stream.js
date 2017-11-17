@@ -37,6 +37,7 @@ module.exports = (send, path) => {
     }
 
     const multipart = new Multipart()
+
     const retStream = new Duplex({ objectMode: true })
 
     retStream._read = (n) => {}
@@ -105,6 +106,10 @@ module.exports = (send, path) => {
       recursive: true,
       progress: options.progress
     }
+
+    multipart.on('error', (err) => {
+      retStream.emit('error', err)
+    })
 
     request = send(args, (err, response) => {
       if (err) {

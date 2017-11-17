@@ -17,6 +17,7 @@ class Multipart extends Transform {
 
   _flush () {
     this.push(Buffer.from(PADDING + this._boundary + PADDING + NEW_LINE))
+    this.push(null)
   }
 
   _generateBoundary () {
