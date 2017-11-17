@@ -79,6 +79,7 @@ describe('.get (specific go-ipfs features)', function () {
 
   it('add path containing "+"s (for testing get)', (done) => {
     if (!isNode) { return done() }
+
     const filename = 'ti,c64x+mega++mod-pic.txt'
     const subdir = 'tmp/c++files'
     const expectedCid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
