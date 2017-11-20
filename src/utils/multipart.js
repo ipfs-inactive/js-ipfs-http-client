@@ -1,6 +1,7 @@
 'use strict'
 
 const Transform = require('stream').Transform
+const isNode = require('detect-node')
 
 const PADDING = '--'
 const NEW_LINE = '\r\n'
@@ -91,7 +92,11 @@ class Multipart extends Transform {
 
     content.on('data', (data) => {
       const drained = this.push(data)
-      if (!drained) {
+      // Only do the drain dance on Node.js.
+      // In browserland, the underlying stream
+      // does NOT drain because the request is only sent
+      // once this stream ends.
+      if (!drained && isNode) {
         content.pause()
         this.once('drain', () => content.resume())
       }
