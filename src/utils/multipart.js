@@ -8,7 +8,7 @@ const NEW_LINE_BUFFER = Buffer.from(NEW_LINE)
 
 class Multipart extends Transform {
   constructor (options) {
-    super(Object.assign({}, options, { objectMode: true }))
+    super(Object.assign({}, options, { objectMode: true, highWaterMark: 1 }))
 
     this._boundary = this._generateBoundary()
     this._files = []
@@ -90,7 +90,11 @@ class Multipart extends Transform {
     })
 
     content.on('data', (data) => {
-      this.push(data)
+      const drained = this.push(data)
+      if (!drained) {
+        content.pause()
+        this.once('drain', () => content.resume())
+      }
     })
   }
 

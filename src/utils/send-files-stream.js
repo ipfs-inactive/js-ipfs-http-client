@@ -140,6 +140,10 @@ module.exports = (send, path) => {
       response.pipe(convertedResponse)
     })
 
+    // signal the multipart that the underlying stream has drained and that
+    // it can continue producing data..
+    request.on('drain', () => multipart.emit('drain'))
+
     multipart.pipe(request)
 
     return retStream
