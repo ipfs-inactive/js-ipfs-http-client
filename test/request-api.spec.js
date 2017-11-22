@@ -11,7 +11,7 @@ const ndjson = require('ndjson')
 const pump = require('pump')
 
 describe('\'deal with HTTP weirdness\' tests', () => {
-  it.only('does not crash if no content-type header is provided', (done) => {
+  it('does not crash if no content-type header is provided', (done) => {
     if (!isNode) {
       return done()
     }
