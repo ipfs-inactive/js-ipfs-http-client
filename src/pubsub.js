@@ -120,7 +120,7 @@ module.exports = (arg) => {
 
   function subscribe (topic, options, handler, callback) {
     ps.on(topic, handler)
-    
+
     if (subscriptions[topic]) {
       return callback()
     }

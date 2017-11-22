@@ -20,7 +20,7 @@ class PubsubMessageStream extends TransformStream {
     if (Object.keys(obj).length === 0) {
       return callback()
     }
-    
+
     try {
       const msg = PubsubMessage.deserialize(obj, 'base64')
       this.push(msg)
@@ -28,7 +28,6 @@ class PubsubMessageStream extends TransformStream {
     } catch (err) {
       return callback(err)
     }
-
   }
 }
 
