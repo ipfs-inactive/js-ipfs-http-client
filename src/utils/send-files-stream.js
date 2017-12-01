@@ -31,7 +31,7 @@ module.exports = (send, path) => {
     let request
     let ended = false
     let writing = false
-   
+
     options = options || {}
 
     const multipart = new Multipart()
@@ -44,7 +44,7 @@ module.exports = (send, path) => {
       const next = once(_next)
       try {
         const files = prepareFile(file, Object.assign({}, options, options.qs))
-                        .map((file) => Object.assign({headers: headers(file)}, file))
+          .map((file) => Object.assign({headers: headers(file)}, file))
 
         writing = true
         eachSeries(
