@@ -48,7 +48,6 @@ describe('stats', function () {
       ipfs.stats.bw((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
-        console.log(res)
         expect(res).to.have.a.property('TotalIn')
         expect(res).to.have.a.property('TotalOut')
         expect(res).to.have.a.property('RateIn')
