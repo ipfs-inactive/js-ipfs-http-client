@@ -13,6 +13,14 @@ module.exports = (send) => {
     send.andTransform({
       path: 'stats/bw',
       qs: opts
-    }, streamToValue, callback)
+    }, streamToValue, (err, stats) => {
+      if (err) {
+        return callback(err)
+      }
+      
+      // streamToValue returns an array and we're only
+      // interested in returning the object itself.
+      callback(err, stats[0])
+    })
   })
 }
