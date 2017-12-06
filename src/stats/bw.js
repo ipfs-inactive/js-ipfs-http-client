@@ -9,7 +9,7 @@ module.exports = (send) => {
       callback = opts
       opts = {}
     }
-    
+
     send.andTransform({
       path: 'stats/bw',
       qs: opts
