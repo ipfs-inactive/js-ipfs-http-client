@@ -17,7 +17,7 @@ module.exports = (send) => {
       if (err) {
         return callback(err)
       }
-      
+
       // streamToValue returns an array and we're only
       // interested in returning the object itself.
       callback(err, stats[0])
