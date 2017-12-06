@@ -56,7 +56,7 @@ describe('stats', function () {
         done()
       })
     })
-    
+
     it('.stats.repo', (done) => {
       ipfs.stats.repo((err, res) => {
         expect(err).to.not.exist()
@@ -110,5 +110,5 @@ describe('stats', function () {
           expect(res).to.have.a.property('DupDataReceived')
         })
     })
-  }) 
+  })
 })
