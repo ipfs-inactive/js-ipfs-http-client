@@ -8,6 +8,7 @@ module.exports = (arg) => {
   return {
     gen: require('./gen')(send),
     list: require('./list')(send),
+    rename: require('./rename')(send),
     rm: require('./rm')(send)
   }
 }
