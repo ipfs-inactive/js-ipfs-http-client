@@ -29,14 +29,18 @@ describe('.refs', function () {
         ipfs.util.addFromFs(filesPath, { recursive: true }, cb)
       },
       (hashes, cb) => {
+        console.log('hashes', hashes)
         folder = hashes[hashes.length - 1].hash
-        expect(folder).to.be.eql('QmQao3KNcpCsdXaLGpjieFGMfXzsSXgsf6Rnc5dJJA3QMh')
         cb()
       }
     ], done)
   })
 
   after((done) => fc.dismantle(done))
+
+  it('created the folder', () => {
+    expect(folder).to.be.eql('QmQao3KNcpCsdXaLGpjieFGMfXzsSXgsf6Rnc5dJJA3QMh')
+  })
 
   const result = [
     {
