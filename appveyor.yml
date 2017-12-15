@@ -4,6 +4,9 @@ version: "{build}"
 init:
   - git config --global core.autocrlf input
 
+platform:
+  - x64
+
 environment:
   matrix:
     - nodejs_version: "6"
