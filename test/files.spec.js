@@ -62,6 +62,21 @@ describe('.files (the MFS API part)', function () {
       })
     })
 
+    it('file.add with NPM Buffer', (done) => {
+      let Buffer = require('buffer/').Buffer
+      let expectedBufferMultihash = 'QmWfVY9y3xjsixTgbd9AorQxH7VtMpzfx2HaWtsoUYecaX'
+      let file = Buffer.from('hello')
+
+      ipfs.files.add(file, (err, res) => {
+        expect(err).to.not.exist()
+
+        expect(res).to.have.length(1)
+        expect(res[0].hash).to.equal(expectedBufferMultihash)
+        expect(res[0].path).to.equal(expectedBufferMultihash)
+        done()
+      })
+    })
+
     it('files.add with cid-version=1 and raw-leaves=false', (done) => {
       const expectedCid = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
       const options = { 'cid-version': 1, 'raw-leaves': false }
