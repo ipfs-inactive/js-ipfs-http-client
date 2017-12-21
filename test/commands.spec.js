@@ -13,11 +13,13 @@ describe('.commands', function () {
   this.timeout(20 * 1000)
 
   let ipfsd
+  let ipfs
 
   before((done) => {
     df.spawn((err, node) => {
       expect(err).to.not.exist()
       ipfsd = node
+      ipfs = node.api
       done()
     })
   })
@@ -25,7 +27,7 @@ describe('.commands', function () {
   after((done) => ipfsd.stop(done))
 
   it('lists commands', (done) => {
-    ipfsd.api.commands((err, res) => {
+    ipfs.commands((err, res) => {
       expect(err).to.not.exist()
       expect(res).to.exist()
       done()
@@ -34,7 +36,7 @@ describe('.commands', function () {
 
   describe('promise', () => {
     it('lists commands', () => {
-      return ipfsd.api.commands()
+      return ipfs.commands()
         .then((res) => {
           expect(res).to.exist()
         })

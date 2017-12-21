@@ -20,6 +20,7 @@ describe('.refs', function () {
     return
   }
 
+  let ipfs
   let ipfsd
   let folder
 
@@ -39,6 +40,7 @@ describe('.refs', function () {
       (cb) => df.spawn(cb),
       (node, cb) => {
         ipfsd = node
+        ipfs = node.api
         ipfsd.api.util.addFromFs(filesPath, { recursive: true }, cb)
       },
       (hashes, cb) => {
@@ -78,7 +80,7 @@ describe('.refs', function () {
 
   describe('Callback API', () => {
     it('refs', (done) => {
-      ipfsd.api.refs(folder, { format: '<src> <dst> <linkname>' }, (err, objs) => {
+      ipfs.refs(folder, { format: '<src> <dst> <linkname>' }, (err, objs) => {
         expect(err).to.not.exist()
         expect(objs).to.eql(result)
         done()
@@ -88,7 +90,7 @@ describe('.refs', function () {
 
   describe('Promise API', () => {
     it('refs', () => {
-      return ipfsd.api.refs(folder, { format: '<src> <dst> <linkname>' })
+      return ipfs.refs(folder, {format: '<src> <dst> <linkname>'})
         .then((objs) => {
           expect(objs).to.eql(result)
         })

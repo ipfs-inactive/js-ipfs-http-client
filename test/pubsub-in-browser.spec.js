@@ -46,11 +46,13 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
   }
   const topic = 'pubsub-tests'
 
+  let ipfs
   let ipfsd
 
   before((done) => {
     df.spawn((err, node) => {
       expect(err).to.not.exist()
+      ipfs = node.api
       ipfsd = node
       done()
     })
@@ -62,7 +64,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
     describe('Callback API', () => {
       describe('.publish', () => {
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.publish(topic, 'hello friend', (err, topics) => {
+          ipfs.pubsub.publish(topic, 'hello friend', (err, topics) => {
             expect(err).to.exist()
             expect(err.message).to.equal(expectedError)
             done()
@@ -73,7 +75,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
       describe('.subscribe', () => {
         const handler = () => {}
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.subscribe(topic, {}, handler, (err, topics) => {
+          ipfs.pubsub.subscribe(topic, {}, handler, (err, topics) => {
             expect(err).to.exist()
             expect(err.message).to.equal(expectedError)
             done()
@@ -83,7 +85,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
 
       describe('.peers', () => {
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.peers(topic, (err, topics) => {
+          ipfs.pubsub.peers(topic, (err, topics) => {
             expect(err).to.exist()
             expect(err.message).to.equal(expectedError)
             done()
@@ -93,7 +95,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
 
       describe('.ls', () => {
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.ls((err, topics) => {
+          ipfs.pubsub.ls((err, topics) => {
             expect(err).to.exist()
             expect(err.message).to.equal(expectedError)
             done()
@@ -105,7 +107,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
     describe('Promise API', () => {
       describe('.publish', () => {
         it('throws an error if called in the browser', () => {
-          return ipfsd.api.pubsub.publish(topic, 'hello friend')
+          return ipfs.pubsub.publish(topic, 'hello friend')
             .catch((err) => {
               expect(err).to.exist()
               expect(err.message).to.equal(expectedError)
@@ -116,7 +118,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
       describe('.subscribe', () => {
         const handler = () => {}
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.subscribe(topic, {}, handler)
+          ipfs.pubsub.subscribe(topic, {}, handler)
             .catch((err) => {
               expect(err).to.exist()
               expect(err.message).to.equal(expectedError)
@@ -127,7 +129,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
 
       describe('.peers', () => {
         it('throws an error if called in the browser', (done) => {
-          ipfsd.api.pubsub.peers(topic)
+          ipfs.pubsub.peers(topic)
             .catch((err) => {
               expect(err).to.exist()
               expect(err.message).to.equal(expectedError)
@@ -138,7 +140,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
 
       describe('.ls', () => {
         it('throws an error if called in the browser', () => {
-          return ipfsd.api.pubsub.ls()
+          return ipfs.pubsub.ls()
             .catch((err) => {
               expect(err).to.exist()
               expect(err.message).to.equal(expectedError)
@@ -150,7 +152,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
     describe('.unsubscribe', () => {
       it('throws an error if called in the browser', (done) => {
         try {
-          ipfsd.api.pubsub.unsubscribe()
+          ipfs.pubsub.unsubscribe()
           done('unsubscribe() didn\'t throw an error')
         } catch (err) {
           expect(err).to.exist()

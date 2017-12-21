@@ -34,6 +34,7 @@ describe('.files (the MFS API part)', function () {
   this.timeout(120 * 1000)
 
   let ipfsd
+  let ipfs
 
   const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
@@ -41,6 +42,7 @@ describe('.files (the MFS API part)', function () {
     df.spawn((err, node) => {
       expect(err).to.not.exist()
       ipfsd = node
+      ipfs = node.api
       done()
     })
   })
@@ -51,7 +53,7 @@ describe('.files (the MFS API part)', function () {
     this.timeout(120 * 1000)
 
     it('add file for testing', (done) => {
-      ipfsd.api.files.add(testfile, (err, res) => {
+      ipfs.files.add(testfile, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -79,7 +81,7 @@ describe('.files (the MFS API part)', function () {
       const expectedCid = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
       const options = { 'cid-version': 1, 'raw-leaves': false }
 
-      ipfsd.api.files.add(testfile, options, (err, res) => {
+      ipfs.files.add(testfile, options, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -90,7 +92,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.add with options', (done) => {
-      ipfsd.api.files.add(testfile, { pin: false }, (err, res) => {
+      ipfs.files.add(testfile, { pin: false }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -109,7 +111,7 @@ describe('.files (the MFS API part)', function () {
         }
         const options = { hash: name, 'raw-leaves': false }
 
-        ipfsd.api.files.add([file], options, (err, res) => {
+        ipfs.files.add([file], options, (err, res) => {
           if (err) return done(err)
           expect(res).to.have.length(1)
           const cid = new CID(res[0].hash)
@@ -128,7 +130,7 @@ describe('.files (the MFS API part)', function () {
         progress = p
       }
 
-      ipfsd.api.files.add(testfile, { progress: progressHandler }, (err, res) => {
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -149,7 +151,7 @@ describe('.files (the MFS API part)', function () {
       }
 
       // TODO: needs to be using a big file
-      ipfsd.api.files.add(testfile, { progress: progressHandler }, (err, res) => {
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -170,7 +172,7 @@ describe('.files (the MFS API part)', function () {
       }
 
       // TODO: needs to be using a directory
-      ipfsd.api.files.add(testfile, { progress: progressHandler }, (err, res) => {
+      ipfs.files.add(testfile, { progress: progressHandler }, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -182,7 +184,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.add without progress options', (done) => {
-      ipfsd.api.files.add(testfile, (err, res) => {
+      ipfs.files.add(testfile, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -199,7 +201,7 @@ describe('.files (the MFS API part)', function () {
         }
         const options = { hash: name, 'raw-leaves': false }
 
-        ipfsd.api.files.add([file], options, (err, res) => {
+        ipfs.files.add([file], options, (err, res) => {
           if (err) return done(err)
           expect(res).to.have.length(1)
           const cid = new CID(res[0].hash)
@@ -210,15 +212,15 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.mkdir', (done) => {
-      ipfsd.api.files.mkdir('/test-folder', done)
+      ipfs.files.mkdir('/test-folder', done)
     })
 
     it('files.flush', (done) => {
-      ipfsd.api.files.flush('/', done)
+      ipfs.files.flush('/', done)
     })
 
     it('files.cp', (done) => {
-      ipfsd.api.files.cp([
+      ipfs.files.cp([
         '/ipfs/Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
         '/test-folder/test-file'
       ], (err) => {
@@ -228,7 +230,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.ls', (done) => {
-      ipfsd.api.files.ls('/test-folder', (err, res) => {
+      ipfs.files.ls('/test-folder', (err, res) => {
         expect(err).to.not.exist()
         expect(res.Entries.length).to.equal(1)
         done()
@@ -236,11 +238,11 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.write', (done) => {
-      ipfsd.api.files
+      ipfs.files
         .write('/test-folder/test-file-2.txt', Buffer.from('hello world'), {create: true}, (err) => {
           expect(err).to.not.exist()
 
-          ipfsd.api.files.read('/test-folder/test-file-2.txt', (err, stream) => {
+          ipfs.files.read('/test-folder/test-file-2.txt', (err, stream) => {
             expect(err).to.not.exist()
 
             let buf = ''
@@ -258,11 +260,11 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.write without options', (done) => {
-      ipfsd.api.files
+      ipfs.files
         .write('/test-folder/test-file-2.txt', Buffer.from('hello world'), (err) => {
           expect(err).to.not.exist()
 
-          ipfsd.api.files.read('/test-folder/test-file-2.txt', (err, stream) => {
+          ipfs.files.read('/test-folder/test-file-2.txt', (err, stream) => {
             expect(err).to.not.exist()
 
             let buf = ''
@@ -282,7 +284,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.stat', (done) => {
-      ipfsd.api.files.stat('/test-folder/test-file', (err, res) => {
+      ipfs.files.stat('/test-folder/test-file', (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.deep.equal({
           Hash: 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
@@ -297,7 +299,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.stat file that does not exist()', (done) => {
-      ipfsd.api.files.stat('/test-folder/does-not-exist()', (err, res) => {
+      ipfs.files.stat('/test-folder/does-not-exist()', (err, res) => {
         expect(err).to.exist()
         if (err.code === 0) {
           return done()
@@ -311,7 +313,7 @@ describe('.files (the MFS API part)', function () {
         return done()
       }
 
-      ipfsd.api.files.read('/test-folder/test-file', (err, stream) => {
+      ipfs.files.read('/test-folder/test-file', (err, stream) => {
         expect(err).to.not.exist()
         let buf = ''
         stream
@@ -329,11 +331,11 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.rm without options', (done) => {
-      ipfsd.api.files.rm('/test-folder/test-file-2.txt', done)
+      ipfs.files.rm('/test-folder/test-file-2.txt', done)
     })
 
     it('files.rm', (done) => {
-      ipfsd.api.files.rm('/test-folder', {recursive: true}, done)
+      ipfs.files.rm('/test-folder', {recursive: true}, done)
     })
   })
 
@@ -341,7 +343,7 @@ describe('.files (the MFS API part)', function () {
     this.timeout(120 * 1000)
 
     it('files.add', () => {
-      return ipfsd.api.files.add(testfile)
+      return ipfs.files.add(testfile)
         .then((res) => {
           expect(res).to.have.length(1)
           expect(res[0].hash).to.equal(expectedMultihash)
@@ -353,7 +355,7 @@ describe('.files (the MFS API part)', function () {
       const expectedHash = 'zdj7Wh9x6gXdg4UAqhRYnjBTw9eJF7hvzUU4HjpnZXHYQz9jK'
       const options = { 'cid-version': 1, 'raw-leaves': false }
 
-      return ipfsd.api.files.add(testfile, options)
+      return ipfs.files.add(testfile, options)
         .then((res) => {
           expect(res).to.have.length(1)
           expect(res[0].hash).to.equal(expectedHash)
@@ -362,7 +364,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.add with options', () => {
-      return ipfsd.api.files.add(testfile, { pin: false })
+      return ipfs.files.add(testfile, { pin: false })
         .then((res) => {
           expect(res).to.have.length(1)
           expect(res[0].hash).to.equal(expectedMultihash)
@@ -379,7 +381,7 @@ describe('.files (the MFS API part)', function () {
         }
         const options = { hash: name, 'raw-leaves': false }
 
-        return ipfsd.api.files.add([file], options)
+        return ipfs.files.add([file], options)
           .then((res) => {
             expect(res).to.have.length(1)
             const cid = new CID(res[0].hash)
@@ -389,11 +391,11 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.mkdir', () => {
-      return ipfsd.api.files.mkdir('/test-folder')
+      return ipfs.files.mkdir('/test-folder')
     })
 
     it('files.cp', () => {
-      return ipfsd.api.files
+      return ipfs.files
         .cp([
           '/ipfs/Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
           '/test-folder/test-file'
@@ -401,17 +403,17 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.ls', () => {
-      return ipfsd.api.files.ls('/test-folder')
+      return ipfs.files.ls('/test-folder')
         .then((res) => {
           expect(res.Entries.length).to.equal(1)
         })
     })
 
     it('files.write', (done) => {
-      ipfsd.api.files
+      ipfs.files
         .write('/test-folder/test-file-2.txt', Buffer.from('hello world'), {create: true})
         .then(() => {
-          return ipfsd.api.files.read('/test-folder/test-file-2.txt')
+          return ipfs.files.read('/test-folder/test-file-2.txt')
         })
         .then((stream) => {
           let buf = ''
@@ -431,10 +433,10 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.write without options', (done) => {
-      ipfsd.api.files
+      ipfs.files
         .write('/test-folder/test-file-2.txt', Buffer.from('hello world'))
         .then(() => {
-          return ipfsd.api.files.read('/test-folder/test-file-2.txt')
+          return ipfs.files.read('/test-folder/test-file-2.txt')
         })
         .then((stream) => {
           let buf = ''
@@ -454,7 +456,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.stat', () => {
-      return ipfsd.api.files.stat('/test-folder/test-file')
+      return ipfs.files.stat('/test-folder/test-file')
         .then((res) => {
           expect(res).to.deep.equal({
             Hash: 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
@@ -467,7 +469,7 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.stat file that does not exist()', () => {
-      return ipfsd.api.files.stat('/test-folder/does-not-exist()')
+      return ipfs.files.stat('/test-folder/does-not-exist()')
         .catch((err) => {
           expect(err).to.exist()
           expect(err.code).to.be.eql(0)
@@ -477,7 +479,7 @@ describe('.files (the MFS API part)', function () {
     it('files.read', (done) => {
       if (!isNode) { return done() }
 
-      ipfsd.api.files.read('/test-folder/test-file')
+      ipfs.files.read('/test-folder/test-file')
         .then((stream) => {
           let buf = ''
           stream
@@ -495,11 +497,11 @@ describe('.files (the MFS API part)', function () {
     })
 
     it('files.rm without options', () => {
-      return ipfsd.api.files.rm('/test-folder/test-file-2.txt')
+      return ipfs.files.rm('/test-folder/test-file-2.txt')
     })
 
     it('files.rm', () => {
-      return ipfsd.api.files.rm('/test-folder', { recursive: true })
+      return ipfs.files.rm('/test-folder', { recursive: true })
     })
   })
 })

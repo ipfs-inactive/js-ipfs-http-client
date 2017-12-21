@@ -11,6 +11,7 @@ const df = DaemonFactory.create()
 
 describe('.bitswap', function () {
   this.timeout(20 * 1000) // slow CI
+  let ipfs
   let ipfsd = null
 
   before((done) => {
@@ -18,6 +19,7 @@ describe('.bitswap', function () {
     df.spawn((err, node) => {
       expect(err).to.not.exist()
       ipfsd = node
+      ipfs = node.api
       done()
     })
   })
@@ -26,7 +28,7 @@ describe('.bitswap', function () {
 
   describe('Callback API', () => {
     it('.wantlist', (done) => {
-      ipfsd.api.bitswap.wantlist((err, res) => {
+      ipfs.bitswap.wantlist((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.have.to.be.eql({
           Keys: null
@@ -36,7 +38,7 @@ describe('.bitswap', function () {
     })
 
     it('.stat', (done) => {
-      ipfsd.api.bitswap.stat((err, res) => {
+      ipfs.bitswap.stat((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.have.property('BlocksReceived')
         expect(res).to.have.property('DupBlksReceived')
@@ -51,7 +53,7 @@ describe('.bitswap', function () {
 
     it('.unwant', (done) => {
       const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      ipfsd.api.bitswap.unwant(key, (err) => {
+      ipfs.bitswap.unwant(key, (err) => {
         expect(err).to.not.exist()
         done()
       })
@@ -60,7 +62,7 @@ describe('.bitswap', function () {
 
   describe('Promise API', () => {
     it('.wantlist', () => {
-      return ipfsd.api.bitswap.wantlist()
+      return ipfs.bitswap.wantlist()
         .then((res) => {
           expect(res).to.have.to.be.eql({
             Keys: null
@@ -69,7 +71,7 @@ describe('.bitswap', function () {
     })
 
     it('.stat', () => {
-      return ipfsd.api.bitswap.stat()
+      return ipfs.bitswap.stat()
         .then((res) => {
           expect(res).to.have.property('BlocksReceived')
           expect(res).to.have.property('DupBlksReceived')
@@ -82,7 +84,7 @@ describe('.bitswap', function () {
 
     it('.unwant', () => {
       const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      return ipfsd.api.bitswap.unwant(key)
+      return ipfs.bitswap.unwant(key)
     })
   })
 })

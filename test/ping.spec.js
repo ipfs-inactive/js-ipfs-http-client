@@ -13,8 +13,10 @@ const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
 describe.skip('.ping', () => {
+  let ipfs
   let ipfsd
   let other
+  let otherd
 
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
@@ -23,6 +25,7 @@ describe.skip('.ping', () => {
         df.spawn((err, node) => {
           expect(err).to.not.exist()
           ipfsd = node
+          ipfs = node.api
           cb()
         })
       },
@@ -30,7 +33,8 @@ describe.skip('.ping', () => {
         console.log('going to spawn second node')
         df.spawn((err, node) => {
           expect(err).to.not.exist()
-          other = node
+          other = node.api
+          otherd = node
           cb()
         })
       },
@@ -47,7 +51,7 @@ describe.skip('.ping', () => {
   after((done) => {
     parallel([
       (cb) => ipfsd.stop(cb),
-      (cb) => other.stop(cb)
+      (cb) => otherd.stop(cb)
     ], done)
   })
 
@@ -56,7 +60,7 @@ describe.skip('.ping', () => {
       other.id((err, id) => {
         expect(err).to.not.exist()
 
-        ipfsd.api.ping(id.id, (err, res) => {
+        ipfs.ping(id.id, (err, res) => {
           expect(err).to.not.exist()
           expect(res).to.have.a.property('Success')
           expect(res).to.have.a.property('Time')
@@ -73,7 +77,7 @@ describe.skip('.ping', () => {
     it('ping another peer', () => {
       return other.id()
         .then((id) => {
-          return ipfsd.api.ping(id.id)
+          return ipfs.ping(id.id)
         })
         .then((res) => {
           expect(res).to.have.a.property('Success')
