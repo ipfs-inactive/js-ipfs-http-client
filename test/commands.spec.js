@@ -27,7 +27,7 @@ describe('.commands', function () {
   after((done) => ipfsd.stop(done))
 
   it('lists commands', (done) => {
-    ipfs.commands((err, res) => {
+    ipfsd.api.commands((err, res) => {
       expect(err).to.not.exist()
       expect(res).to.exist()
       done()
@@ -36,7 +36,7 @@ describe('.commands', function () {
 
   describe('promise', () => {
     it('lists commands', () => {
-      return ipfs.commands()
+      return ipfsd.api.commands()
         .then((res) => {
           expect(res).to.exist()
         })

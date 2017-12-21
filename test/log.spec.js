@@ -31,7 +31,7 @@ describe('.log', function () {
     this.timeout(100 * 1000)
 
     it('.log.tail', (done) => {
-      const req = ipfs.log.tail((err, res) => {
+      const req = ipfsd.api.log.tail((err, res) => {
         expect(err).to.not.exist()
         expect(req).to.exist()
 
@@ -43,7 +43,7 @@ describe('.log', function () {
     })
 
     it('.log.ls', (done) => {
-      ipfs.log.ls((err, res) => {
+      ipfsd.api.log.ls((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
 
@@ -54,7 +54,7 @@ describe('.log', function () {
     })
 
     it('.log.level', (done) => {
-      ipfs.log.level('all', 'error', (err, res) => {
+      ipfsd.api.log.level('all', 'error', (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
 
@@ -71,7 +71,7 @@ describe('.log', function () {
     this.timeout(100 * 1000)
 
     it('.log.tail', () => {
-      return ipfs.log.tail()
+      return ipfsd.api.log.tail()
         .then((res) => {
           res.once('data', (obj) => {
             expect(obj).to.be.an('object')
@@ -80,7 +80,7 @@ describe('.log', function () {
     })
 
     it('.log.ls', () => {
-      return ipfs.log.ls()
+      return ipfsd.api.log.ls()
         .then((res) => {
           expect(res).to.exist()
 
@@ -89,7 +89,7 @@ describe('.log', function () {
     })
 
     it('.log.level', () => {
-      return ipfs.log.level('all', 'error')
+      return ipfsd.api.log.level('all', 'error')
         .then((res) => {
           expect(res).to.exist()
 

@@ -80,7 +80,7 @@ describe('.refs', function () {
 
   describe('Callback API', () => {
     it('refs', (done) => {
-      ipfs.refs(folder, { format: '<src> <dst> <linkname>' }, (err, objs) => {
+      ipfsd.api.refs(folder, { format: '<src> <dst> <linkname>' }, (err, objs) => {
         expect(err).to.not.exist()
         expect(objs).to.eql(result)
         done()
@@ -90,7 +90,7 @@ describe('.refs', function () {
 
   describe('Promise API', () => {
     it('refs', () => {
-      return ipfs.refs(folder, {format: '<src> <dst> <linkname>'})
+      return ipfsd.api.refs(folder, { format: '<src> <dst> <linkname>' })
         .then((objs) => {
           expect(objs).to.eql(result)
         })

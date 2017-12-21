@@ -35,7 +35,7 @@ describe('.diag', function () {
   describe('Callback API', () => {
     // Disabled in go-ipfs 0.4.10
     it.skip('.diag.net', (done) => {
-      ipfs.diag.net((err, res) => {
+      ipfsd.api.diag.net((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         done()
@@ -43,7 +43,7 @@ describe('.diag', function () {
     })
 
     it('.diag.sys', (done) => {
-      ipfs.diag.sys((err, res) => {
+      ipfsd.api.diag.sys((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('memory')
@@ -53,7 +53,7 @@ describe('.diag', function () {
     })
 
     it('.diag.cmds', (done) => {
-      ipfs.diag.cmds((err, res) => {
+      ipfsd.api.diag.cmds((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         done()
@@ -64,12 +64,12 @@ describe('.diag', function () {
   describe('Promise API', () => {
     // Disabled in go-ipfs 0.4.10
     it.skip('.diag.net', () => {
-      return ipfs.diag.net()
+      return ipfsd.api.diag.net()
         .then((res) => expect(res).to.exist())
     })
 
     it('.diag.sys', () => {
-      return ipfs.diag.sys()
+      return ipfsd.api.diag.sys()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('memory')
@@ -78,7 +78,7 @@ describe('.diag', function () {
     })
 
     it('.diag.cmds', () => {
-      return ipfs.diag.cmds()
+      return ipfsd.api.diag.cmds()
         .then((res) => expect(res).to.exist())
     })
   })

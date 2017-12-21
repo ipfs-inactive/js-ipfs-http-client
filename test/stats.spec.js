@@ -28,7 +28,7 @@ describe('stats', function () {
 
   describe('Callback API', () => {
     it('.stats.bitswap', (done) => {
-      ipfs.stats.bitswap((err, res) => {
+      ipfsd.api.stats.bitswap((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('provideBufLen')
@@ -45,7 +45,7 @@ describe('stats', function () {
     })
 
     it('.stats.bw', (done) => {
-      ipfs.stats.bw((err, res) => {
+      ipfsd.api.stats.bw((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('totalIn')
@@ -57,7 +57,7 @@ describe('stats', function () {
     })
 
     it('.stats.repo', (done) => {
-      ipfs.stats.repo((err, res) => {
+      ipfsd.api.stats.repo((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('numObjects')
@@ -72,7 +72,7 @@ describe('stats', function () {
 
   describe('Promise API', () => {
     it('.stats.bw', () => {
-      return ipfs.stats.bw()
+      return ipfsd.api.stats.bw()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('totalIn')
@@ -83,7 +83,7 @@ describe('stats', function () {
     })
 
     it('.stats.repo', () => {
-      return ipfs.stats.repo()
+      return ipfsd.api.stats.repo()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('numObjects')
@@ -95,7 +95,7 @@ describe('stats', function () {
     })
 
     it('.stats.bitswap', () => {
-      return ipfs.stats.bitswap()
+      return ipfsd.api.stats.bitswap()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('provideBufLen')

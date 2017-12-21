@@ -28,7 +28,7 @@ describe('.repo', function () {
 
   describe('Callback API', () => {
     it('.repo.gc', (done) => {
-      ipfs.repo.gc((err, res) => {
+      ipfsd.api.repo.gc((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         done()
@@ -36,7 +36,7 @@ describe('.repo', function () {
     })
 
     it('.repo.stat', (done) => {
-      ipfs.repo.stat((err, res) => {
+      ipfsd.api.repo.stat((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('NumObjects')
@@ -48,11 +48,11 @@ describe('.repo', function () {
 
   describe('Promise API', () => {
     it('.repo.gc', () => {
-      return ipfs.repo.gc().then((res) => expect(res).to.exist())
+      return ipfsd.api.repo.gc().then((res) => expect(res).to.exist())
     })
 
     it('.repo.stat', () => {
-      return ipfs.repo.stat()
+      return ipfsd.api.repo.stat()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('NumObjects')
