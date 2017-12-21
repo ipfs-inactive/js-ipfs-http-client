@@ -48,7 +48,7 @@ describe('.name', function () {
         ipfsd.api.id((err, id) => {
           expect(err).to.not.exist()
           const ma = id.addresses[0]
-          other.api.swarm.connect(ma, cb)
+          other.swarm.connect(ma, cb)
         })
       }
     ], done)
@@ -67,7 +67,7 @@ describe('.name', function () {
     it('add file for testing', (done) => {
       const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
-      ipfsd.api.files.add(testfile, (err, res) => {
+      ipfs.files.add(testfile, (err, res) => {
         expect(err).to.not.exist()
 
         expect(res).to.have.length(1)
@@ -78,7 +78,7 @@ describe('.name', function () {
     })
 
     it('.name.publish', (done) => {
-      ipfsd.api.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
+      ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
         expect(err).to.not.exist()
         name = res
         expect(name).to.exist()
@@ -87,7 +87,7 @@ describe('.name', function () {
     })
 
     it('.name.resolve', (done) => {
-      ipfsd.api.name.resolve(name.name, (err, res) => {
+      ipfs.name.resolve(name.name, (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.be.eql(name.value)
@@ -100,7 +100,7 @@ describe('.name', function () {
     let name
 
     it('.name.publish', () => {
-      return ipfsd.api.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
+      return ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
         .then((res) => {
           name = res
           expect(name).to.exist()
@@ -108,7 +108,7 @@ describe('.name', function () {
     })
 
     it('.name.resolve', () => {
-      return ipfsd.api.name.resolve(name.name)
+      return ipfs.name.resolve(name.name)
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.be.eql(name.value)

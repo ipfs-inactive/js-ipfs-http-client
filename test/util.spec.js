@@ -37,7 +37,7 @@ describe('.util', () => {
     const rs = fs.createReadStream(tfpath)
     rs.path = '' // clean the path for testing purposes
 
-    ipfsd.api.util.addFromStream(rs, (err, result) => {
+    ipfs.util.addFromStream(rs, (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -47,7 +47,7 @@ describe('.util', () => {
   describe('.fsAdd should add', () => {
     it('a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfsd.api.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(8)
         done()
@@ -56,7 +56,7 @@ describe('.util', () => {
 
     it('a directory with an odd name', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/weird name folder [v0]')
-      ipfsd.api.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(8)
         done()
@@ -65,7 +65,7 @@ describe('.util', () => {
 
     it('add and ignore a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfsd.api.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
+      ipfs.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.below(9)
         done()
@@ -74,7 +74,7 @@ describe('.util', () => {
 
     it('a file', (done) => {
       const filePath = path.join(__dirname, '/fixtures/testfile.txt')
-      ipfsd.api.util.addFromFs(filePath, (err, result) => {
+      ipfs.util.addFromFs(filePath, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.equal(1)
         expect(result[0].path).to.be.equal('testfile.txt')
@@ -84,7 +84,7 @@ describe('.util', () => {
 
     it('a hidden file in a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfsd.api.util.addFromFs(filesPath, { recursive: true, hidden: true }, (err, result) => {
+      ipfs.util.addFromFs(filesPath, { recursive: true, hidden: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(10)
         expect(result.map(object => object.path)).to.include('test-folder/.hiddenTest.txt')
@@ -97,7 +97,7 @@ describe('.util', () => {
   it('.urlAdd http', function (done) {
     this.timeout(20 * 1000)
 
-    ipfsd.api.util.addFromURL('http://example.com/', (err, result) => {
+    ipfs.util.addFromURL('http://example.com/', (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -105,7 +105,7 @@ describe('.util', () => {
   })
 
   it('.urlAdd https', (done) => {
-    ipfsd.api.util.addFromURL('https://example.com/', (err, result) => {
+    ipfs.util.addFromURL('https://example.com/', (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -113,7 +113,7 @@ describe('.util', () => {
   })
 
   it('.urlAdd http with redirection', (done) => {
-    ipfsd.api.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
+    ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
       expect(err).to.not.exist()
       expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')
       done()

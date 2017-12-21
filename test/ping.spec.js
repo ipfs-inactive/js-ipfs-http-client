@@ -60,7 +60,7 @@ describe.skip('.ping', () => {
       other.id((err, id) => {
         expect(err).to.not.exist()
 
-        ipfsd.api.ping(id.id, (err, res) => {
+        ipfs.ping(id.id, (err, res) => {
           expect(err).to.not.exist()
           expect(res).to.have.a.property('Success')
           expect(res).to.have.a.property('Time')
@@ -77,7 +77,7 @@ describe.skip('.ping', () => {
     it('ping another peer', () => {
       return other.id()
         .then((id) => {
-          return ipfsd.api.ping(id.id)
+          return ipfs.ping(id.id)
         })
         .then((res) => {
           expect(res).to.have.a.property('Success')

@@ -44,7 +44,7 @@ describe('.get (specific go-ipfs features)', function () {
   after((done) => ipfsd.stop(done))
 
   it('no compression args', (done) => {
-    ipfsd.api.get(smallFile.cid, (err, files) => {
+    ipfs.get(smallFile.cid, (err, files) => {
       expect(err).to.not.exist()
 
       expect(files).to.be.length(1)
@@ -54,7 +54,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('archive true', (done) => {
-    ipfsd.api.get(smallFile.cid, { archive: true }, (err, files) => {
+    ipfs.get(smallFile.cid, { archive: true }, (err, files) => {
       expect(err).to.not.exist()
 
       expect(files).to.be.length(1)
@@ -64,7 +64,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('err with out of range compression level', (done) => {
-    ipfsd.api.get(smallFile.cid, {
+    ipfs.get(smallFile.cid, {
       compress: true,
       'compression-level': 10
     }, (err, files) => {
@@ -75,7 +75,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('with compression level', (done) => {
-    ipfsd.api.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
+    ipfs.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
   })
 
   it('add path containing "+"s (for testing get)', (done) => {
@@ -84,7 +84,7 @@ describe('.get (specific go-ipfs features)', function () {
     const filename = 'ti,c64x+mega++mod-pic.txt'
     const subdir = 'tmp/c++files'
     const expectedCid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
-    ipfsd.api.add([{
+    ipfs.add([{
       path: subdir + '/' + filename,
       content: Buffer.from(subdir + '/' + filename, 'utf-8')
     }], (err, files) => {
@@ -99,7 +99,7 @@ describe('.get (specific go-ipfs features)', function () {
 
     const cid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
     let count = 0
-    ipfsd.api.get(cid, (err, files) => {
+    ipfs.get(cid, (err, files) => {
       expect(err).to.not.exist()
       files.forEach((file) => {
         if (file.path !== cid) {
