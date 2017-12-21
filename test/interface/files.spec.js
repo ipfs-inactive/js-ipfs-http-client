@@ -4,17 +4,12 @@
 
 const test = require('interface-ipfs-core')
 
-const FactoryClient = require('../ipfs-factory/client')
-
-let fc
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 const common = {
   setup: function (callback) {
-    fc = new FactoryClient()
-    callback(null, fc)
-  },
-  teardown: function (callback) {
-    fc.dismantle(callback)
+    callback(null, df)
   }
 }
 

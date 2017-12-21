@@ -9,33 +9,33 @@ chai.use(dirtyChai)
 const isNode = require('detect-node')
 const path = require('path')
 const fs = require('fs')
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.util', () => {
   if (!isNode) { return }
 
-  let ipfs
-  let fc
+  let ipfsd
 
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
 
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
       done()
     })
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => ipfsd.stop(done))
 
   it('.streamAdd', (done) => {
     const tfpath = path.join(__dirname, '/fixtures/testfile.txt')
     const rs = fs.createReadStream(tfpath)
     rs.path = '' // clean the path for testing purposes
 
-    ipfs.util.addFromStream(rs, (err, result) => {
+    ipfsd.api.util.addFromStream(rs, (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -45,7 +45,7 @@ describe('.util', () => {
   describe('.fsAdd should add', () => {
     it('a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+      ipfsd.api.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(8)
         done()
@@ -54,7 +54,7 @@ describe('.util', () => {
 
     it('a directory with an odd name', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/weird name folder [v0]')
-      ipfs.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
+      ipfsd.api.util.addFromFs(filesPath, { recursive: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(8)
         done()
@@ -63,7 +63,7 @@ describe('.util', () => {
 
     it('add and ignore a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfs.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
+      ipfsd.api.util.addFromFs(filesPath, { recursive: true, ignore: ['files/**'] }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.below(9)
         done()
@@ -72,7 +72,7 @@ describe('.util', () => {
 
     it('a file', (done) => {
       const filePath = path.join(__dirname, '/fixtures/testfile.txt')
-      ipfs.util.addFromFs(filePath, (err, result) => {
+      ipfsd.api.util.addFromFs(filePath, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.equal(1)
         expect(result[0].path).to.be.equal('testfile.txt')
@@ -82,7 +82,7 @@ describe('.util', () => {
 
     it('a hidden file in a directory', (done) => {
       const filesPath = path.join(__dirname, '/fixtures/test-folder')
-      ipfs.util.addFromFs(filesPath, { recursive: true, hidden: true }, (err, result) => {
+      ipfsd.api.util.addFromFs(filesPath, { recursive: true, hidden: true }, (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.be.above(10)
         expect(result.map(object => object.path)).to.include('test-folder/.hiddenTest.txt')
@@ -95,7 +95,7 @@ describe('.util', () => {
   it('.urlAdd http', function (done) {
     this.timeout(20 * 1000)
 
-    ipfs.util.addFromURL('http://example.com/', (err, result) => {
+    ipfsd.api.util.addFromURL('http://example.com/', (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -103,7 +103,7 @@ describe('.util', () => {
   })
 
   it('.urlAdd https', (done) => {
-    ipfs.util.addFromURL('https://example.com/', (err, result) => {
+    ipfsd.api.util.addFromURL('https://example.com/', (err, result) => {
       expect(err).to.not.exist()
       expect(result.length).to.equal(1)
       done()
@@ -111,7 +111,7 @@ describe('.util', () => {
   })
 
   it('.urlAdd http with redirection', (done) => {
-    ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
+    ipfsd.api.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
       expect(err).to.not.exist()
       expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')
       done()

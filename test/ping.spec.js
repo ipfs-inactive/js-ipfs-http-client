@@ -6,51 +6,57 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const parallel = require('async/parallel')
 const series = require('async/series')
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe.skip('.ping', () => {
-  let ipfs
+  let ipfsd
   let other
-  let fc
 
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
-    fc = new FactoryClient()
     series([
       (cb) => {
-        fc.spawnNode((err, node) => {
+        df.spawn((err, node) => {
           expect(err).to.not.exist()
-          ipfs = node
+          ipfsd = node
           cb()
         })
       },
       (cb) => {
         console.log('going to spawn second node')
-        fc.spawnNode((err, node) => {
+        df.spawn((err, node) => {
           expect(err).to.not.exist()
           other = node
           cb()
         })
       },
       (cb) => {
-        ipfs.id((err, id) => {
+        ipfsd.api.id((err, id) => {
           expect(err).to.not.exist()
           const ma = id.addresses[0]
-          other.swarm.connect(ma, cb)
+          other.api.swarm.connect(ma, cb)
         })
       }
     ], done)
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => {
+    parallel([
+      (cb) => ipfsd.stop(cb),
+      (cb) => other.stop(cb)
+    ], done)
+  })
 
   describe('callback API', () => {
     it('ping another peer', (done) => {
       other.id((err, id) => {
         expect(err).to.not.exist()
 
-        ipfs.ping(id.id, (err, res) => {
+        ipfsd.api.ping(id.id, (err, res) => {
           expect(err).to.not.exist()
           expect(res).to.have.a.property('Success')
           expect(res).to.have.a.property('Time')
@@ -67,7 +73,7 @@ describe.skip('.ping', () => {
     it('ping another peer', () => {
       return other.id()
         .then((id) => {
-          return ipfs.ping(id.id)
+          return ipfsd.api.ping(id.id)
         })
         .then((res) => {
           expect(res).to.have.a.property('Success')

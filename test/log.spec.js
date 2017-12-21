@@ -6,30 +6,30 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.log', function () {
   this.timeout(100 * 1000)
 
-  let ipfs
-  let fc
+  let ipfsd
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
       done()
     })
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', function () {
     this.timeout(100 * 1000)
 
     it('.log.tail', (done) => {
-      const req = ipfs.log.tail((err, res) => {
+      const req = ipfsd.api.log.tail((err, res) => {
         expect(err).to.not.exist()
         expect(req).to.exist()
 
@@ -41,7 +41,7 @@ describe('.log', function () {
     })
 
     it('.log.ls', (done) => {
-      ipfs.log.ls((err, res) => {
+      ipfsd.api.log.ls((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
 
@@ -52,7 +52,7 @@ describe('.log', function () {
     })
 
     it('.log.level', (done) => {
-      ipfs.log.level('all', 'error', (err, res) => {
+      ipfsd.api.log.level('all', 'error', (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
 
@@ -69,7 +69,7 @@ describe('.log', function () {
     this.timeout(100 * 1000)
 
     it('.log.tail', () => {
-      return ipfs.log.tail()
+      return ipfsd.api.log.tail()
         .then((res) => {
           res.once('data', (obj) => {
             expect(obj).to.be.an('object')
@@ -78,7 +78,7 @@ describe('.log', function () {
     })
 
     it('.log.ls', () => {
-      return ipfs.log.ls()
+      return ipfsd.api.log.ls()
         .then((res) => {
           expect(res).to.exist()
 
@@ -87,7 +87,7 @@ describe('.log', function () {
     })
 
     it('.log.level', () => {
-      return ipfs.log.level('all', 'error')
+      return ipfsd.api.log.level('all', 'error')
         .then((res) => {
           expect(res).to.exist()
 

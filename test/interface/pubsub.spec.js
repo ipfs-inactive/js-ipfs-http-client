@@ -3,19 +3,15 @@
 'use strict'
 
 const test = require('interface-ipfs-core')
-const FactoryClient = require('../ipfs-factory/client')
 const isNode = require('detect-node')
 
-if (isNode) {
-  let fc
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
+if (isNode) {
   const common = {
     setup: function (callback) {
-      fc = new FactoryClient()
-      callback(null, fc)
-    },
-    teardown: function (callback) {
-      fc.dismantle(callback)
+      callback(null, df)
     }
   }
 

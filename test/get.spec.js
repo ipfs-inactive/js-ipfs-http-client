@@ -10,7 +10,9 @@ chai.use(dirtyChai)
 const isNode = require('detect-node')
 const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.get (specific go-ipfs features)', function () {
   this.timeout(20 * 1000)
@@ -24,26 +26,23 @@ describe('.get (specific go-ipfs features)', function () {
     data: fixture('../test/fixtures/testfile.txt')
   }
 
-  let ipfs
-  let fc
+  let ipfsd
 
   before((done) => {
-    fc = new FactoryClient()
-
     series([
-      (cb) => fc.spawnNode((err, node) => {
+      (cb) => df.spawn((err, node) => {
         expect(err).to.not.exist()
-        ipfs = node
+        ipfsd = node
         cb()
       }),
-      (cb) => ipfs.files.add(smallFile.data, cb)
+      (cb) => ipfsd.api.files.add(smallFile.data, cb)
     ], done)
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => ipfsd.stop(done))
 
   it('no compression args', (done) => {
-    ipfs.get(smallFile.cid, (err, files) => {
+    ipfsd.api.get(smallFile.cid, (err, files) => {
       expect(err).to.not.exist()
 
       expect(files).to.be.length(1)
@@ -53,7 +52,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('archive true', (done) => {
-    ipfs.get(smallFile.cid, { archive: true }, (err, files) => {
+    ipfsd.api.get(smallFile.cid, { archive: true }, (err, files) => {
       expect(err).to.not.exist()
 
       expect(files).to.be.length(1)
@@ -63,7 +62,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('err with out of range compression level', (done) => {
-    ipfs.get(smallFile.cid, {
+    ipfsd.api.get(smallFile.cid, {
       compress: true,
       'compression-level': 10
     }, (err, files) => {
@@ -74,7 +73,7 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('with compression level', (done) => {
-    ipfs.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
+    ipfsd.api.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
   })
 
   it('add path containing "+"s (for testing get)', (done) => {
@@ -83,7 +82,7 @@ describe('.get (specific go-ipfs features)', function () {
     const filename = 'ti,c64x+mega++mod-pic.txt'
     const subdir = 'tmp/c++files'
     const expectedCid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
-    ipfs.add([{
+    ipfsd.api.add([{
       path: subdir + '/' + filename,
       content: Buffer.from(subdir + '/' + filename, 'utf-8')
     }], (err, files) => {
@@ -98,7 +97,7 @@ describe('.get (specific go-ipfs features)', function () {
 
     const cid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
     let count = 0
-    ipfs.get(cid, (err, files) => {
+    ipfsd.api.get(cid, (err, files) => {
       expect(err).to.not.exist()
       files.forEach((file) => {
         if (file.path !== cid) {

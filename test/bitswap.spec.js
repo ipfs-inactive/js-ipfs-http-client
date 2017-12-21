@@ -5,30 +5,28 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.bitswap', function () {
   this.timeout(20 * 1000) // slow CI
-  let ipfs
-  let fc
+  let ipfsd = null
 
   before((done) => {
     this.timeout(20 * 1000) // slow CI
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', () => {
     it('.wantlist', (done) => {
-      ipfs.bitswap.wantlist((err, res) => {
+      ipfsd.api.bitswap.wantlist((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.have.to.be.eql({
           Keys: null
@@ -38,7 +36,7 @@ describe('.bitswap', function () {
     })
 
     it('.stat', (done) => {
-      ipfs.bitswap.stat((err, res) => {
+      ipfsd.api.bitswap.stat((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.have.property('BlocksReceived')
         expect(res).to.have.property('DupBlksReceived')
@@ -53,7 +51,7 @@ describe('.bitswap', function () {
 
     it('.unwant', (done) => {
       const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      ipfs.bitswap.unwant(key, (err) => {
+      ipfsd.api.bitswap.unwant(key, (err) => {
         expect(err).to.not.exist()
         done()
       })
@@ -62,7 +60,7 @@ describe('.bitswap', function () {
 
   describe('Promise API', () => {
     it('.wantlist', () => {
-      return ipfs.bitswap.wantlist()
+      return ipfsd.api.bitswap.wantlist()
         .then((res) => {
           expect(res).to.have.to.be.eql({
             Keys: null
@@ -71,7 +69,7 @@ describe('.bitswap', function () {
     })
 
     it('.stat', () => {
-      return ipfs.bitswap.stat()
+      return ipfsd.api.bitswap.stat()
         .then((res) => {
           expect(res).to.have.property('BlocksReceived')
           expect(res).to.have.property('DupBlksReceived')
@@ -84,7 +82,7 @@ describe('.bitswap', function () {
 
     it('.unwant', () => {
       const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      return ipfs.bitswap.unwant(key)
+      return ipfsd.api.bitswap.unwant(key)
     })
   })
 })

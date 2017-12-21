@@ -1,34 +1,32 @@
 /* eslint-env mocha */
 'use strict'
 
-const FactoryClient = require('./ipfs-factory/client')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
+
 describe('.repo', function () {
   this.timeout(50 * 1000) // slow CI
 
-  let ipfs
-  let fc
+  let ipfsd
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', () => {
     it('.repo.gc', (done) => {
-      ipfs.repo.gc((err, res) => {
+      ipfsd.api.repo.gc((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         done()
@@ -36,7 +34,7 @@ describe('.repo', function () {
     })
 
     it('.repo.stat', (done) => {
-      ipfs.repo.stat((err, res) => {
+      ipfsd.api.repo.stat((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
         expect(res).to.have.a.property('NumObjects')
@@ -48,11 +46,11 @@ describe('.repo', function () {
 
   describe('Promise API', () => {
     it('.repo.gc', () => {
-      return ipfs.repo.gc().then((res) => expect(res).to.exist())
+      return ipfsd.api.repo.gc().then((res) => expect(res).to.exist())
     })
 
     it('.repo.stat', () => {
-      return ipfs.repo.stat()
+      return ipfsd.api.repo.stat()
         .then((res) => {
           expect(res).to.exist()
           expect(res).to.have.a.property('NumObjects')

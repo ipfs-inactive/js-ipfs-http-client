@@ -6,7 +6,9 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 const invalidArg = 'this/Is/So/Invalid/'
 const validIp4 = '/ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z'
@@ -14,21 +16,17 @@ const validIp4 = '/ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrS
 describe('.bootstrap', function () {
   this.timeout(100 * 1000)
 
-  let ipfs
-  let fc
+  let ipfsd
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
   let peers
 
@@ -37,14 +35,14 @@ describe('.bootstrap', function () {
 
     describe('.add', () => {
       it('returns an error when called with an invalid arg', (done) => {
-        ipfs.bootstrap.add(invalidArg, (err) => {
+        ipfsd.api.bootstrap.add(invalidArg, (err) => {
           expect(err).to.be.an.instanceof(Error)
           done()
         })
       })
 
       it('returns a list of containing the bootstrap peer when called with a valid arg (ip4)', (done) => {
-        ipfs.bootstrap.add(validIp4, (err, res) => {
+        ipfsd.api.bootstrap.add(validIp4, (err, res) => {
           expect(err).to.not.exist()
           expect(res).to.be.eql({ Peers: [validIp4] })
           peers = res.Peers
@@ -55,7 +53,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns a list of bootstrap peers when called with the default option', (done) => {
-        ipfs.bootstrap.add({ default: true }, (err, res) => {
+        ipfsd.api.bootstrap.add({ default: true }, (err, res) => {
           expect(err).to.not.exist()
           peers = res.Peers
           expect(peers).to.exist()
@@ -67,7 +65,7 @@ describe('.bootstrap', function () {
 
     describe('.list', () => {
       it('returns a list of peers', (done) => {
-        ipfs.bootstrap.list((err, res) => {
+        ipfsd.api.bootstrap.list((err, res) => {
           expect(err).to.not.exist()
           peers = res.Peers
           expect(peers).to.exist()
@@ -78,14 +76,14 @@ describe('.bootstrap', function () {
 
     describe('.rm', () => {
       it('returns an error when called with an invalid arg', (done) => {
-        ipfs.bootstrap.rm(invalidArg, (err) => {
+        ipfsd.api.bootstrap.rm(invalidArg, (err) => {
           expect(err).to.be.an.instanceof(Error)
           done()
         })
       })
 
       it('returns empty list because no peers removed when called without an arg or options', (done) => {
-        ipfs.bootstrap.rm(null, (err, res) => {
+        ipfsd.api.bootstrap.rm(null, (err, res) => {
           expect(err).to.not.exist()
           peers = res.Peers
           expect(peers).to.exist()
@@ -95,7 +93,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns list containing the peer removed when called with a valid arg (ip4)', (done) => {
-        ipfs.bootstrap.rm(null, (err, res) => {
+        ipfsd.api.bootstrap.rm(null, (err, res) => {
           expect(err).to.not.exist()
           peers = res.Peers
           expect(peers).to.exist()
@@ -105,7 +103,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns list of all peers removed when all option is passed', (done) => {
-        ipfs.bootstrap.rm(null, { all: true }, (err, res) => {
+        ipfsd.api.bootstrap.rm(null, { all: true }, (err, res) => {
           expect(err).to.not.exist()
           peers = res.Peers
           expect(peers).to.exist()
@@ -120,21 +118,21 @@ describe('.bootstrap', function () {
 
     describe('.add', () => {
       it('returns an error when called without args or options', () => {
-        return ipfs.bootstrap.add(null)
+        return ipfsd.api.bootstrap.add(null)
           .catch((err) => {
             expect(err).to.be.an.instanceof(Error)
           })
       })
 
       it('returns an error when called with an invalid arg', () => {
-        return ipfs.bootstrap.add(invalidArg)
+        return ipfsd.api.bootstrap.add(invalidArg)
           .catch((err) => {
             expect(err).to.be.an.instanceof(Error)
           })
       })
 
       it('returns a list of peers when called with a valid arg (ip4)', () => {
-        return ipfs.bootstrap.add(validIp4)
+        return ipfsd.api.bootstrap.add(validIp4)
           .then((res) => {
             expect(res).to.be.eql({ Peers: [validIp4] })
             peers = res.Peers
@@ -144,7 +142,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns a list of default peers when called with the default option', () => {
-        return ipfs.bootstrap.add(null, { default: true })
+        return ipfsd.api.bootstrap.add(null, { default: true })
           .then((res) => {
             peers = res.Peers
             expect(peers).to.exist()
@@ -155,7 +153,7 @@ describe('.bootstrap', function () {
 
     describe('.list', () => {
       it('returns a list of peers', () => {
-        return ipfs.bootstrap.list()
+        return ipfsd.api.bootstrap.list()
           .then((res) => {
             peers = res.Peers
             expect(peers).to.exist()
@@ -165,14 +163,14 @@ describe('.bootstrap', function () {
 
     describe('.rm', () => {
       it('returns an error when called with an invalid arg', () => {
-        return ipfs.bootstrap.rm(invalidArg)
+        return ipfsd.api.bootstrap.rm(invalidArg)
           .catch((err) => {
             expect(err).to.be.an.instanceof(Error)
           })
       })
 
       it('returns empty list when called without an arg or options', () => {
-        return ipfs.bootstrap.rm(null)
+        return ipfsd.api.bootstrap.rm(null)
           .then((res) => {
             peers = res.Peers
             expect(peers).to.exist()
@@ -181,7 +179,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns list containing the peer removed when called with a valid arg (ip4)', () => {
-        return ipfs.bootstrap.rm(null)
+        return ipfsd.api.bootstrap.rm(null)
           .then((res) => {
             peers = res.Peers
             expect(peers).to.exist()
@@ -190,7 +188,7 @@ describe('.bootstrap', function () {
       })
 
       it('returns list of all peers removed when all option is passed', () => {
-        return ipfs.bootstrap.rm(null, { all: true })
+        return ipfsd.api.bootstrap.rm(null, { all: true })
           .then((res) => {
             peers = res.Peers
             expect(peers).to.exist()
