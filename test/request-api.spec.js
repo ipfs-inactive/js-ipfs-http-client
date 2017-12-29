@@ -24,7 +24,8 @@ describe('\'deal with HTTP weirdness\' tests', () => {
     })
 
     server.listen(6001, () => {
-      ipfsAPI('/ip4/127.0.0.1/tcp/6001').config.replace('test/fixtures/r-config.json', (err) => {
+//      ipfsAPI('/ip4/127.0.0.1/tcp/6001').config.replace('test/fixtures/r-config.json', (err) => {
+      ipfsAPI('/ip4/127.0.0.1/tcp/6001').id((err) => {
         expect(err).to.not.exist()
         server.close(done)
       })
