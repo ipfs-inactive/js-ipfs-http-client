@@ -238,8 +238,8 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.swarm.disconnect(addr, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#disconnect)
   - [`ipfs.swarm.peers([opts] [, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#peers)
 - [name](https://github.com/ipfs/interface-ipfs-core/tree/master/API/name)
-  - [`ipfs.name.publish()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#publish)
-  - [`ipfs.name.resolve()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#resolve)
+  - [`ipfs.name.publish(addr, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#publish)
+  - [`ipfs.name.resolve(addr, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#resolve)
 
 #### `Node Management`
 
