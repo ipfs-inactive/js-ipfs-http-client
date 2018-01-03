@@ -3,7 +3,7 @@
 const promisify = require('promisify-es6')
 
 const transform = function (res, callback) {
-  callback(null, res.Path) 
+  callback(null, res.Path)
 }
 
 module.exports = (send) => {

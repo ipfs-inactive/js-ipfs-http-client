@@ -6,7 +6,7 @@ const transform = function (res, callback) {
   callback(null, {
     name: res.Name,
     value: res.Value
-  }) 
+  })
 }
 
 module.exports = (send) => {
