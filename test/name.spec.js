@@ -79,9 +79,7 @@ describe('.name', function () {
       ipfs.name.resolve(name.Name, (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
-        expect(res).to.be.eql({
-          Path: name.Value
-        })
+        expect(res).to.be.eql(name.Value)
         done()
       })
     })
@@ -102,9 +100,7 @@ describe('.name', function () {
       return ipfs.name.resolve(name.Name)
         .then((res) => {
           expect(res).to.exist()
-          expect(res).to.be.eql({
-            Path: name.Value
-          })
+          expect(res).to.be.eql(name.Value)
         })
     })
   })
