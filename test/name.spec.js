@@ -76,10 +76,10 @@ describe('.name', function () {
     })
 
     it('.name.resolve', (done) => {
-      ipfs.name.resolve(name.Name, (err, res) => {
+      ipfs.name.resolve(name.name, (err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
-        expect(res).to.be.eql(name.Value)
+        expect(res).to.be.eql(name.value)
         done()
       })
     })
@@ -97,10 +97,10 @@ describe('.name', function () {
     })
 
     it('.name.resolve', () => {
-      return ipfs.name.resolve(name.Name)
+      return ipfs.name.resolve(name.name)
         .then((res) => {
           expect(res).to.exist()
-          expect(res).to.be.eql(name.Value)
+          expect(res).to.be.eql(name.value)
         })
     })
   })
