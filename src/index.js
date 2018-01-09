@@ -14,8 +14,16 @@ function IpfsAPI (hostOrMultiaddr, port, opts) {
     config.port = maddr.port
   } catch (e) {
     if (typeof hostOrMultiaddr === 'string') {
-      config.host = hostOrMultiaddr
-      config.port = port && typeof port !== 'object' ? port : config.port
+      if (hostOrMultiaddr.match(/^\/\/.*:\d+$/)) {
+        const parts = hostOrMultiaddr.split(':')
+        if (parts.length === 2) {
+          config.host = parts[0].substr(2, parts[0].length - 1)
+          config.port = parts[1]
+        }
+      } else {
+        config.host = hostOrMultiaddr
+        config.port = port && typeof port !== 'object' ? port : config.port
+      }
     }
   }
 
