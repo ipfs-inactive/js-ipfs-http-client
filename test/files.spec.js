@@ -458,11 +458,11 @@ describe('.files (the MFS API part)', function () {
       return ipfs.files.stat('/test-folder/test-file')
         .then((res) => {
           expect(res).to.deep.equal({
-            Hash: 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
-            Size: 12,
-            CumulativeSize: 20,
-            Blocks: 0,
-            Type: 'file'
+            hash: 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
+            size: 12,
+            cumulativeSize: 20,
+            blocks: 0,
+            type: 'file'
           })
         })
     })
