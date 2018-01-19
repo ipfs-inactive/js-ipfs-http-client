@@ -26,65 +26,35 @@ describe('.bitswap', function () {
 
   after((done) => ipfsd.stop(done))
 
-  describe('Callback API', () => {
-    it('.wantlist', (done) => {
-      ipfs.bitswap.wantlist((err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.have.to.be.eql({
-          Keys: null
-        })
-        done()
+  it('.wantlist', (done) => {
+    ipfs.bitswap.wantlist((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.have.to.eql({
+        Keys: null
       })
-    })
-
-    it('.stat', (done) => {
-      ipfs.bitswap.stat((err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.have.property('BlocksReceived')
-        expect(res).to.have.property('DupBlksReceived')
-        expect(res).to.have.property('DupDataReceived')
-        expect(res).to.have.property('Peers')
-        expect(res).to.have.property('ProvideBufLen')
-        expect(res).to.have.property('Wantlist')
-
-        done()
-      })
-    })
-
-    it('.unwant', (done) => {
-      const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      ipfs.bitswap.unwant(key, (err) => {
-        expect(err).to.not.exist()
-        done()
-      })
+      done()
     })
   })
 
-  describe('Promise API', () => {
-    it('.wantlist', () => {
-      return ipfs.bitswap.wantlist()
-        .then((res) => {
-          expect(res).to.have.to.be.eql({
-            Keys: null
-          })
-        })
-    })
+  it('.stat', (done) => {
+    ipfs.bitswap.stat((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.have.property('BlocksReceived')
+      expect(res).to.have.property('DupBlksReceived')
+      expect(res).to.have.property('DupDataReceived')
+      expect(res).to.have.property('Peers')
+      expect(res).to.have.property('ProvideBufLen')
+      expect(res).to.have.property('Wantlist')
 
-    it('.stat', () => {
-      return ipfs.bitswap.stat()
-        .then((res) => {
-          expect(res).to.have.property('BlocksReceived')
-          expect(res).to.have.property('DupBlksReceived')
-          expect(res).to.have.property('DupDataReceived')
-          expect(res).to.have.property('Peers')
-          expect(res).to.have.property('ProvideBufLen')
-          expect(res).to.have.property('Wantlist')
-        })
+      done()
     })
+  })
 
-    it('.unwant', () => {
-      const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
-      return ipfs.bitswap.unwant(key)
+  it('.unwant', (done) => {
+    const key = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
+    ipfs.bitswap.unwant(key, (err) => {
+      expect(err).to.not.exist()
+      done()
     })
   })
 })
