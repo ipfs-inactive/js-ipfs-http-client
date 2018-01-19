@@ -99,7 +99,8 @@ describe('.name', function () {
   describe('Promise API', () => {
     let name
 
-    it('.name.publish', () => {
+    it('.name.publish', function () {
+      this.timeout(80 * 1000)
       return ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
         .then((res) => {
           name = res
