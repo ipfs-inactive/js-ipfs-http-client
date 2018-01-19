@@ -7,6 +7,8 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -17,10 +19,10 @@ describe('.key', function () {
   let ipfs
 
   before((done) => {
-    df.spawn((err, node) => {
+    df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfsd = node
-      ipfs = node.api
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })
@@ -61,13 +63,13 @@ describe('.key', function () {
   describe('Promise API', () => {
     describe('.gen', () => {
       it('create a new rsa key', () => {
-        return ipfs.key.gen('foobarsa2', {type: 'rsa', size: 2048}).then((res) => {
+        return ipfs.key.gen('foobarsa2', { type: 'rsa', size: 2048 }).then((res) => {
           expect(res).to.exist()
         })
       })
 
       it('create a new ed25519 key', () => {
-        return ipfs.key.gen('bazed2', {type: 'ed25519'}).then((res) => {
+        return ipfs.key.gen('bazed2', { type: 'ed25519' }).then((res) => {
           expect(res).to.exist()
         })
       })

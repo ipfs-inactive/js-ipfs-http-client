@@ -10,6 +10,8 @@ const waterfall = require('async/waterfall')
 const path = require('path')
 const fs = require('fs')
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -38,10 +40,10 @@ describe('.refs', function () {
 
     waterfall([
       (cb) => df.spawn(cb),
-      (node, cb) => {
-        ipfsd = node
-        ipfs = node.api
-        ipfsd.api.util.addFromFs(filesPath, { recursive: true }, cb)
+      (_ipfsd, cb) => {
+        ipfsd = _ipfsd
+        ipfs = IPFSApi(_ipfsd.apiAddr)
+        ipfs.util.addFromFs(filesPath, { recursive: true }, cb)
       },
       (hashes, cb) => {
         folder = hashes[hashes.length - 1].hash
@@ -90,7 +92,7 @@ describe('.refs', function () {
 
   describe('Promise API', () => {
     it('refs', () => {
-      return ipfs.refs(folder, {format: '<src> <dst> <linkname>'})
+      return ipfs.refs(folder, { format: '<src> <dst> <linkname>' })
         .then((objs) => {
           expect(objs).to.eql(result)
         })

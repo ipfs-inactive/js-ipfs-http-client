@@ -11,6 +11,8 @@ const isNode = require('detect-node')
 const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -29,10 +31,10 @@ describe('.name', function () {
   before((done) => {
     series([
       (cb) => {
-        df.spawn((err, node) => {
+        df.spawn((err, _ipfsd) => {
           expect(err).to.not.exist()
-          ipfsd = node
-          ipfs = node.api
+          ipfsd = _ipfsd
+          ipfs = IPFSApi(_ipfsd.apiAddr)
           cb()
         })
       },

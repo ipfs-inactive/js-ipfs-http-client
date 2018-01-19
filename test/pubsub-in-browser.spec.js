@@ -32,6 +32,8 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -50,10 +52,10 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
   let ipfsd
 
   before((done) => {
-    df.spawn((err, node) => {
+    df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfs = node.api
-      ipfsd = node
+      ipfs = _ipfsd.api
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })

@@ -11,6 +11,8 @@ const loadFixture = require('aegir/fixtures')
 const mh = require('multihashes')
 const CID = require('cids')
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -39,10 +41,10 @@ describe('.files (the MFS API part)', function () {
   const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
   before((done) => {
-    df.spawn((err, node) => {
+    df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfsd = node
-      ipfs = node.api
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })

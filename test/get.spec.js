@@ -11,6 +11,8 @@ const isNode = require('detect-node')
 const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -31,13 +33,13 @@ describe('.get (specific go-ipfs features)', function () {
 
   before((done) => {
     series([
-      (cb) => df.spawn((err, node) => {
+      (cb) => df.spawn((err, _ipfsd) => {
         expect(err).to.not.exist()
-        ipfsd = node
-        ipfs = node.api
+        ipfsd = _ipfsd
+        ipfs = IPFSApi(_ipfsd.apiAddr)
         cb()
       }),
-      (cb) => ipfsd.api.files.add(smallFile.data, cb)
+      (cb) => ipfs.files.add(smallFile.data, cb)
     ], done)
   })
 
@@ -79,7 +81,9 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('add path containing "+"s (for testing get)', (done) => {
-    if (!isNode) { return done() }
+    if (!isNode) {
+      return done()
+    }
 
     const filename = 'ti,c64x+mega++mod-pic.txt'
     const subdir = 'tmp/c++files'
@@ -95,7 +99,9 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   it('get path containing "+"s', (done) => {
-    if (!isNode) { return done() }
+    if (!isNode) {
+      return done()
+    }
 
     const cid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
     let count = 0

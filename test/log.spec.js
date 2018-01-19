@@ -7,6 +7,8 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -17,10 +19,10 @@ describe('.log', function () {
   let ipfs
 
   before((done) => {
-    df.spawn((err, node) => {
+    df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfsd = node
-      ipfs = node.api
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })

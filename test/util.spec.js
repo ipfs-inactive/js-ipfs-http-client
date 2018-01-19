@@ -10,6 +10,8 @@ const isNode = require('detect-node')
 const path = require('path')
 const fs = require('fs')
 
+const IPFSApi = require('../src')
+
 const DaemonFactory = require('ipfsd-ctl')
 const df = DaemonFactory.create()
 
@@ -22,10 +24,10 @@ describe('.util', () => {
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
 
-    df.spawn((err, node) => {
+    df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfsd = node
-      ipfs = node.api
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })
