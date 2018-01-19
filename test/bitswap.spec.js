@@ -5,26 +5,26 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.bitswap', function () {
   this.timeout(20 * 1000) // slow CI
   let ipfs
-  let fc
+  let ipfsd = null
 
   before((done) => {
     this.timeout(20 * 1000) // slow CI
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
+      ipfs = node.api
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', () => {
     it('.wantlist', (done) => {

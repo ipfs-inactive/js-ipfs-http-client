@@ -2,30 +2,30 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
-const FactoryClient = require('./ipfs-factory/client')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
+
 describe('.key', function () {
   this.timeout(50 * 1000)
 
+  let ipfsd
   let ipfs
-  let fc
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    df.spawn((err, node) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = node
+      ipfs = node.api
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', () => {
     describe('.gen', () => {

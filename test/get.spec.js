@@ -10,7 +10,9 @@ chai.use(dirtyChai)
 const isNode = require('detect-node')
 const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 describe('.get (specific go-ipfs features)', function () {
   this.timeout(20 * 1000)
@@ -24,23 +26,22 @@ describe('.get (specific go-ipfs features)', function () {
     data: fixture('../test/fixtures/testfile.txt')
   }
 
+  let ipfsd
   let ipfs
-  let fc
 
   before((done) => {
-    fc = new FactoryClient()
-
     series([
-      (cb) => fc.spawnNode((err, node) => {
+      (cb) => df.spawn((err, node) => {
         expect(err).to.not.exist()
-        ipfs = node
+        ipfsd = node
+        ipfs = node.api
         cb()
       }),
-      (cb) => ipfs.files.add(smallFile.data, cb)
+      (cb) => ipfsd.api.files.add(smallFile.data, cb)
     ], done)
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => ipfsd.stop(done))
 
   it('no compression args', (done) => {
     ipfs.get(smallFile.cid, (err, files) => {

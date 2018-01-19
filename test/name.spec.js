@@ -5,10 +5,14 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
+
+const parallel = require('async/parallel')
 const isNode = require('detect-node')
 const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
-const FactoryClient = require('./ipfs-factory/client')
+
+const DaemonFactory = require('ipfsd-ctl')
+const df = DaemonFactory.create()
 
 const testfile = isNode
   ? loadFixture(__dirname, '/fixtures/testfile.txt')
@@ -18,28 +22,30 @@ describe('.name', function () {
   this.timeout(50 * 1000)
 
   let ipfs
+  let ipfsd
   let other
-  let fc
+  let otherd
 
   before((done) => {
-    fc = new FactoryClient()
     series([
       (cb) => {
-        fc.spawnNode((err, node) => {
+        df.spawn((err, node) => {
           expect(err).to.not.exist()
-          ipfs = node
+          ipfsd = node
+          ipfs = node.api
           cb()
         })
       },
       (cb) => {
-        fc.spawnNode((err, node) => {
+        df.spawn((err, node) => {
           expect(err).to.not.exist()
-          other = node
+          other = node.api
+          otherd = node
           cb()
         })
       },
       (cb) => {
-        ipfs.id((err, id) => {
+        ipfsd.api.id((err, id) => {
           expect(err).to.not.exist()
           const ma = id.addresses[0]
           other.swarm.connect(ma, cb)
@@ -48,7 +54,12 @@ describe('.name', function () {
     ], done)
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => {
+    parallel([
+      (cb) => ipfsd.stop(cb),
+      (cb) => otherd.stop(cb)
+    ], done)
+  })
 
   describe('Callback API', () => {
     let name
@@ -88,7 +99,8 @@ describe('.name', function () {
   describe('Promise API', () => {
     let name
 
-    it('.name.publish', () => {
+    it('.name.publish', function () {
+      this.timeout(80 * 1000)
       return ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
         .then((res) => {
           name = res
