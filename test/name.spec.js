@@ -80,7 +80,7 @@ describe('.name', function () {
     })
 
     it('.name.publish', function (done) {
-      this.timeout(50 * 1000)
+      this.timeout(100 * 1000)
       ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
         expect(err).to.not.exist()
         name = res

@@ -54,7 +54,7 @@ describe('.pubsub-browser (pubsub not supported in the browsers currently)', fun
   before((done) => {
     df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfs = _ipfsd.api
+      ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
