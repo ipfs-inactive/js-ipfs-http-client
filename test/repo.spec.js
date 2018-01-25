@@ -51,7 +51,6 @@ describe('.repo', function () {
       ipfs.repo.version((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
-        expect(res).to.have.a.property('Version')
         done()
       })
     })
@@ -75,7 +74,6 @@ describe('.repo', function () {
       return ipfs.repo.version()
         .then(res => {
           expect(res).to.exist()
-          expect(res).to.have.a.property('Version')
         })
     })
   })
