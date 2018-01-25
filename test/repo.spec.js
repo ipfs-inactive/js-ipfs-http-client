@@ -41,8 +41,8 @@ describe('.repo', function () {
       ipfs.repo.stat((err, res) => {
         expect(err).to.not.exist()
         expect(res).to.exist()
-        expect(res).to.have.a.property('NumObjects')
-        expect(res).to.have.a.property('RepoSize')
+        expect(res).to.have.a.property('numObjects')
+        expect(res).to.have.a.property('repoSize')
         done()
       })
     })
@@ -66,8 +66,8 @@ describe('.repo', function () {
       return ipfs.repo.stat()
         .then((res) => {
           expect(res).to.exist()
-          expect(res).to.have.a.property('NumObjects')
-          expect(res).to.have.a.property('RepoSize')
+          expect(res).to.have.a.property('numObjects')
+          expect(res).to.have.a.property('repoSize')
         })
     })
 
