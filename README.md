@@ -187,9 +187,10 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.block.put(block, cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#put)
   - [`ipfs.block.stat(cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#stat)
 
-- repo
-  - `ipfs.repo.stat()`
-  - `ipfs.repo.gc()`
+- [repo](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md)
+  - [`ipfs.repo.gc([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#gc)
+  - [`ipfs.repo.stat([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#stat)
+  - [`ipfs.repo.version([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#version)
 
 #### `Graph`
 
