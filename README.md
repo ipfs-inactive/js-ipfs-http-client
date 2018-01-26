@@ -172,15 +172,15 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.files.getPullStream(ipfsPath, [options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#getpullstream)  
   - `ipfs.ls`
   - MFS (mutable file system) specific:
-    - `ipfs.files.cp`
-    - `ipfs.files.ls`
-    - `ipfs.files.mkdir`
-    - `ipfs.files.stat`
-    - `ipfs.files.rm`
-    - `ipfs.files.read`
-    - `ipfs.files.write`
-    - `ipfs.files.mv`
-    - `ipfs.files.flush(path, [callback])`
+    - [`ipfs.files.cp([from, to], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#cp)
+    - [`ipfs.files.mkdir(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#mkdir)
+    - [`ipfs.files.stat(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#stat)
+    - [`ipfs.files.rm(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#rm)
+    - [`ipfs.files.read(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#read)
+    - [`ipfs.files.write(path, content, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#write)
+    - [`ipfs.files.mv([from, to], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#mv)
+    - [`ipfs.files.ls([path, options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#ls)
+    - [`ipfs.files.flush([path, callback])`(https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#flush)
 
 - [block](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md)
   - [`ipfs.block.get(cid, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#get)
