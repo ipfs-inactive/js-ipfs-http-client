@@ -42,6 +42,9 @@ function requireCommands () {
     dns: require('../dns')
   }
 
+  // stop is another name for shutdown
+  cmds.stop = cmds.shutdown
+
   // TODO: crowding the 'files' namespace temporarily for interface-ipfs-core
   // compatibility, until 'files vs mfs' naming decision is resolved.
   cmds.files = function (send) {

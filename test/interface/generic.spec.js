@@ -3,7 +3,6 @@
 'use strict'
 
 const test = require('interface-ipfs-core')
-const parallel = require('async/parallel')
 
 const IPFSApi = require('../../src')
 
