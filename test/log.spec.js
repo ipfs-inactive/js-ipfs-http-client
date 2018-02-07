@@ -10,7 +10,6 @@ chai.use(dirtyChai)
 const IPFSApi = require('../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
 
 describe('.log', function () {
   this.timeout(100 * 1000)
@@ -19,6 +18,8 @@ describe('.log', function () {
   let ipfs
 
   before((done) => {
+    const df = DaemonFactory.create({remote: true, port: 30003})
+
     df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd

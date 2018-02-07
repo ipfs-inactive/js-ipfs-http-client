@@ -13,14 +13,11 @@ const fs = require('fs')
 const IPFSApi = require('../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
 
 describe('.refs', function () {
   this.timeout(80 * 1000)
 
-  if (!isNode) {
-    return
-  }
+  if (!isNode) { return }
 
   let ipfs
   let ipfsd
@@ -37,6 +34,8 @@ describe('.refs', function () {
       fs.unlinkSync(symlinkPath)
       fs.symlinkSync(symlinkTarget, symlinkPath)
     }
+
+    const df = DaemonFactory.create({remote: true, port: 30003})
 
     waterfall([
       (cb) => df.spawn(cb),

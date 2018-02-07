@@ -7,11 +7,12 @@ const test = require('interface-ipfs-core')
 const IPFSApi = require('../../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
 
 const nodes = []
 const common = {
   setup: function (callback) {
+    const df = DaemonFactory.create({remote: true, port: 30003})
+
     callback(null, {
       spawnNode: (cb) => {
         df.spawn((err, _ipfsd) => {

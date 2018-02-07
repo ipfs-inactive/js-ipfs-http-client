@@ -10,12 +10,13 @@ const parallel = require('async/parallel')
 const IPFSApi = require('../../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
 
 if (isNode) {
   const nodes = []
   const common = {
     setup: function (callback) {
+      const df = DaemonFactory.create({remote: true, port: 30003})
+
       callback(null, {
         spawnNode: (cb) => {
           df.spawn({ args: ['--enable-pubsub-experiment'] },

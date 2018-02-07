@@ -12,7 +12,6 @@ const series = require('async/series')
 const IPFSApi = require('../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
 
 describe.skip('.ping', () => {
   let ipfs
@@ -22,6 +21,9 @@ describe.skip('.ping', () => {
 
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
+
+    const df = DaemonFactory.create({remote: true, port: 30003})
+
     series([
       (cb) => {
         df.spawn((err, _ipfsd) => {

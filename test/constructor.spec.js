@@ -7,8 +7,6 @@ const expect = chai.expect
 chai.use(dirtyChai)
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
-
 const ipfsAPI = require('../src/index.js')
 
 function clientWorks (client, done) {
@@ -28,6 +26,9 @@ describe('ipfs-api constructor tests', () => {
 
     before(function (done) {
       this.timeout(20 * 1000) // slow CI
+
+      const df = DaemonFactory.create({remote: true, port: 30003})
+
       df.spawn((err, node) => {
         expect(err).to.not.exist()
         ipfsd = node
