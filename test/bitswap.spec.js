@@ -9,15 +9,16 @@ chai.use(dirtyChai)
 const IPFSApi = require('../src')
 
 const DaemonFactory = require('ipfsd-ctl')
-const df = DaemonFactory.create()
+const df = DaemonFactory.create({remote: true, port: 30003})
 
-describe('.bitswap', function () {
+describe.only('.bitswap', function () {
   this.timeout(20 * 1000) // slow CI
   let ipfs
   let ipfsd = null
 
   before((done) => {
     this.timeout(20 * 1000) // slow CI
+
     df.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
