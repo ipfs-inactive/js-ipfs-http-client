@@ -26,9 +26,9 @@ const common = {
     })
   },
   teardown: function (callback) {
-    // No need to stop, because the test suite does a 'shutdown' test.
+    // No need to stop, because the test suite does a 'stop' test.
     // parallel(nodes.map((node) => (cb) => node.stop(cb)), callback)
-    callback(null)
+    callback()
   }
 }
 

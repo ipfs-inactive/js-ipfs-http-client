@@ -33,7 +33,7 @@ function requireCommands () {
     ping: require('../ping'),
     refs: require('../refs'),
     repo: require('../repo'),
-    shutdown: require('../shutdown'),
+    stop: require('../stop'),
     stats: require('../stats'),
     swarm: require('../swarm'),
     pubsub: require('../pubsub'),
@@ -42,8 +42,8 @@ function requireCommands () {
     dns: require('../dns')
   }
 
-  // stop is another name for shutdown
-  cmds.stop = cmds.shutdown
+  // shutdown is an alias for stop
+  cmds.shutdown = cmds.stop
 
   // TODO: crowding the 'files' namespace temporarily for interface-ipfs-core
   // compatibility, until 'files vs mfs' naming decision is resolved.
