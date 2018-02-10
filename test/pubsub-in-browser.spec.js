@@ -33,8 +33,7 @@ const expect = chai.expect
 chai.use(dirtyChai)
 
 const IPFSApi = require('../src')
-
-const DaemonFactory = require('ipfsd-ctl')
+const f = require('./utils/factory')
 
 const expectedError = 'pubsub is currently not supported when run in the browser'
 
@@ -48,9 +47,7 @@ describe('.pubsub is not supported in the browser, yet!', function () {
   let ipfsd
 
   before((done) => {
-    const df = DaemonFactory.create({remote: true, port: 30003})
-
-    df.spawn((err, _ipfsd) => {
+    f.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)

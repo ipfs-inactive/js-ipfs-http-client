@@ -11,8 +11,7 @@ const path = require('path')
 const fs = require('fs')
 
 const IPFSApi = require('../src')
-
-const DaemonFactory = require('ipfsd-ctl')
+const f = require('./utils/factory')
 
 describe('.refs', function () {
   this.timeout(80 * 1000)
@@ -35,10 +34,8 @@ describe('.refs', function () {
       fs.symlinkSync(symlinkTarget, symlinkPath)
     }
 
-    const df = DaemonFactory.create({remote: true, port: 30003})
-
     waterfall([
-      (cb) => df.spawn(cb),
+      (cb) => f.spawn(cb),
       (_ipfsd, cb) => {
         ipfsd = _ipfsd
         ipfs = IPFSApi(_ipfsd.apiAddr)

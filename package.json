@@ -7,7 +7,9 @@
     "glob": false,
     "fs": false,
     "stream": "readable-stream",
-    "http": "stream-http"
+    "http": "stream-http",
+    "ipfs-api": false,
+    "ipfs": false
   },
   "scripts": {
     "test": "aegir test",

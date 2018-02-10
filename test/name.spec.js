@@ -12,8 +12,7 @@ const series = require('async/series')
 const loadFixture = require('aegir/fixtures')
 
 const IPFSApi = require('../src')
-
-const DaemonFactory = require('ipfsd-ctl')
+const f = require('./utils/factory')
 
 const testfile = isNode
   ? loadFixture(__dirname, '/fixtures/testfile.txt')
@@ -28,11 +27,9 @@ describe('.name', function () {
   let otherd
 
   before((done) => {
-    const df = DaemonFactory.create({remote: true, port: 30003})
-
     series([
       (cb) => {
-        df.spawn((err, _ipfsd) => {
+        f.spawn((err, _ipfsd) => {
           expect(err).to.not.exist()
           ipfsd = _ipfsd
           ipfs = IPFSApi(_ipfsd.apiAddr)
@@ -40,7 +37,7 @@ describe('.name', function () {
         })
       },
       (cb) => {
-        df.spawn((err, node) => {
+        f.spawn((err, node) => {
           expect(err).to.not.exist()
           other = node.api
           otherd = node

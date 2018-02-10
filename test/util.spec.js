@@ -11,8 +11,7 @@ const path = require('path')
 const fs = require('fs')
 
 const IPFSApi = require('../src')
-
-const DaemonFactory = require('ipfsd-ctl')
+const f = require('./utils/factory')
 
 describe('.util', () => {
   if (!isNode) { return }
@@ -23,9 +22,7 @@ describe('.util', () => {
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
 
-    const df = DaemonFactory.create({remote: true, port: 30003})
-
-    df.spawn((err, _ipfsd) => {
+    f.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)

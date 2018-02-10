@@ -8,7 +8,7 @@ chai.use(dirtyChai)
 
 const IPFSApi = require('../src')
 
-const DaemonFactory = require('ipfsd-ctl')
+const f = require('./utils/factory')
 
 describe('.commands', function () {
   this.timeout(20 * 1000)
@@ -17,9 +17,7 @@ describe('.commands', function () {
   let ipfs
 
   before((done) => {
-    const df = DaemonFactory.create({remote: true, port: 30003})
-
-    df.spawn((err, _ipfsd) => {
+    f.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)
