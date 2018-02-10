@@ -16,15 +16,15 @@
   "scripts": {
     "test": "aegir test",
     "test:node": "aegir test -t node",
-    "test:browser": "node --max-old-space-size=8192 ./node_modules/.bin/aegir test -t browser",
-    "test:webworker": "aegir test -t webworker",
+    "test:browser": "node --max-old-space-size=8192 $(npm bin)/aegir test -t browser",
+    "test:webworker": "node --max-old-space-size=8192 $(npm bin)/aegir test -t webworker",
     "lint": "aegir lint",
     "build": "aegir build",
-    "release": "aegir release ",
-    "release-minor": "aegir release --type minor ",
-    "release-major": "aegir release --type major ",
-    "coverage": "aegir coverage --timeout 100000",
-    "coverage-publish": "aegir coverage --provider coveralls --timeout 100000"
+    "release": "node --max-old-space-size=8192 $(npm bin)/aegir release ",
+    "release-minor": "node --max-old-space-size=8192 $(npm bin)/aegir release --type minor ",
+    "release-major": "node --max-old-space-size=8192 $(npm bin)/aegir release --type major ",
+    "coverage": "node --max-old-space-size=8192 $(npm bin)/aegir coverage --timeout 100000",
+    "coverage-publish": "anode --max-old-space-size=8192 $(npm bin)/aegir coverage --provider coveralls --timeout 100000"
   },
   "dependencies": {
     "async": "^2.6.0",
