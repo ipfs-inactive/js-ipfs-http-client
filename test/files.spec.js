@@ -14,9 +14,7 @@ const CID = require('cids')
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-const testfile = isNode
-  ? loadFixture(__dirname, '/fixtures/testfile.txt')
-  : loadFixture(__dirname, 'fixtures/testfile.txt')
+const testfile = loadFixture('test/fixtures/testfile.txt')
 
 // TODO: Test against all algorithms Object.keys(mh.names)
 // This subset is known to work with both go-ipfs and js-ipfs as of 2017-09-05
@@ -72,6 +70,7 @@ describe('.files (the MFS API part)', function () {
       expect(res).to.have.length(1)
       expect(res[0].hash).to.equal(expectedBufferMultihash)
       expect(res[0].path).to.equal(expectedBufferMultihash)
+      done()
     })
   })
 
