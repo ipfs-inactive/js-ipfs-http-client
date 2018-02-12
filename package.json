@@ -7,11 +7,7 @@
     "glob": false,
     "fs": false,
     "stream": "readable-stream",
-    "http": "stream-http",
-    "ipfs-api": false,
-    "ipfs": false,
-    "./node_modules/ipfsd-ctl/src/ipfsd-in-proc.js": false,
-    "./node_modules/ipfsd-ctl/src/factory-in-proc.js": false
+    "http": "stream-http"
   },
   "scripts": {
     "test": "aegir test",
