@@ -1,7 +1,17 @@
-
 'use strict'
 
 const promisify = require('promisify-es6')
+const Big = require('big.js')
+
+const transform = function (res, callback) {
+  callback(null, {
+    numObjects: new Big(res.NumObjects),
+    repoSize: new Big(res.RepoSize),
+    repoPath: res.RepoPath,
+    version: res.Version,
+    storageMax: new Big(res.StorageMax)
+  })
+}
 
 module.exports = (send) => {
   return promisify((opts, callback) => {
@@ -10,9 +20,9 @@ module.exports = (send) => {
       opts = {}
     }
 
-    send({
+    send.andTransform({
       path: 'stats/repo',
       qs: opts
-    }, callback)
+    }, transform, callback)
   })
 }

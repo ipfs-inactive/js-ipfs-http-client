@@ -2,6 +2,17 @@
 
 const promisify = require('promisify-es6')
 const streamToValue = require('../utils/stream-to-value')
+const transformChunk = require('./bw-util')
+
+const transform = (res, callback) => {
+  return streamToValue(res, (err, data) => {
+    if (err) {
+      return callback(err)
+    }
+
+    callback(null, transformChunk(data[0]))
+  })
+}
 
 module.exports = (send) => {
   return promisify((opts, callback) => {
@@ -13,14 +24,6 @@ module.exports = (send) => {
     send.andTransform({
       path: 'stats/bw',
       qs: opts
-    }, streamToValue, (err, stats) => {
-      if (err) {
-        return callback(err)
-      }
-
-      // streamToValue returns an array and we're only
-      // interested in returning the object itself.
-      callback(err, stats[0])
-    })
+    }, transform, callback)
   })
 }

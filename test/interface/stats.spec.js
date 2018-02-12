@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint max-nested-callbacks: ["error", 8] */
+
 'use strict'
 
 const test = require('interface-ipfs-core')
@@ -29,4 +29,4 @@ const common = {
   }
 }
 
-test.config(common)
+test.stats(common)

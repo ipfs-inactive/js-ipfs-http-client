@@ -1,63 +1,54 @@
 /* eslint-env mocha */
 'use strict'
 
-const FactoryClient = require('./ipfs-factory/client')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const IPFSApi = require('../src')
+const f = require('./utils/factory')
+
 describe('.repo', function () {
   this.timeout(50 * 1000) // slow CI
 
   let ipfs
-  let fc
+  let ipfsd
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    f.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })
 
-  after((done) => {
-    fc.dismantle(done)
-  })
+  after((done) => ipfsd.stop(done))
 
-  describe('Callback API', () => {
-    it('.repo.gc', (done) => {
-      ipfs.repo.gc((err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.exist()
-        done()
-      })
-    })
-
-    it('.repo.stat', (done) => {
-      ipfs.repo.stat((err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.exist()
-        expect(res).to.have.a.property('NumObjects')
-        expect(res).to.have.a.property('RepoSize')
-        done()
-      })
+  it('.repo.gc', (done) => {
+    ipfs.repo.gc((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
+      done()
     })
   })
 
-  describe('Promise API', () => {
-    it('.repo.gc', () => {
-      return ipfs.repo.gc().then((res) => expect(res).to.exist())
+  it('.repo.stat', (done) => {
+    ipfs.repo.stat((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
+      expect(res).to.have.a.property('numObjects')
+      expect(res).to.have.a.property('repoSize')
+      done()
     })
+  })
 
-    it('.repo.stat', () => {
-      return ipfs.repo.stat()
-        .then((res) => {
-          expect(res).to.exist()
-          expect(res).to.have.a.property('NumObjects')
-          expect(res).to.have.a.property('RepoSize')
-        })
+  it('.repo.version', (done) => {
+    ipfs.repo.version((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
+      done()
     })
   })
 })

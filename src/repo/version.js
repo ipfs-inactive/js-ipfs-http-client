@@ -1,19 +1,21 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const streamToValue = require('../utils/stream-to-value')
+
+const transform = function (res, callback) {
+  callback(null, res.Version)
+}
 
 module.exports = (send) => {
-  return promisify((args, opts, callback) => {
+  return promisify((opts, callback) => {
     if (typeof (opts) === 'function') {
       callback = opts
       opts = {}
     }
 
     send.andTransform({
-      path: 'files/read',
-      args: args,
+      path: 'repo/version',
       qs: opts
-    }, streamToValue, callback)
+    }, transform, callback)
   })
 }

@@ -29,4 +29,4 @@ const common = {
   }
 }
 
-test.config(common)
+test.repo(common)

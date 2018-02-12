@@ -1,34 +1,34 @@
 /* eslint-env mocha */
 'use strict'
 
-const FactoryClient = require('./ipfs-factory/client')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const os = require('os')
 
+const IPFSApi = require('../src')
+const f = require('./utils/factory')
+
 describe('.diag', function () {
   this.timeout(50 * 1000)
 
-  if (os.platform() === 'win32') {
-    it('skip these on Windows')
-    return
-  }
+  // go-ipfs does not support these on Windows
+  if (os.platform() === 'win32') { return }
 
+  let ipfsd
   let ipfs
-  let fc
 
   before((done) => {
-    fc = new FactoryClient()
-    fc.spawnNode((err, node) => {
+    f.spawn((err, _ipfsd) => {
       expect(err).to.not.exist()
-      ipfs = node
+      ipfsd = _ipfsd
+      ipfs = IPFSApi(_ipfsd.apiAddr)
       done()
     })
   })
 
-  after((done) => fc.dismantle(done))
+  after((done) => ipfsd.stop(done))
 
   describe('Callback API', () => {
     // Disabled in go-ipfs 0.4.10

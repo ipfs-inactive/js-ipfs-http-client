@@ -3,17 +3,39 @@
 'use strict'
 
 const test = require('interface-ipfs-core')
-const FactoryClient = require('../ipfs-factory/client')
+const parallel = require('async/parallel')
 
-let fc
+const IPFSApi = require('../../src')
+const f = require('../utils/factory')
 
+const nodes = []
 const common = {
   setup: function (callback) {
-    fc = new FactoryClient()
-    callback(null, fc)
+    callback(null, {
+      spawnNode: (repoPath, config, cb) => {
+        if (typeof repoPath === 'function') {
+          cb = repoPath
+          repoPath = undefined
+        }
+
+        if (typeof config === 'function') {
+          cb = config
+          config = undefined
+        }
+
+        f.spawn({ repoPath, config }, (err, _ipfsd) => {
+          if (err) {
+            return cb(err)
+          }
+
+          nodes.push(_ipfsd)
+          cb(null, IPFSApi(_ipfsd.apiAddr))
+        })
+      }
+    })
   },
   teardown: function (callback) {
-    fc.dismantle(callback)
+    parallel(nodes.map((node) => (cb) => node.stop(cb)), callback)
   }
 }
 

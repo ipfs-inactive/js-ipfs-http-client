@@ -160,32 +160,32 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
 
 #### `Files`
 
-- [files](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES)
-  - [`ipfs.files.add(data, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#add)
-    - alias to `ipfs.add`
-  - [`ipfs.files.createAddStream([options], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#createaddstream)
-  - [`ipfs.files.cat(multihash, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#cat)
-    - alias to `ipfs.cat`
-  - [`ipfs.files.get(hash, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#get)
-    - alias to `ipfs.get`
-  - `ipfs.ls`
-  - `ipfs.files.flush(path, [callback])`
-  - mfs (mutable file system) specific:
-    - `ipfs.files.cp`
-    - `ipfs.files.ls`
-    - `ipfs.files.mkdir`
-    - `ipfs.files.stat`
-    - `ipfs.files.rm`
-    - `ipfs.files.read`
-    - `ipfs.files.write`
-    - `ipfs.files.mv`
+- [files](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md)
+  - [`ipfs.files.add(data, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#add). Alias to `ipfs.add`.
+  - [`ipfs.files.addReadableStream([options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#addreadablestream)
+  - [`ipfs.files.addPullStream([options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#addpullstream)
+  - [`ipfs.files.cat(ipfsPath, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#cat). Alias to `ipfs.cat`.
+  - [`ipfs.files.catReadableStream(ipfsPath, [options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#catreadablestream)
+  - [`ipfs.files.catPullStream(ipfsPath, [options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#catpullstream)  
+  - [`ipfs.files.get(ipfsPath, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#get). Alias to `ipfs.get`.
+  - [`ipfs.files.getReadableStream(ipfsPath, [options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#getreadablestream)
+  - [`ipfs.files.getPullStream(ipfsPath, [options])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#getpullstream)  
+  - [`ipfs.ls(ipfsPath, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#ls)
+  - [MFS (mutable file system) specific](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#mutable-file-system)
+    - [`ipfs.files.cp([from, to], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#cp)
+    - [`ipfs.files.mkdir(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#mkdir)
+    - [`ipfs.files.stat(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#stat)
+    - [`ipfs.files.rm(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#rm)
+    - [`ipfs.files.read(path, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#read)
+    - [`ipfs.files.write(path, content, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#write)
+    - [`ipfs.files.mv([from, to], [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#mv)
+    - [`ipfs.files.ls([path, options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#ls-1)
+    - [`ipfs.files.flush([path, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/FILES.md#flush)
+
 - [block](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md)
   - [`ipfs.block.get(cid, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#get)
   - [`ipfs.block.put(block, cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#put)
   - [`ipfs.block.stat(cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/BLOCK.md#stat)
-- repo
-  - `ipfs.repo.stat()`
-  - `ipfs.repo.gc()`
 
 #### `Graph`
 
@@ -193,6 +193,7 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.dag.put(dagNode, options, callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DAG.md#dagput)
   - [`ipfs.dag.get(cid [, path, options], callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DAG.md#dagget)
   - [`ipfs.dag.tree(cid [, path, options], callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DAG.md#dagtree)
+  
 - [object](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/OBJECT.md).
   - [`ipfs.object.new([template][, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/OBJECT.md#objectnew)
   - [`ipfs.object.put(obj, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/OBJECT.md#objectput)
@@ -218,28 +219,33 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - `ipfs.bootstrap.list`
   - `ipfs.bootstrap.add`
   - `ipfs.bootstrap.rm`
+  
 - [bitswap](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/)
   - `ipfs.bitswap.wantlist()`
   - `ipfs.bitswap.stat()`
   - `ipfs.bitswap.unwant()`
+  
 - [dht](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/)
   - [`ipfs.dht.findprovs()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DHT.md#findprovs)
   - [`ipfs.dht.get()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DHT.md#get)
   - [`ipfs.dht.put()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/DHT.md#put)
+  
 - [pubsub](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md)
   - [`ipfs.pubsub.subscribe(topic, options, handler, callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md#pubsubsubscribe)
   - [`ipfs.pubsub.unsubscribe(topic, handler)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md#pubsubunsubscribe)
   - [`ipfs.pubsub.publish(topic, data, callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md#pubsubpublish)
   - [`ipfs.pubsub.ls(topic, callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md#pubsubls)
   - [`ipfs.pubsub.peers(topic, callback)`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/PUBSUB.md#pubsubpeers)
+  
 - [swarm](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md)
   - [`ipfs.swarm.addrs([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#addrs)
   - [`ipfs.swarm.connect(addr, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#connect)
   - [`ipfs.swarm.disconnect(addr, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#disconnect)
   - [`ipfs.swarm.peers([opts] [, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/SWARM.md#peers)
+  
 - [name](https://github.com/ipfs/interface-ipfs-core/tree/master/API/name)
-  - [`ipfs.name.publish()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#publish)
-  - [`ipfs.name.resolve()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#resolve)
+  - [`ipfs.name.publish(addr, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#publish)
+  - [`ipfs.name.resolve(addr, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/NAME.md#resolve)
 
 #### `Node Management`
 
@@ -247,21 +253,36 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.id([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#id)
   - [`ipfs.version([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#version)
   - [`ipfs.ping()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#ping)
+  - [`ipfs.dns(domain, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#dns)
+  - [`ipfs.stop([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#stop). Alias to `ipfs.shutdown`.
+  
 - [config](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/CONFIG.md)
   - [`ipfs.config.get([key, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/CONFIG.md#configget)
   - [`ipfs.config.set(key, value, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/CONFIG.md#configset)
   - [`ipfs.config.replace(config, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/CONFIG.md#configreplace)
-- stats:
-  - `ipfs.stats.bitswap([callback])`
-  - `ipfs.stats.bw([options, callback])`
-  - `ipfs.stats.repo([options, callback])`
-- log:
+  
+- [stats](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/STATS.md)
+  - [`ipfs.stats.bitswap([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/STATS.md#bitswap)
+  - [`ipfs.stats.bw([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/STATS.md#bw)
+  - [`ipfs.stats.repo([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/STATS.md#repo)
+  
+- log
   - `ipfs.log.ls([callback])`
   - `ipfs.log.tail([callback])`
   - `ipfs.log.level(subsystem, level, [options, callback])`
-- key:
-  - `ipfs.key.gen(name, [options, callback])`
-  - `ipfs.key.list([options, callback])`
+
+- [repo](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md)
+  - [`ipfs.repo.gc([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#gc)
+  - [`ipfs.repo.stat([options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#stat)
+  - [`ipfs.repo.version([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#version)
+  
+- [key](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md)
+  - [`ipfs.key.gen(name, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeygenname-options-callback)
+  - [`ipfs.key.list([options, callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeylistcallback)
+  - [`ipfs.key.rm(name, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyrmname-callback)
+  - [`ipfs.key.rename(oldName, newName, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyrenameoldname-newname-callback)
+  - [`ipfs.key.export(name, password, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyexportname-password-callback)
+  - [`ipfs.key.import(name, pem, password, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyimportname-pem-password-callback)
 
 #### `Pubsub Caveat` 
 

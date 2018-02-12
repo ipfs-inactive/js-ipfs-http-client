@@ -10,16 +10,14 @@ const transform = function (res, callback) {
 }
 
 module.exports = (send) => {
-  return promisify((args, opts, callback) => {
-    if (typeof (opts) === 'function') {
-      callback = opts
-      opts = {}
-    }
-
+  return promisify((name, pem, password, callback) => {
     send.andTransform({
-      path: 'key/gen',
-      args: args,
-      qs: opts
+      path: 'key/import',
+      args: name,
+      qs: {
+        pem: pem,
+        password: password
+      }
     }, transform, callback)
   })
 }

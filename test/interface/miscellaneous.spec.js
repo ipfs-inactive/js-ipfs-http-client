@@ -1,9 +1,8 @@
 /* eslint-env mocha */
-/* eslint max-nested-callbacks: ["error", 8] */
+
 'use strict'
 
 const test = require('interface-ipfs-core')
-const parallel = require('async/parallel')
 
 const IPFSApi = require('../../src')
 const f = require('../utils/factory')
@@ -25,8 +24,10 @@ const common = {
     })
   },
   teardown: function (callback) {
-    parallel(nodes.map((node) => (cb) => node.stop(cb)), callback)
+    // No need to stop, because the test suite does a 'stop' test.
+    // parallel(nodes.map((node) => (cb) => node.stop(cb)), callback)
+    callback()
   }
 }
 
-test.config(common)
+test.generic(common)

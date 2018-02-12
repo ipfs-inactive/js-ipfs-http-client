@@ -1,3 +1,70 @@
+<a name="17.5.0"></a>
+# [17.5.0](https://github.com/ipfs/js-ipfs-api/compare/v17.3.0...v17.5.0) (2018-01-24)
+
+
+### Bug Fixes
+
+* normalize stats fields ([#669](https://github.com/ipfs/js-ipfs-api/issues/669)) ([5803d39](https://github.com/ipfs/js-ipfs-api/commit/5803d39))
+
+
+### Features
+
+* /api/v0/repo/version ([#676](https://github.com/ipfs/js-ipfs-api/issues/676)) ([ecf70b9](https://github.com/ipfs/js-ipfs-api/commit/ecf70b9))
+* integrate new ipfsd-ctl ([2b1820b](https://github.com/ipfs/js-ipfs-api/commit/2b1820b))
+
+
+
+<a name="17.4.0"></a>
+# [17.4.0](https://github.com/ipfs/js-ipfs-api/compare/v17.3.0...v17.4.0) (2018-01-24)
+
+
+### Bug Fixes
+
+* normalize stats fields ([#669](https://github.com/ipfs/js-ipfs-api/issues/669)) ([5803d39](https://github.com/ipfs/js-ipfs-api/commit/5803d39))
+
+
+### Features
+
+* integrate new ipfsd-ctl ([2b1820b](https://github.com/ipfs/js-ipfs-api/commit/2b1820b))
+
+
+
+<a name="17.3.0"></a>
+# [17.3.0](https://github.com/ipfs/js-ipfs-api/compare/v17.2.7...v17.3.0) (2018-01-12)
+
+
+### Features
+
+* /api/v0/dns ([#665](https://github.com/ipfs/js-ipfs-api/issues/665)) ([81016bb](https://github.com/ipfs/js-ipfs-api/commit/81016bb))
+
+
+
+<a name="17.2.7"></a>
+## [17.2.7](https://github.com/ipfs/js-ipfs-api/compare/v17.2.6...v17.2.7) (2018-01-11)
+
+
+### Bug Fixes
+
+* name and key tests ([#661](https://github.com/ipfs/js-ipfs-api/issues/661)) ([5ab1d02](https://github.com/ipfs/js-ipfs-api/commit/5ab1d02))
+
+
+### Features
+
+* normalize KEY API ([#659](https://github.com/ipfs/js-ipfs-api/issues/659)) ([1b10821](https://github.com/ipfs/js-ipfs-api/commit/1b10821))
+* normalize NAME API ([#658](https://github.com/ipfs/js-ipfs-api/issues/658)) ([9b8ef48](https://github.com/ipfs/js-ipfs-api/commit/9b8ef48))
+
+
+
+<a name="17.2.6"></a>
+## [17.2.6](https://github.com/ipfs/js-ipfs-api/compare/v17.2.5...v17.2.6) (2017-12-28)
+
+
+### Features
+
+* support key/export and key/import ([#653](https://github.com/ipfs/js-ipfs-api/issues/653)) ([496f08e](https://github.com/ipfs/js-ipfs-api/commit/496f08e))
+
+
+
 <a name="17.2.5"></a>
 ## [17.2.5](https://github.com/ipfs/js-ipfs-api/compare/v17.2.4...v17.2.5) (2017-12-20)
 
