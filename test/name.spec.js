@@ -18,15 +18,16 @@ const testfile = isNode
   ? loadFixture(__dirname, '/fixtures/testfile.txt')
   : loadFixture(__dirname, 'fixtures/testfile.txt')
 
-describe('.name', function () {
-  this.timeout(50 * 1000)
-
+describe('.name', () => {
   let ipfs
   let ipfsd
   let other
   let otherd
+  let name
 
-  before((done) => {
+  before(function (done) {
+    this.timeout(20 * 1000)
+
     series([
       (cb) => {
         f.spawn((err, _ipfsd) => {
@@ -61,60 +62,36 @@ describe('.name', function () {
     ], done)
   })
 
-  describe('Callback API', () => {
-    let name
+  it('add file for testing', (done) => {
+    const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
-    it('add file for testing', (done) => {
-      const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
+    ipfs.files.add(testfile, (err, res) => {
+      expect(err).to.not.exist()
 
-      ipfs.files.add(testfile, (err, res) => {
-        expect(err).to.not.exist()
-
-        expect(res).to.have.length(1)
-        expect(res[0].hash).to.equal(expectedMultihash)
-        expect(res[0].path).to.equal(expectedMultihash)
-        done()
-      })
-    })
-
-    it('.name.publish', function (done) {
-      this.timeout(100 * 1000)
-      ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
-        expect(err).to.not.exist()
-        name = res
-        expect(name).to.exist()
-        done()
-      })
-    })
-
-    it('.name.resolve', (done) => {
-      ipfs.name.resolve(name.name, (err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.exist()
-        expect(res).to.be.eql(name.value)
-        done()
-      })
+      expect(res).to.have.length(1)
+      expect(res[0].hash).to.equal(expectedMultihash)
+      expect(res[0].path).to.equal(expectedMultihash)
+      done()
     })
   })
 
-  describe('Promise API', () => {
-    let name
+  it('.name.publish', function (done) {
+    this.timeout(100 * 1000)
 
-    it('.name.publish', function () {
-      this.timeout(80 * 1000)
-      return ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP')
-        .then((res) => {
-          name = res
-          expect(name).to.exist()
-        })
+    ipfs.name.publish('Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP', (err, res) => {
+      expect(err).to.not.exist()
+      name = res
+      expect(name).to.exist()
+      done()
     })
+  })
 
-    it('.name.resolve', () => {
-      return ipfs.name.resolve(name.name)
-        .then((res) => {
-          expect(res).to.exist()
-          expect(res).to.be.eql(name.value)
-        })
+  it('.name.resolve', (done) => {
+    ipfs.name.resolve(name.name, (err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
+      expect(res).to.be.eql(name.value)
+      done()
     })
   })
 })
