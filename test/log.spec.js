@@ -27,76 +27,39 @@ describe('.log', function () {
 
   after((done) => ipfsd.stop(done))
 
-  describe('Callback API', function () {
-    this.timeout(100 * 1000)
+  it('.log.tail', (done) => {
+    const req = ipfs.log.tail((err, res) => {
+      expect(err).to.not.exist()
+      expect(req).to.exist()
 
-    it('.log.tail', (done) => {
-      const req = ipfs.log.tail((err, res) => {
-        expect(err).to.not.exist()
-        expect(req).to.exist()
-
-        res.once('data', (obj) => {
-          expect(obj).to.be.an('object')
-          done()
-        })
-      })
-    })
-
-    it('.log.ls', (done) => {
-      ipfs.log.ls((err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.exist()
-
-        expect(res).to.be.an('array')
-
-        done()
-      })
-    })
-
-    it('.log.level', (done) => {
-      ipfs.log.level('all', 'error', (err, res) => {
-        expect(err).to.not.exist()
-        expect(res).to.exist()
-
-        expect(res).to.be.an('object')
-        expect(res).to.not.have.property('Error')
-        expect(res).to.have.property('Message')
-
+      res.once('data', (obj) => {
+        expect(obj).to.be.an('object')
         done()
       })
     })
   })
 
-  describe('Promise API', function () {
-    this.timeout(100 * 1000)
+  it('.log.ls', (done) => {
+    ipfs.log.ls((err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
 
-    it('.log.tail', () => {
-      return ipfs.log.tail()
-        .then((res) => {
-          res.once('data', (obj) => {
-            expect(obj).to.be.an('object')
-          })
-        })
+      expect(res).to.be.an('array')
+
+      done()
     })
+  })
 
-    it('.log.ls', () => {
-      return ipfs.log.ls()
-        .then((res) => {
-          expect(res).to.exist()
+  it('.log.level', (done) => {
+    ipfs.log.level('all', 'error', (err, res) => {
+      expect(err).to.not.exist()
+      expect(res).to.exist()
 
-          expect(res).to.be.an('array')
-        })
-    })
+      expect(res).to.be.an('object')
+      expect(res).to.not.have.property('Error')
+      expect(res).to.have.property('Message')
 
-    it('.log.level', () => {
-      return ipfs.log.level('all', 'error')
-        .then((res) => {
-          expect(res).to.exist()
-
-          expect(res).to.be.an('object')
-          expect(res).to.not.have.property('Error')
-          expect(res).to.have.property('Message')
-        })
+      done()
     })
   })
 })
