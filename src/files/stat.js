@@ -1,6 +1,7 @@
 'use strict'
 
 const promisify = require('promisify-es6')
+const _ = require('lodash')
 
 const transform = function (res, callback) {
   callback(null, {
@@ -8,7 +9,10 @@ const transform = function (res, callback) {
     blocks: res.Blocks,
     size: res.Size,
     hash: res.Hash,
-    cumulativeSize: res.CumulativeSize
+    cumulativeSize: res.CumulativeSize,
+    withLocality: res.WithLocality || false,
+    local: res.Local || undefined,
+    sizeLocal: res.SizeLocal || undefined
   })
 }
 
@@ -18,6 +22,9 @@ module.exports = (send) => {
       callback = opts
       opts = {}
     }
+
+    opts = _.mapKeys(opts, (v, k) => _.kebabCase(k))
+
     send.andTransform({
       path: 'files/stat',
       args: args,
