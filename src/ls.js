@@ -41,7 +41,7 @@ module.exports = (arg) => {
         size: link.Size,
         hash: link.Hash,
         type: typeOf(link),
-        depth: link.Depth
+        depth: link.Depth || 1
       }))
 
       callback(null, result)
