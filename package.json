@@ -2,7 +2,7 @@
   "name": "ipfs-api",
   "version": "18.1.1",
   "description": "A client library for the IPFS HTTP API",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "browser": {
     "glob": false,
     "fs": false,
