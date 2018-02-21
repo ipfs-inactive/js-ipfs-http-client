@@ -12,7 +12,7 @@
     "ipfs": false
   },
   "scripts": {
-    "test": "aegir test",
+    "test": "node --max-old-space-size=8192 $(npm bin)/aegir test",
     "test:node": "aegir test -t node",
     "test:browser": "node --max-old-space-size=8192 $(npm bin)/aegir test -t browser",
     "test:webworker": "node --max-old-space-size=8192 $(npm bin)/aegir test -t webworker",
