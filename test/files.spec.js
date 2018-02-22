@@ -102,6 +102,25 @@ describe('.files (the MFS API part)', function () {
     })
   })
 
+  it('files.add with only-hash=true', function () {
+    this.slow(4000)
+    const content = String(Math.random() + Date.now())
+
+    return ipfs.files.add(Buffer.from(content), { onlyHash: true })
+      .then(files => {
+        expect(files).to.have.length(1)
+        const findAttempt = ipfs.object.get(files[0].hash)
+          .then(() => {
+            throw new Error('Should not find content added with --only-hash')
+          })
+
+        return Promise.race([
+          findAttempt,
+          new Promise(res => setTimeout(res, 3000))
+        ])
+      })
+  })
+
   it('files.add with options', (done) => {
     ipfs.files.add(testfile, { pin: false }, (err, res) => {
       expect(err).to.not.exist()
