@@ -103,20 +103,20 @@ describe('.files (the MFS API part)', function () {
   })
 
   it('files.add with only-hash=true', function () {
-    this.slow(4000)
     const content = String(Math.random() + Date.now())
 
     return ipfs.files.add(Buffer.from(content), { onlyHash: true })
       .then(files => {
         expect(files).to.have.length(1)
-        const findAttempt = ipfs.object.get(files[0].hash)
+        const getAttempt = ipfs.object.get(files[0].hash)
           .then(() => {
             throw new Error('Should not find content added with --only-hash')
           })
 
+        // 'ipfs.object.get(<hash>)' should timeout/hang on a non-existant hash
         return Promise.race([
-          findAttempt,
-          new Promise(res => setTimeout(res, 3000))
+          getAttempt,
+          new Promise((resolve, reject) => setTimeout(resolve, 4000))
         ])
       })
   })
