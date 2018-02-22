@@ -88,11 +88,18 @@ module.exports = (send, path) => {
       qs['raw-leaves'] = options.rawLeaves
     }
 
+    if ('onlyHash' != null) {
+      qs['only-hash'] = options.onlyHash
+    } else if ('only-hash' != null) {
+      qs['only-hash'] = options['only-hash']
+    }
+
     if (options.hash != null) {
       qs.hash = options.hash
     } else if (options.hashAlg != null) {
       qs.hash = options.hashAlg
     }
+
 
     const args = {
       path: path,
