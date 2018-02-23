@@ -113,7 +113,7 @@ describe('.files (the MFS API part)', function () {
             throw new Error('Should not find content added with --only-hash')
           })
 
-        // 'ipfs.object.get(<hash>)' should timeout/hang on a non-existant hash
+        // 'ipfs.object.get(<hash>)' should timeout because content wasn't actually added
         return Promise.race([
           getAttempt,
           new Promise((resolve, reject) => setTimeout(resolve, 4000))
