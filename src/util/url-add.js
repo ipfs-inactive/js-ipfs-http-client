@@ -6,8 +6,8 @@ const request = require('../utils/request')
 const moduleConfig = require('../utils/module-config')
 const SendOneFile = require('../utils/send-one-file-multiple-results')
 
-module.exports = (arg) => {
-  const sendOneFile = SendOneFile(moduleConfig(arg), 'add')
+module.exports = (send) => {
+  const sendOneFile = SendOneFile(send, 'add')
 
   return promisify((url, opts, callback) => {
     if (typeof (opts) === 'function' &&
@@ -49,7 +49,7 @@ const requestWithRedirect = (url, opts, sendOneFile, callback) => {
       }
       requestWithRedirect(redirection, opts, sendOneFile, callback)
     } else {
-      sendOneFile(res, { qs: opts }, callback)
+      sendOneFile(res, opts, callback)
     }
   }).end()
 }

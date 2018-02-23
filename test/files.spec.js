@@ -13,6 +13,7 @@ const CID = require('cids')
 
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
+const expectTimeout = require('./utils/expect-timeout')
 
 const testfile = loadFixture('test/fixtures/testfile.txt')
 
@@ -103,21 +104,15 @@ describe('.files (the MFS API part)', function () {
   })
 
   it('files.add with only-hash=true', function () {
+    this.slow(10 * 1000)
     const content = String(Math.random() + Date.now())
 
     return ipfs.files.add(Buffer.from(content), { onlyHash: true })
       .then(files => {
         expect(files).to.have.length(1)
-        const getAttempt = ipfs.object.get(files[0].hash)
-          .then(() => {
-            throw new Error('Should not find content added with --only-hash')
-          })
 
         // 'ipfs.object.get(<hash>)' should timeout because content wasn't actually added
-        return Promise.race([
-          getAttempt,
-          new Promise((resolve, reject) => setTimeout(resolve, 4000))
-        ])
+        return expectTimeout(ipfs.object.get(files[0].hash), 4000)
       })
   })
 

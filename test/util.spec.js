@@ -9,9 +9,11 @@ chai.use(dirtyChai)
 const isNode = require('detect-node')
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
+const expectTimeout = require('./utils/expect-timeout')
 
 describe('.util', () => {
   if (!isNode) { return }
@@ -92,31 +94,54 @@ describe('.util', () => {
         done()
       })
     })
-  })
 
-  it('.urlAdd http', function (done) {
-    this.timeout(20 * 1000)
+    it('with only-hash=true', function () {
+      this.slow(10 * 1000)
+      const content = String(Math.random() + Date.now())
+      const filepath = path.join(require('os').tmpdir(), `${content}.txt`)
+      fs.writeFileSync(filepath, content)
 
-    ipfs.util.addFromURL('http://example.com/', (err, result) => {
-      expect(err).to.not.exist()
-      expect(result.length).to.equal(1)
-      done()
+      return ipfs.util.addFromFs(filepath, { 'only-hash': true })
+        .then(out => {
+          fs.unlinkSync(filepath)
+          return expectTimeout(ipfs.object.get(out[0].hash), 4000)
+        })
     })
   })
 
-  it('.urlAdd https', (done) => {
-    ipfs.util.addFromURL('https://example.com/', (err, result) => {
-      expect(err).to.not.exist()
-      expect(result.length).to.equal(1)
-      done()
-    })
-  })
+  describe('.urlAdd', () => {
+    it('http', function (done) {
+      this.timeout(20 * 1000)
 
-  it('.urlAdd http with redirection', (done) => {
-    ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
-      expect(err).to.not.exist()
-      expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')
-      done()
+      ipfs.util.addFromURL('http://example.com/', (err, result) => {
+        expect(err).to.not.exist()
+        expect(result.length).to.equal(1)
+        done()
+      })
+    })
+
+    it('https', (done) => {
+      ipfs.util.addFromURL('https://example.com/', (err, result) => {
+        expect(err).to.not.exist()
+        expect(result.length).to.equal(1)
+        done()
+      })
+    })
+
+    it('http with redirection', (done) => {
+      ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
+        expect(err).to.not.exist()
+        expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')
+        done()
+      })
+    })
+
+    it('with only-hash=true', function () {
+      this.timeout(10 * 1000)
+      this.slow(10 * 1000)
+
+      return ipfs.util.addFromURL('http://www.randomtext.me/#/gibberish', { 'only-hash': true })
+        .then(out => expectTimeout(ipfs.object.get(out[0].hash), 4000))
     })
   })
 })
