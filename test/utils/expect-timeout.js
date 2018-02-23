@@ -1,6 +1,8 @@
+'use strict'
+
 /**
- * Expect a Promise to timeout
- * @param  {Promise} promise promise that you expect to timeout
+ * Resolve if @param promise hangs for at least @param ms, throw otherwise
+ * @param  {Promise} promise promise that you expect to hang
  * @param  {Number} ms       millis to wait
  * @return {Promise}
  */

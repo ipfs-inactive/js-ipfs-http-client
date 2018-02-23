@@ -98,7 +98,7 @@ describe('.util', () => {
     it('with only-hash=true', function () {
       this.slow(10 * 1000)
       const content = String(Math.random() + Date.now())
-      const filepath = path.join(require('os').tmpdir(), `${content}.txt`)
+      const filepath = path.join(os.tmpdir(), `${content}.txt`)
       fs.writeFileSync(filepath, content)
 
       return ipfs.util.addFromFs(filepath, { 'only-hash': true })
