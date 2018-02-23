@@ -3,7 +3,6 @@
 const promisify = require('promisify-es6')
 const parseUrl = require('url').parse
 const request = require('../utils/request')
-const moduleConfig = require('../utils/module-config')
 const SendOneFile = require('../utils/send-one-file-multiple-results')
 
 module.exports = (send) => {

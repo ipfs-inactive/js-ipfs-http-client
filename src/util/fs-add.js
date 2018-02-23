@@ -2,7 +2,6 @@
 
 const isNode = require('detect-node')
 const promisify = require('promisify-es6')
-const moduleConfig = require('../utils/module-config')
 const SendOneFile = require('../utils/send-one-file-multiple-results')
 
 module.exports = (send) => {
