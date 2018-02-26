@@ -32,7 +32,7 @@ module.exports = (send, path) => {
     let ended = false
     let writing = false
 
-    options = options || {}
+    options = options ? Object.assign({}, options, options.qs) : {}
 
     const multipart = new Multipart()
 
@@ -43,7 +43,7 @@ module.exports = (send, path) => {
     retStream._write = (file, enc, _next) => {
       const next = once(_next)
       try {
-        const files = prepareFile(file, Object.assign({}, options, options.qs))
+        const files = prepareFile(file, options)
           .map((file) => Object.assign({headers: headers(file)}, file))
 
         writing = true

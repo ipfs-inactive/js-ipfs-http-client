@@ -30,6 +30,6 @@ module.exports = (send) => {
       return callback(new Error('"path" must be a string'))
     }
 
-    sendOneFile(path, opts, callback)
+    sendOneFile(path, { qs: opts }, callback)
   })
 }

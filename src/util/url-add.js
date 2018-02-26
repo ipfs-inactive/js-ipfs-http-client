@@ -48,7 +48,7 @@ const requestWithRedirect = (url, opts, sendOneFile, callback) => {
       }
       requestWithRedirect(redirection, opts, sendOneFile, callback)
     } else {
-      sendOneFile(res, opts, callback)
+      sendOneFile(res, { qs: opts }, callback)
     }
   }).end()
 }
