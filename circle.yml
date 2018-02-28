@@ -4,6 +4,8 @@ machine:
     version: stable
 
 test:
+  override:
+    - npm run test:node
   post:
     - npm run coverage -- --upload --providers coveralls
 
