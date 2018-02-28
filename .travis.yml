@@ -13,7 +13,7 @@ matrix:
 
 script:
   - npm run lint
-  - npm run test
+  - npm run test:node
   - npm run coverage
 
 before_script:
