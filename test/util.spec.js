@@ -144,7 +144,7 @@ describe('.util', () => {
       this.timeout(10 * 1000)
       this.slow(10 * 1000)
 
-      return ipfs.util.addFromURL('http://www.randomtext.me/#/gibberish', { 'only-hash': true })
+      return ipfs.util.addFromURL('http://www.randomtext.me/#/gibberish', { onlyHash: true })
         .then(out => expectTimeout(ipfs.object.get(out[0].hash), 4000))
     })
   })
