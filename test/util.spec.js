@@ -101,7 +101,7 @@ describe('.util', () => {
       const filepath = path.join(os.tmpdir(), `${content}.txt`)
       fs.writeFileSync(filepath, content)
 
-      return ipfs.util.addFromFs(filepath, { 'only-hash': true })
+      return ipfs.util.addFromFs(filepath, { onlyHash: true })
         .then(out => {
           fs.unlinkSync(filepath)
           return expectTimeout(ipfs.object.get(out[0].hash), 4000)
@@ -120,7 +120,9 @@ describe('.util', () => {
       })
     })
 
-    it('https', (done) => {
+    it('https', function (done) {
+      this.timeout(20 * 1000)
+
       ipfs.util.addFromURL('https://example.com/', (err, result) => {
         expect(err).to.not.exist()
         expect(result.length).to.equal(1)
@@ -128,7 +130,9 @@ describe('.util', () => {
       })
     })
 
-    it('http with redirection', (done) => {
+    it('http with redirection', function (done) {
+      this.timeout(20 * 1000)
+
       ipfs.util.addFromURL('http://covers.openlibrary.org/book/id/969165.jpg', (err, result) => {
         expect(err).to.not.exist()
         expect(result[0].hash).to.equal('QmaL9zy7YUfvWmtD5ZXp42buP7P4xmZJWFkm78p8FJqgjg')

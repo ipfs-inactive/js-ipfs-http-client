@@ -31,7 +31,7 @@ module.exports = (send) => {
       qs: opts
     }
 
-    const stream = sendFilesStream(options)
+    const stream = sendFilesStream({ qs: options })
     const concat = concatStream((result) => callback(null, result))
     stream.once('error', callback)
     stream.pipe(concat)

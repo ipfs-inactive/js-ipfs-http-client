@@ -127,6 +127,42 @@ describe('.files (the MFS API part)', function () {
     })
   })
 
+  it('files.add pins by default', (done) => {
+    const newContent = Buffer.from(String(Math.random()))
+
+    ipfs.pin.ls((err, pins) => {
+      expect(err).to.not.exist()
+      const initialPinCount = pins.length
+      ipfs.files.add(newContent, (err, res) => {
+        expect(err).to.not.exist()
+
+        ipfs.pin.ls((err, pins) => {
+          expect(err).to.not.exist()
+          expect(pins.length).to.eql(initialPinCount + 1)
+          done()
+        })
+      })
+    })
+  })
+
+  it('files.add with pin=false', (done) => {
+    const newContent = Buffer.from(String(Math.random()))
+
+    ipfs.pin.ls((err, pins) => {
+      expect(err).to.not.exist()
+      const initialPinCount = pins.length
+      ipfs.files.add(newContent, { pin: false }, (err, res) => {
+        expect(err).to.not.exist()
+
+        ipfs.pin.ls((err, pins) => {
+          expect(err).to.not.exist()
+          expect(pins.length).to.eql(initialPinCount)
+          done()
+        })
+      })
+    })
+  })
+
   HASH_ALGS.forEach((name) => {
     it(`files.add with hash=${name} and raw-leaves=false`, (done) => {
       const content = String(Math.random() + Date.now())
