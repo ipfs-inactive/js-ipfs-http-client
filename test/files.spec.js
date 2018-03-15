@@ -38,7 +38,7 @@ describe('.files (the MFS API part)', function () {
   const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
   before((done) => {
-    f.spawn((err, _ipfsd) => {
+    f.spawn({ initOptions: { bits: 1024 } }, (err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)
@@ -332,7 +332,10 @@ describe('.files (the MFS API part)', function () {
         size: 12,
         cumulativeSize: 20,
         blocks: 0,
-        type: 'file'
+        type: 'file',
+        withLocality: false,
+        local: undefined,
+        sizeLocal: undefined
       })
 
       done()

@@ -5,6 +5,7 @@ const ConcatStream = require('concat-stream')
 const once = require('once')
 const isStream = require('is-stream')
 const OtherBuffer = require('buffer').Buffer
+const FileResultStreamConverter = require('../utils/file-result-stream-converter')
 const SendFilesStream = require('../utils/send-files-stream')
 
 module.exports = (send) => {
@@ -21,14 +22,16 @@ module.exports = (send) => {
     if (!options) {
       options = {}
     }
+    options.converter = FileResultStreamConverter
 
     const ok = Buffer.isBuffer(_files) ||
                isStream.readable(_files) ||
                Array.isArray(_files) ||
-               OtherBuffer.isBuffer(_files)
+               OtherBuffer.isBuffer(_files) ||
+               typeof _files === 'object'
 
     if (!ok) {
-      return callback(new Error('"files" must be a buffer, readable stream, or array of objects'))
+      return callback(new Error('first arg must be a buffer, readable stream, an object or array of objects'))
     }
 
     const files = [].concat(_files)

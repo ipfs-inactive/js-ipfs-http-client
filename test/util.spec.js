@@ -24,7 +24,7 @@ describe('.util', () => {
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
 
-    f.spawn((err, _ipfsd) => {
+    f.spawn({ initOptions: { bits: 1024 } }, (err, _ipfsd) => {
       expect(err).to.not.exist()
       ipfsd = _ipfsd
       ipfs = IPFSApi(_ipfsd.apiAddr)
@@ -140,6 +140,14 @@ describe('.util', () => {
       })
     })
 
+    it('.urlAdd http with redirection', (done) => {
+      ipfs.util.addFromURL('https://coverartarchive.org/release/6e2a1694-d8b9-466a-aa33-b1077b2333c1', (err, result) => {
+        expect(err).to.not.exist()
+        expect(result[0].hash).to.equal('QmSUdDvmXuq5YGrL4M3SEz7UZh5eT9WMuAsd9K34sambSj')
+        done()
+      })
+    })
+    
     it('with only-hash=true', function () {
       this.timeout(10 * 1000)
       this.slow(10 * 1000)

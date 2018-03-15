@@ -1,14 +1,12 @@
 'use strict'
 
-const pump = require('pump')
 const TransformStream = require('readable-stream').Transform
-const streamToValue = require('./stream-to-value')
 
 /*
   Transforms a stream of {Name, Hash} objects to include size
   of the DAG object.
 
-  Usage: inputStream.pipe(new Converter())
+  Usage: inputStream.pipe(new FileResultStreamConverter())
 
   Input object format:
   {
@@ -24,7 +22,7 @@ const streamToValue = require('./stream-to-value')
     size: 20
   }
 */
-class ConverterStream extends TransformStream {
+class FileResultStreamConverter extends TransformStream {
   constructor (options) {
     const opts = Object.assign({}, options || {}, { objectMode: true })
     super(opts)
@@ -43,19 +41,4 @@ class ConverterStream extends TransformStream {
   }
 }
 
-function converter (inputStream, callback) {
-  const outputStream = new ConverterStream()
-  pump(
-    inputStream,
-    outputStream,
-    (err) => {
-      if (err) {
-        callback(err)
-      }
-    })
-
-  streamToValue(outputStream, callback)
-}
-
-exports = module.exports = converter
-exports.ConverterStream = ConverterStream
+module.exports = FileResultStreamConverter
