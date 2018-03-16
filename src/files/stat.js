@@ -2,25 +2,18 @@
 
 const promisify = require('promisify-es6')
 const _ = require('lodash')
-const streamToValue = require('../utils/stream-to-value')
 
 const transform = function (data, callback) {
-  // return streamToValue(res, (err, data) => {
-  //  if (err) {
-  //    return callback(err)
-  //  }
-
   callback(null, {
-    type: data[0].Type,
-    blocks: data[0].Blocks,
-    size: data[0].Size,
-    hash: data[0].Hash,
-    cumulativeSize: data[0].CumulativeSize,
-    withLocality: data[0].WithLocality || false,
-    local: data[0].Local || null,
-    sizeLocal: data[0].SizeLocal || null
+    type: data.Type,
+    blocks: data.Blocks,
+    size: data.Size,
+    hash: data.Hash,
+    cumulativeSize: data.CumulativeSize,
+    withLocality: data.WithLocality || false,
+    local: data.Local || undefined,
+    sizeLocal: data.SizeLocal || undefined
   })
-  // })
 }
 
 module.exports = (send) => {
