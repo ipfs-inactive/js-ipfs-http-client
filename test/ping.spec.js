@@ -12,7 +12,7 @@ const series = require('async/series')
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-describe.skip('.ping', () => {
+describe.only('.ping', () => {
   let ipfs
   let ipfsd
   let other
@@ -43,7 +43,7 @@ describe.skip('.ping', () => {
         ipfsd.api.id((err, id) => {
           expect(err).to.not.exist()
           const ma = id.addresses[0]
-          other.api.swarm.connect(ma, cb)
+          other.swarm.connect(ma, cb)
         })
       }
     ], done)
@@ -63,11 +63,14 @@ describe.skip('.ping', () => {
 
         ipfs.ping(id.id, (err, res) => {
           expect(err).to.not.exist()
-          expect(res).to.have.a.property('Success')
-          expect(res).to.have.a.property('Time')
-          expect(res).to.have.a.property('Text')
-          expect(res.Text).to.contain('Average latency')
-          expect(res.Time).to.be.a('number')
+          expect(res).to.be.an('array')
+          expect(res).to.have.lengthOf(3)
+					res.forEach(packet => {
+						expect(packet).to.have.keys('Success', 'Time', 'Text')
+						expect(packet.Time).to.be.a('number')
+					})
+					const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+          expect(resultMsg).to.exist()
           done()
         })
       })
@@ -81,11 +84,14 @@ describe.skip('.ping', () => {
           return ipfs.ping(id.id)
         })
         .then((res) => {
-          expect(res).to.have.a.property('Success')
-          expect(res).to.have.a.property('Time')
-          expect(res).to.have.a.property('Text')
-          expect(res.Text).to.contain('Average latency')
-          expect(res.Time).to.be.a('number')
+          expect(res).to.be.an('array')
+          expect(res).to.have.lengthOf(3)
+					res.forEach(packet => {
+						expect(packet).to.have.keys('Success', 'Time', 'Text')
+						expect(packet.Time).to.be.a('number')
+					})
+					const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+          expect(resultMsg).to.exist()
         })
     })
   })
