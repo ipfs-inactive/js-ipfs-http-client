@@ -20,7 +20,7 @@ module.exports = (arg) => {
     const p = deferred.source()
 
     send(request, (err, stream) => {
-      if (err) { return p.abort(err)  }
+      if (err) { return p.abort(err) }
       p.resolve(toPull.source(stream))
     })
 

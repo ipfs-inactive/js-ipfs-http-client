@@ -14,7 +14,7 @@ const series = require('async/series')
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-describe('.ping',function () {
+describe('.ping', function () {
   let ipfs
   let ipfsd
   let other
@@ -164,7 +164,7 @@ describe('.ping',function () {
     })
 
     it('sending both n and count should fail', (done) => {
-      ipfs.ping(otherId, {n: 3, count:3})
+      ipfs.ping(otherId, {n: 3, count: 3})
         .catch(err => {
           expect(err).to.exist()
           done()
@@ -208,7 +208,6 @@ describe('.ping',function () {
         })
       )
     })
-
 
     it('ping another peer with a specifc packet count through parameter n', (done) => {
       pull(
@@ -292,7 +291,7 @@ describe('.ping',function () {
     })
 
     it('sending both n and count should fail', (done) => {
-      ipfs.pingReadableStream(otherId, {n: 3, count:3})
+      ipfs.pingReadableStream(otherId, {n: 3, count: 3})
         .on('error', err => {
           expect(err).to.exist()
           done()

@@ -73,8 +73,8 @@ describe('submodules', () => {
     const pingReadableStream = require('../src/ping-readable-stream')(config)
 
     expect(ping).to.be.a('function')
-    expect(pingPullStream ).to.be.a('function')
-    expect(pingReadableStream ).to.be.a('function')
+    expect(pingPullStream).to.be.a('function')
+    expect(pingReadableStream).to.be.a('function')
   })
 
   it('log', () => {

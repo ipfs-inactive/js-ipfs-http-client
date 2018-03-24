@@ -24,7 +24,7 @@ module.exports = (arg) => {
 
     send(request, (err, stream) => {
       if (err) { return pt.destroy(err) }
-      
+
       pump(stream, pt)
     })
 
