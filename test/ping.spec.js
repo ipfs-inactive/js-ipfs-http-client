@@ -139,7 +139,7 @@ describe('.ping', function () {
       return ipfs.ping(otherId, {count: 3})
         .then((res) => {
           expect(res).to.be.an('array')
-          expect(res).to.have.lengthOf(3)
+          expect(res).to.have.lengthOf(5)
           res.forEach(packet => {
             expect(packet).to.have.keys('Success', 'Time', 'Text')
             expect(packet.Time).to.be.a('number')
