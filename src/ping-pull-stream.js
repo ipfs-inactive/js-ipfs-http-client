@@ -16,14 +16,14 @@ module.exports = (arg) => {
       path: 'ping',
       args: id,
       qs: opts
-		}
-		const p = deferred.source()
+    }
+    const p = deferred.source()
 
-		send(request, (err, stream) => {
-			if (err) { return p.abort(err)  }
+    send(request, (err, stream) => {
+      if (err) { return p.abort(err)  }
       p.resolve(toPull.source(stream))
-		})
+    })
 
-		return p
-	}
+    return p
+  }
 }

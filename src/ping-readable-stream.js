@@ -17,10 +17,10 @@ module.exports = (arg) => {
       args: id,
       qs: opts
     }
-		// ndjson streams objects
+    // ndjson streams objects
     const pt = new Stream.PassThrough({
-			objectMode: true
-		})
+      objectMode: true
+    })
 
     send(request, (err, stream) => {
       if (err) { return pt.destroy(err) }
