@@ -3,6 +3,8 @@
 
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
+const pull = require('pull-stream')
+const drain = require('pull-stream/sinks/drain')
 const expect = chai.expect
 chai.use(dirtyChai)
 
@@ -12,11 +14,12 @@ const series = require('async/series')
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-describe.only('.ping', () => {
+describe.only('.ping',function () {
   let ipfs
   let ipfsd
   let other
   let otherd
+	let otherId
 
   before(function (done) {
     this.timeout(20 * 1000) // slow CI
@@ -45,6 +48,13 @@ describe.only('.ping', () => {
           const ma = id.addresses[0]
           other.swarm.connect(ma, cb)
         })
+      },
+      (cb) => {
+        other.id((err, id) => {
+          expect(err).to.not.exist()
+          otherId = id.id
+					cb()
+        })
       }
     ], done)
   })
@@ -57,32 +67,62 @@ describe.only('.ping', () => {
   })
 
   describe('callback API', () => {
-    it('ping another peer', (done) => {
-      other.id((err, id) => {
-        expect(err).to.not.exist()
-
-        ipfs.ping(id.id, (err, res) => {
-          expect(err).to.not.exist()
-          expect(res).to.be.an('array')
-          expect(res).to.have.lengthOf(3)
-					res.forEach(packet => {
-						expect(packet).to.have.keys('Success', 'Time', 'Text')
-						expect(packet.Time).to.be.a('number')
-					})
-					const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
-          expect(resultMsg).to.exist()
-          done()
-        })
-      })
+    it('ping another peer with default packet count', (done) => {
+			ipfs.ping(otherId, (err, res) => {
+				expect(err).to.not.exist()
+				expect(res).to.be.an('array')
+				expect(res).to.have.lengthOf(3)
+				res.forEach(packet => {
+					expect(packet).to.have.keys('Success', 'Time', 'Text')
+					expect(packet.Time).to.be.a('number')
+				})
+				const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+				expect(resultMsg).to.exist()
+				done()
+			})
     })
+
+		it('ping another peer with a specifc packet count through parameter count', (done) => {
+			ipfs.ping(otherId, {count: 3}, (err, res) => {
+				expect(err).to.not.exist()
+				expect(res).to.be.an('array')
+				expect(res).to.have.lengthOf(5)
+				res.forEach(packet => {
+					expect(packet).to.have.keys('Success', 'Time', 'Text')
+					expect(packet.Time).to.be.a('number')
+				})
+				const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+				expect(resultMsg).to.exist()
+				done()
+			})
+		})
+
+		it('ping another peer with a specifc packet count through parameter n', (done) => {
+			ipfs.ping(otherId, {n: 3}, (err, res) => {
+				expect(err).to.not.exist()
+				expect(res).to.be.an('array')
+				expect(res).to.have.lengthOf(5)
+				res.forEach(packet => {
+					expect(packet).to.have.keys('Success', 'Time', 'Text')
+					expect(packet.Time).to.be.a('number')
+				})
+				const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+				expect(resultMsg).to.exist()
+				done()
+			})
+		})
+
+		it('sending both n and count should fail', (done) => {
+			ipfs.ping(otherId, {count: 10, n: 10}, (err, res) => {
+				expect(err).to.exist()
+				done()
+			})
+		})
   })
 
   describe('promise API', () => {
-    it('ping another peer', () => {
-      return other.id()
-        .then((id) => {
-          return ipfs.ping(id.id)
-        })
+    it('ping another peer with default packet count', () => {
+      return ipfs.ping(otherId)
         .then((res) => {
           expect(res).to.be.an('array')
           expect(res).to.have.lengthOf(3)
@@ -94,5 +134,75 @@ describe.only('.ping', () => {
           expect(resultMsg).to.exist()
         })
     })
+
+    it('ping another peer with a specifc packet count through parameter count', () => {
+      return ipfs.ping(otherId, {count: 3})
+        .then((res) => {
+          expect(res).to.be.an('array')
+          expect(res).to.have.lengthOf(3)
+					res.forEach(packet => {
+						expect(packet).to.have.keys('Success', 'Time', 'Text')
+						expect(packet.Time).to.be.a('number')
+					})
+					const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+          expect(resultMsg).to.exist()
+        })
+				.catch(console.log)
+    })
+
+    it('ping another peer with a specifc packet count through parameter n', () => {
+      return ipfs.ping(otherId, {n: 3})
+        .then((res) => {
+          expect(res).to.be.an('array')
+          expect(res).to.have.lengthOf(5)
+					res.forEach(packet => {
+						expect(packet).to.have.keys('Success', 'Time', 'Text')
+						expect(packet.Time).to.be.a('number')
+					})
+					const resultMsg = res.find(packet => packet.Text.includes('Average latency'))
+          expect(resultMsg).to.exist()
+        })
+    })
+
+    it('sending both n and count should fail', () => {
+      ipfs.ping(otherId)
+        .catch(err => {
+          expect(err).to.exist()
+					done()
+        })
+    })
   })
+
+	describe('pull stream API', () => {
+		it('ping another peer', (done) => {
+			let packetNum = 0
+			pull(
+				ipfs.pingPullStream(otherId),
+				drain(data => {
+					packetNum++
+					expect(data).to.be.an('object')
+					expect(data).to.have.keys('Success', 'Time', 'Text')
+				}, () => {
+					expect(packetNum).to.equal(3)
+					done()
+				})
+			)
+		})
+	})
+
+  describe('readable stream API', () => {
+		it('ping another peer', (done) => {
+			let packetNum = 0
+			ipfs.pingReadableStream(otherId)
+				.on('data', data => {
+					packetNum++
+					expect(data).to.be.an('object')
+					expect(data).to.have.keys('Success', 'Time', 'Text')
+				})
+				.on('error', err => {
+					expect(err).not.to.exist()
+				})
+				.on('end', done)
+		})
+	})
 })
