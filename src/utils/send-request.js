@@ -34,9 +34,11 @@ function onRes (buffer, cb) {
     const chunkedObjects = Boolean(res.headers['x-chunked-output'])
     const isJson = res.headers['content-type'] &&
                    res.headers['content-type'].indexOf('application/json') === 0
+
     if (res.statusCode >= 400 || !res.statusCode) {
       return parseError(res, cb)
     }
+
     // Return the response stream directly
     if (stream && !buffer) {
       return cb(null, res)
