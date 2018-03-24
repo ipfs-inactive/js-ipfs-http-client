@@ -2,8 +2,6 @@
 
 const toPull = require('stream-to-pull-stream')
 const deferred = require('pull-defer')
-const pull = require('pull-stream')
-const log = require('pull-stream/sinks/log')
 const moduleConfig = require('./utils/module-config')
 
 module.exports = (arg) => {
@@ -22,7 +20,7 @@ module.exports = (arg) => {
 		const p = deferred.source()
 
 		send(request, (err, stream) => {
-			if (err) { return p.end(err)  }
+			if (err) { return p.abort(err)  }
       p.resolve(toPull.source(stream))
 		})
 
