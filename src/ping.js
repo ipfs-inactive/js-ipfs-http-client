@@ -4,6 +4,18 @@ const promisify = require('promisify-es6')
 const moduleConfig = require('./utils/module-config')
 const streamToValue = require('./utils/stream-to-value')
 
+// Transform the response stream to a value:
+// [{ Success: <boolean>, Time: <number>, Text: <string> }]
+const transform = (res, callback) => {
+  streamToValue(res, (err, res) => {
+    if (err) {
+      return callback(err)
+    }
+
+    callback(null, res)
+  })
+}
+
 module.exports = (arg) => {
   const send = moduleConfig(arg)
 
@@ -22,24 +34,10 @@ module.exports = (arg) => {
       opts.n = 1
     }
 
-    const request = {
+    send.andTransform({
       path: 'ping',
       args: id,
       qs: opts
-    }
-
-    // Transform the response stream to a value:
-    // [{ Success: <boolean>, Time: <number>, Text: <string> }]
-    const transform = (res, callback) => {
-      streamToValue(res, (err, res) => {
-        if (err) {
-          return callback(err)
-        }
-
-        callback(null, res)
-      })
-    }
-
-    send.andTransform(request, transform, callback)
+    }, transform, callback)
   })
 }
