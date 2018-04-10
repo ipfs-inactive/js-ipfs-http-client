@@ -15,7 +15,11 @@ function IpfsAPI (hostOrMultiaddr, port, opts) {
   } catch (e) {
     if (typeof hostOrMultiaddr === 'string') {
       config.host = hostOrMultiaddr
-      config.port = port && typeof port !== 'object' ? port : config.port
+      if (hostOrMultiaddr.indexOf(':') > -1 || !port || typeof port === 'object') {
+        config.port = undefined
+      } else {
+        config.port = port
+      }
     }
   }
 
