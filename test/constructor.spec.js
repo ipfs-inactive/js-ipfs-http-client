@@ -50,6 +50,12 @@ describe('ipfs-api constructor tests', () => {
       clientWorks(ipfsAPI(apiAddr, { protocol: 'http' }), done)
     })
 
+    it('host:port', (done) => {
+      const splitted = apiAddr.split('/')
+
+      clientWorks(ipfsAPI(`${splitted[2]}:${splitted[4]}`), done)
+    })
+
     it('host, port', (done) => {
       const splitted = apiAddr.split('/')
 
