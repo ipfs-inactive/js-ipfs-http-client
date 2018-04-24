@@ -13,7 +13,6 @@ const f = require('./utils/factory')
 describe('custom headers', function () {
   // do not test in browser
   if (!isNode) { return }
-  
   this.timeout(50 * 1000) // slow CI
   let ipfs
   let ipfsd
