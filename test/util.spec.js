@@ -165,6 +165,7 @@ describe('.util', () => {
         expect(result[0].path).to.equal('969165.jpg')
         expect(result[1].hash).to.equal('QmWjppACLcFLQ2qL38unKQvJBhXH3RUtcGLPk7zmrTwV61')
         expect(result.length).to.equal(2)
+        done()
       })
     })
 
