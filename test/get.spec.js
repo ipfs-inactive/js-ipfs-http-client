@@ -14,7 +14,7 @@ const loadFixture = require('aegir/fixtures')
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-describe('.get (specific go-ipfs features)', function () {
+describe.only('.get (specific go-ipfs features)', function () {
   this.timeout(20 * 1000)
 
   function fixture (path) {
@@ -74,7 +74,7 @@ describe('.get (specific go-ipfs features)', function () {
     })
   })
 
-  it('with compression level', function (done) {
+  it.only('with compression level', function (done) {
     this.timeout(40 * 1000)
 
     ipfs.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
