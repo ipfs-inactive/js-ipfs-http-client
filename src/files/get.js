@@ -37,9 +37,7 @@ module.exports = (send) => {
 
       const files = []
 
-      console.log('got back')
       stream.pipe(through.obj((file, enc, next) => {
-        console.log('flowing')
         if (file.content) {
           file.content.pipe(concat((content) => {
             files.push({ path: file.path, content: content })
