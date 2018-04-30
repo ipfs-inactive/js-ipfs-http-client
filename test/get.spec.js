@@ -74,9 +74,7 @@ describe.only('.get (specific go-ipfs features)', function () {
     })
   })
 
-  it.only('with compression level', function (done) {
-    this.timeout(40 * 1000)
-
+  it.only('with compression level', (done) => {
     ipfs.get(smallFile.cid, { compress: true, 'compression-level': 1 }, done)
   })
 
