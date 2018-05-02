@@ -1,10 +1,9 @@
 'use strict'
 
-const dagPB = require('ipld-dag-pb')
-const dagCBOR = require('ipld-dag-cbor')
 const promisify = require('promisify-es6')
-const CID = require('cids')
-const waterfall = require('async/waterfall')
+const IPLDResolver = require('ipld')
+const explain = require('explain-error')
+const ipfsPath = require('../utils/ipfs-path')
 const block = require('../block')
 
 module.exports = (send) => {
@@ -22,31 +21,22 @@ module.exports = (send) => {
     options = options || {}
     path = path || ''
 
-    if (CID.isCID(cid)) {
-      cid = cid.toBaseEncodedString()
+    try {
+      const res = ipfsPath(cid)
+      cid = res.cid
+      path = res.path || path
+    } catch (err) {
+      return callback(err)
     }
 
-    waterfall([
-      cb => {
-        send({
-          path: 'dag/resolve',
-          args: cid + '/' + path,
-          qs: options
-        }, cb)
-      },
-      (resolved, cb) => {
-        block(send).get(new CID(resolved['Cid']['/']), (err, ipfsBlock) => {
-          cb(err, ipfsBlock, resolved['RemPath'])
-        })
-      },
-      (ipfsBlock, path, cb) => {
-        if (ipfsBlock.cid.codec === 'dag-cbor') {
-          dagCBOR.resolver.resolve(ipfsBlock.data, path, cb)
-        }
-        if (ipfsBlock.cid.codec === 'dag-pb') {
-          dagPB.resolver.resolve(ipfsBlock.data, path, cb)
-        }
-      }
-    ], callback)
+    IPLDResolver.inMemory((err, ipld) => {
+      if (err) return callback(explain(err, 'failed to create IPLD resolver'))
+
+      ipld.bs.setExchange({
+        get: (cid, cb) => block(send).get(cid, cb)
+      })
+
+      ipld.get(cid, path, options, callback)
+    })
   })
 }
