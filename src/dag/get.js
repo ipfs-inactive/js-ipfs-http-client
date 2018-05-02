@@ -7,6 +7,8 @@ const ipfsPath = require('../utils/ipfs-path')
 const block = require('../block')
 
 module.exports = (send) => {
+  const blockGet = block(send).get
+
   return promisify((cid, path, options, callback) => {
     if (typeof path === 'function') {
       callback = path
@@ -31,11 +33,7 @@ module.exports = (send) => {
 
     IPLDResolver.inMemory((err, ipld) => {
       if (err) return callback(explain(err, 'failed to create IPLD resolver'))
-
-      ipld.bs.setExchange({
-        get: (cid, cb) => block(send).get(cid, cb)
-      })
-
+      ipld.bs.setExchange({ get: blockGet })
       ipld.get(cid, path, options, callback)
     })
   })
