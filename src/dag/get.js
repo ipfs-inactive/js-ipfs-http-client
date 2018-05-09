@@ -3,6 +3,7 @@
 const promisify = require('promisify-es6')
 const IPLDResolver = require('ipld')
 const explain = require('explain-error')
+const dagPB = require('ipld-dag-pb/src/ipfs')
 const ipfsPath = require('../utils/ipfs-path')
 const block = require('../block')
 
@@ -33,6 +34,8 @@ module.exports = (send) => {
 
     IPLDResolver.inMemory((err, ipld) => {
       if (err) return callback(explain(err, 'failed to create IPLD resolver'))
+      ipld.support.rm(dagPB.resolver.multicodec)
+      ipld.support.add(dagPB.resolver.multicodec, dagPB.resolver, dagPB.util)
       ipld.bs.setExchange({ get: blockGet })
       ipld.get(cid, path, options, callback)
     })
