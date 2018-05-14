@@ -34,6 +34,7 @@
     "detect-node": "^2.0.3",
     "flatmap": "0.0.3",
     "glob": "^7.1.2",
+    "ip-regex": "^3.0.0",
     "ipfs-block": "~0.7.1",
     "ipfs-unixfs": "~0.1.14",
     "ipld-dag-cbor": "~0.12.0",
