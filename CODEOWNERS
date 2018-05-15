@@ -1,0 +1,4 @@
+# Please see https://help.github.com/articles/about-codeowners/ for more information
+
+# Tests
+/test/ @VictorBjelkholm @travisperson
