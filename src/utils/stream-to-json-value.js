@@ -20,6 +20,7 @@ function streamToJsonValue (res, cb) {
       data = data.toString()
     }
 
+    console.log('->', data)
     let res
     try {
       res = JSON.parse(data)
