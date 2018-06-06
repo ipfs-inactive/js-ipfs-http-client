@@ -2,6 +2,7 @@
 'use strict'
 
 const tests = require('interface-ipfs-core')
+const isNode = require('detect-node')
 const CommonFactory = require('./utils/interface-common-factory')
 const IPFSApi = require('../src')
 
@@ -18,7 +19,7 @@ describe('interface-ipfs-core tests', () => {
     skip: [
       // dag.tree
       //
-      // FIXME vmx 2018-02-22: Currently the tree API is not exposed in go-ipfs
+      // TODO vmx 2018-02-22: Currently the tree API is not exposed in go-ipfs
       'tree',
       // dag.get:
       //
@@ -40,17 +41,14 @@ describe('interface-ipfs-core tests', () => {
   tests.dht(defaultCommonFactory, {
     skip: [
       // dht.findpeer
-      //
       // FIXME checking what is exactly go-ipfs returning
       // https://github.com/ipfs/go-ipfs/issues/3862#issuecomment-294168090
       'should fail to find other peer if peer does not exist',
       // dht.findprovs
-      //
       // FIXME go-ipfs endpoint doesn't conform with the others
       // https://github.com/ipfs/go-ipfs/issues/5047
       'should provide from one node and find it through another node',
       // dht.get
-      //
       // FIXME go-ipfs errors with  Error: key was not found (type 6)
       // https://github.com/ipfs/go-ipfs/issues/3862
       'should get a value after it was put on another node'
@@ -59,14 +57,25 @@ describe('interface-ipfs-core tests', () => {
 
   tests.files(defaultCommonFactory, {
     skip: [
+      // files.add
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should add a nested directory as array of tupples',
+      isNode ? null : 'should add a nested directory as array of tupples with progress',
+      // files.addPullStream
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should add pull stream of valid files and dirs',
+      // files.addReadableStream
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should add readable stream of valid files and dirs',
       // files.catPullStream
-      //
-      // FIXME not implemented in go-ipfs yet
+      // TODO not implemented in go-ipfs yet
       'should export a chunk of a file',
       'should export a chunk of a file in a Pull Stream',
-      'should export a chunk of a file in a Readable Stream'
-    ],
-    only: true
+      'should export a chunk of a file in a Readable Stream',
+      // files.get
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should get a directory'
+    ]
   })
 
   tests.generic(CommonFactory.create({
@@ -76,7 +85,19 @@ describe('interface-ipfs-core tests', () => {
 
   tests.key(defaultCommonFactory)
 
-  tests.ls(defaultCommonFactory)
+  tests.ls(defaultCommonFactory, {
+    skip: [
+      // lsPullStream
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should pull stream ls with a base58 encoded CID',
+      // lsReadableStream
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should readable stream ls with a base58 encoded CID',
+      // ls
+      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
+      isNode ? null : 'should ls with a base58 encoded CID'
+    ]
+  })
 
   tests.object(defaultCommonFactory)
 
