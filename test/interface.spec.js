@@ -18,11 +18,9 @@ describe('interface-ipfs-core tests', () => {
   tests.dag(defaultCommonFactory, {
     skip: [
       // dag.tree
-      //
       // TODO vmx 2018-02-22: Currently the tree API is not exposed in go-ipfs
       'tree',
       // dag.get:
-      //
       // FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might
       // be possible once https://github.com/ipfs/go-ipfs/issues/4728 is
       // done
@@ -30,7 +28,6 @@ describe('interface-ipfs-core tests', () => {
       'should get dag-pb value via dag-cbor node',
       'should get by CID string + path',
       // dag.put
-      //
       // FIXME This works in go-ipfs because dag-pb will serialize any object. If
       // the object has neither a `data` nor `links` field it's serialized
       // as an empty object
@@ -78,12 +75,16 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.generic(CommonFactory.create({
-    // No need to stop, because the test suite does a 'stop' test.
-    createTeardown: cb => cb()
-  }))
-
-  tests.key(defaultCommonFactory)
+  tests.key(defaultCommonFactory, {
+    skip: [
+      // key.export
+      // TODO not implemented in go-ipfs yet
+      'export',
+      // key.import
+      // TODO not implemented in go-ipfs yet
+      'import'
+    ]
+  })
 
   tests.ls(defaultCommonFactory, {
     skip: [
@@ -96,6 +97,14 @@ describe('interface-ipfs-core tests', () => {
       // ls
       // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
       isNode ? null : 'should ls with a base58 encoded CID'
+    ]
+  })
+
+  tests.miscellaneous(defaultCommonFactory, {
+    skip: [
+      // stop
+      // FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078
+      'should stop the node'
     ]
   })
 
