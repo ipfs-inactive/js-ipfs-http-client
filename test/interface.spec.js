@@ -110,6 +110,8 @@ describe('interface-ipfs-core tests', () => {
 
   tests.object(defaultCommonFactory)
 
+  tests.pin(defaultCommonFactory)
+
   tests.ping(defaultCommonFactory)
 
   tests.pubsub(CommonFactory.create({
