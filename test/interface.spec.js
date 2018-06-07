@@ -153,4 +153,8 @@ describe('interface-ipfs-core tests', () => {
       }
     }
   }))
+
+  tests.types(defaultCommonFactory, { skip: true })
+
+  tests.util(defaultCommonFactory, { skip: true })
 })
