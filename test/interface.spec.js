@@ -5,6 +5,7 @@ const tests = require('interface-ipfs-core')
 const isNode = require('detect-node')
 const CommonFactory = require('./utils/interface-common-factory')
 const IPFSApi = require('../src')
+const isWindows = process.platform && process.platform === 'win32'
 
 describe('interface-ipfs-core tests', () => {
   const defaultCommonFactory = CommonFactory.create()
@@ -119,7 +120,15 @@ describe('interface-ipfs-core tests', () => {
       args: ['--enable-pubsub-experiment'],
       initOptions: { bits: 1024 }
     }
-  }))
+  }), {
+    skip: isNode ? [
+      // pubsub.subscribe
+      // FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246
+      // and https://github.com/ipfs/go-ipfs/issues/4778
+      isWindows ? 'should send/receive 100 messages' : null,
+      isWindows ? 'should receive multiple messages' : null
+    ] : true
+  })
 
   tests.repo(defaultCommonFactory)
 
