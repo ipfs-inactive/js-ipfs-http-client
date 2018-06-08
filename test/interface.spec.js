@@ -14,7 +14,15 @@ describe('interface-ipfs-core tests', () => {
 
   tests.bootstrap(defaultCommonFactory)
 
-  tests.config(defaultCommonFactory)
+  tests.config(defaultCommonFactory, {
+    skip: [
+      // config.replace
+      // FIXME Waiting for fix on go-ipfs
+      // - https://github.com/ipfs/js-ipfs-api/pull/307#discussion_r69281789
+      // - https://github.com/ipfs/go-ipfs/issues/2927
+      'replace'
+    ]
+  })
 
   tests.dag(defaultCommonFactory, {
     skip: [
