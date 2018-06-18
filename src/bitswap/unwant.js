@@ -4,33 +4,21 @@ const promisify = require('promisify-es6')
 const CID = require('cids')
 
 module.exports = (send) => {
-  return promisify((args, opts, callback) => {
+  return promisify((cid, opts, callback) => {
     if (typeof (opts) === 'function') {
       callback = opts
       opts = {}
     }
 
-    // Mirrors block.get's parsing of the CID
-    let cid
     try {
-      if (CID.isCID(args)) {
-        cid = args
-        args = cid.toBaseEncodedString()
-      } else if (Buffer.isBuffer(args)) {
-        cid = new CID(args)
-        args = cid.toBaseEncodedString()
-      } else if (typeof args === 'string') {
-        cid = new CID(args)
-      } else {
-        return callback(new Error('invalid argument'))
-      }
+      cid = new CID(cid)
     } catch (err) {
       return callback(err)
     }
 
     send({
       path: 'bitswap/unwant',
-      args: args,
+      args: cid.toBaseEncodedString(),
       qs: opts
     }, callback)
   })
