@@ -39,6 +39,7 @@ module.exports = (send) => {
           if (err) {
             return callback(err)
           }
+          if (!data.length) data = Buffer.alloc(0)
           callback(null, new Block(data, cid))
         })
       }
