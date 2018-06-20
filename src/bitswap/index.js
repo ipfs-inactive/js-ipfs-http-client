@@ -6,8 +6,9 @@ module.exports = (arg) => {
   const send = moduleConfig(arg)
 
   return {
-    wantlist: require('./wantlist')(send),
+    ledger: require('./ledger')(send),
     stat: require('./stat')(send),
-    unwant: require('./unwant')(send)
+    unwant: require('./unwant')(send),
+    wantlist: require('./wantlist')(send)
   }
 }
