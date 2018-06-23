@@ -30,11 +30,10 @@ module.exports = (send) => {
       block = block.data
     }
 
-    let qs = Object.assign(opts,
-      {'input-enc': 'raw',
-       hashAlg: opts.mhtype || 'sha2-256'
-      }
-    )
+    let qs = Object.assign(opts, {
+      'input-enc': 'raw',
+      hashAlg: opts.mhtype || 'sha2-256'
+    })
 
     if (cid && CID.isCID(cid)) {
       qs.format = cid.codec
@@ -43,8 +42,6 @@ module.exports = (send) => {
     delete qs.cid
 
     let _send = sendOneFile
-
-    console.error(qs)
 
     if (qs.format && qs.format.startsWith('dag-')) {
       _send = SendOneFile(send, 'dag/put')
