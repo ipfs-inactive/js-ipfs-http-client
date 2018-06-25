@@ -10,6 +10,14 @@ const isWindows = process.platform && process.platform === 'win32'
 describe('interface-ipfs-core tests', () => {
   const defaultCommonFactory = CommonFactory.create()
 
+  tests.bitswap(defaultCommonFactory, {
+    skip: [
+      // bitswap.unwant
+      // FIXME why is this skipped?
+      'should remove a key from the wantlist'
+    ]
+  })
+
   tests.block(defaultCommonFactory)
 
   tests.bootstrap(defaultCommonFactory)
@@ -173,7 +181,9 @@ describe('interface-ipfs-core tests', () => {
     }
   }))
 
+  // FIXME currently failing
   tests.types(defaultCommonFactory, { skip: true })
 
+  // FIXME currently failing
   tests.util(defaultCommonFactory, { skip: true })
 })
