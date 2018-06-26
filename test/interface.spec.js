@@ -13,8 +13,10 @@ describe('interface-ipfs-core tests', () => {
   tests.bitswap(defaultCommonFactory, {
     skip: [
       // bitswap.unwant
-      // FIXME why is this skipped?
-      'should remove a key from the wantlist'
+      {
+        name: 'should remove a key from the wantlist',
+        reason: 'FIXME why is this skipped?'
+      }
     ]
   })
 
@@ -25,103 +27,145 @@ describe('interface-ipfs-core tests', () => {
   tests.config(defaultCommonFactory, {
     skip: [
       // config.replace
-      // FIXME Waiting for fix on go-ipfs
-      // - https://github.com/ipfs/js-ipfs-api/pull/307#discussion_r69281789
-      // - https://github.com/ipfs/go-ipfs/issues/2927
-      'replace'
+      {
+        name: 'replace',
+        reason: 'FIXME Waiting for fix on go-ipfs https://github.com/ipfs/js-ipfs-api/pull/307#discussion_r69281789 and https://github.com/ipfs/go-ipfs/issues/2927'
+      }
     ]
   })
 
   tests.dag(defaultCommonFactory, {
     skip: [
       // dag.tree
-      // TODO vmx 2018-02-22: Currently the tree API is not exposed in go-ipfs
-      'tree',
+      {
+        name: 'tree',
+        reason: 'TODO vmx 2018-02-22: Currently the tree API is not exposed in go-ipfs'
+      },
       // dag.get:
-      // FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might
-      // be possible once https://github.com/ipfs/go-ipfs/issues/4728 is
-      // done
-      'should get a dag-pb node local value',
-      'should get dag-pb value via dag-cbor node',
-      'should get by CID string + path',
+      {
+        name: 'should get a dag-pb node local value',
+        reason: 'FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might be possible once https://github.com/ipfs/go-ipfs/issues/4728 is done'
+      },
+      {
+        name: 'should get dag-pb value via dag-cbor node',
+        reason: 'FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might be possible once https://github.com/ipfs/go-ipfs/issues/4728 is done'
+      },
+      {
+        name: 'should get by CID string + path',
+        reason: 'FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might be possible once https://github.com/ipfs/go-ipfs/issues/4728 is done'
+      },
       // dag.put
-      // FIXME This works in go-ipfs because dag-pb will serialize any object. If
-      // the object has neither a `data` nor `links` field it's serialized
-      // as an empty object
-      'should not put dag-cbor node with wrong multicodec'
+      {
+        name: 'should not put dag-cbor node with wrong multicodec',
+        reason: 'FIXME This works in go-ipfs because dag-pb will serialize any object. If the object has neither a `data` nor `links` field it\'s serialized as an empty object'
+      }
     ]
   })
 
   tests.dht(defaultCommonFactory, {
     skip: [
       // dht.findpeer
-      // FIXME checking what is exactly go-ipfs returning
-      // https://github.com/ipfs/go-ipfs/issues/3862#issuecomment-294168090
-      'should fail to find other peer if peer does not exist',
+      {
+        name: 'should fail to find other peer if peer does not exist',
+        reason: 'FIXME checking what is exactly go-ipfs returning https://github.com/ipfs/go-ipfs/issues/3862#issuecomment-294168090'
+      },
       // dht.findprovs
-      // FIXME go-ipfs endpoint doesn't conform with the others
-      // https://github.com/ipfs/go-ipfs/issues/5047
-      'should provide from one node and find it through another node',
+      {
+        name: 'should provide from one node and find it through another node',
+        reason: 'FIXME go-ipfs endpoint doesn\'t conform with the others https://github.com/ipfs/go-ipfs/issues/5047'
+      },
       // dht.get
-      // FIXME go-ipfs errors with  Error: key was not found (type 6)
-      // https://github.com/ipfs/go-ipfs/issues/3862
-      'should get a value after it was put on another node'
+      {
+        name: 'should get a value after it was put on another node',
+        reason: 'FIXME go-ipfs errors with  Error: key was not found (type 6) https://github.com/ipfs/go-ipfs/issues/3862'
+      }
     ]
   })
 
   tests.files(defaultCommonFactory, {
     skip: [
       // files.add
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should add a nested directory as array of tupples',
-      isNode ? null : 'should add a nested directory as array of tupples with progress',
+      isNode ? null : {
+        name: 'should add a nested directory as array of tupples',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
+      isNode ? null : {
+        name: 'should add a nested directory as array of tupples with progress',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
       // files.addPullStream
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should add pull stream of valid files and dirs',
+      isNode ? null : {
+        name: 'should add pull stream of valid files and dirs',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
       // files.addReadableStream
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should add readable stream of valid files and dirs',
+      isNode ? null : {
+        name: 'should add readable stream of valid files and dirs',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
       // files.catPullStream
-      // TODO not implemented in go-ipfs yet
-      'should export a chunk of a file',
-      'should export a chunk of a file in a Pull Stream',
-      'should export a chunk of a file in a Readable Stream',
+      {
+        name: 'should export a chunk of a file',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
+      {
+        name: 'should export a chunk of a file in a Pull Stream',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
+      {
+        name: 'should export a chunk of a file in a Readable Stream',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
       // files.get
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should get a directory'
+      isNode ? null : {
+        name: 'should get a directory',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      }
     ]
   })
 
   tests.key(defaultCommonFactory, {
     skip: [
       // key.export
-      // TODO not implemented in go-ipfs yet
-      'export',
+      {
+        name: 'export',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
       // key.import
-      // TODO not implemented in go-ipfs yet
-      'import'
+      {
+        name: 'import',
+        reason: 'TODO not implemented in go-ipfs yet'
+      }
     ]
   })
 
   tests.ls(defaultCommonFactory, {
     skip: [
       // lsPullStream
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should pull stream ls with a base58 encoded CID',
+      isNode ? null : {
+        name: 'should pull stream ls with a base58 encoded CID',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
       // lsReadableStream
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should readable stream ls with a base58 encoded CID',
+      isNode ? null : {
+        name: 'should readable stream ls with a base58 encoded CID',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      },
       // ls
-      // FIXME https://github.com/ipfs/js-ipfs-api/issues/339
-      isNode ? null : 'should ls with a base58 encoded CID'
+      isNode ? null : {
+        name: 'should ls with a base58 encoded CID',
+        reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
+      }
     ]
   })
 
   tests.miscellaneous(defaultCommonFactory, {
     skip: [
       // stop
-      // FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078
-      'should stop the node'
+      {
+        name: 'should stop the node',
+        reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
+      }
     ]
   })
 
@@ -139,10 +183,14 @@ describe('interface-ipfs-core tests', () => {
   }), {
     skip: isNode ? [
       // pubsub.subscribe
-      // FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246
-      // and https://github.com/ipfs/go-ipfs/issues/4778
-      isWindows ? 'should send/receive 100 messages' : null,
-      isWindows ? 'should receive multiple messages' : null
+      isWindows ? {
+        name: 'should send/receive 100 messages',
+        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
+      } : null,
+      isWindows ? {
+        name: 'should receive multiple messages',
+        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
+      } : null
     ] : true
   })
 
@@ -181,9 +229,7 @@ describe('interface-ipfs-core tests', () => {
     }
   }))
 
-  // FIXME currently failing
-  tests.types(defaultCommonFactory, { skip: true })
+  tests.types(defaultCommonFactory, { skip: { reason: 'FIXME currently failing' } })
 
-  // FIXME currently failing
-  tests.util(defaultCommonFactory, { skip: true })
+  tests.util(defaultCommonFactory, { skip: { reason: 'FIXME currently failing' } })
 })
