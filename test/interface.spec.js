@@ -191,7 +191,9 @@ describe('interface-ipfs-core tests', () => {
         name: 'should receive multiple messages',
         reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
       } : null
-    ] : true
+    ] : {
+      reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-api/issues/518'
+    }
   })
 
   tests.repo(defaultCommonFactory)
