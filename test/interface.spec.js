@@ -67,11 +67,6 @@ describe('interface-ipfs-core tests', () => {
       {
         name: 'should get by CID string + path',
         reason: 'FIXME vmx 2018-02-22: Currently not supported in go-ipfs, it might be possible once https://github.com/ipfs/go-ipfs/issues/4728 is done'
-      },
-      // dag.put
-      {
-        name: 'should not put dag-cbor node with wrong multicodec',
-        reason: 'FIXME This works in go-ipfs because dag-pb will serialize any object. If the object has neither a `data` nor `links` field it\'s serialized as an empty object'
       }
     ]
   })
