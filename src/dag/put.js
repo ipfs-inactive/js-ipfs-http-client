@@ -5,7 +5,6 @@ const dagCBOR = require('ipld-dag-cbor')
 const promisify = require('promisify-es6')
 const CID = require('cids')
 const multihash = require('multihashes')
-const setImmediate = require('async/setImmediate')
 const SendOneFile = require('../utils/send-one-file')
 
 function noop () {}
@@ -15,29 +14,35 @@ module.exports = (send) => {
 
   return promisify((dagNode, options, callback) => {
     if (typeof options === 'function') {
-      return setImmediate(() => callback(new Error('no options were passed')))
+      callback = options
+    } else if (options.cid && (options.format || options.hash)) {
+      return callback(new Error('Can\'t put dag node. Please provide either `cid` OR `format` and `hash` options.'))
+    } else if ((options.format && !options.hash) || (!options.format && options.hash)) {
+      return callback(new Error('Can\'t put dag node. Please provide `format` AND `hash` options.'))
     }
 
     callback = callback || noop
 
-    let hashAlg = options.hash || 'sha2-256'
-    let format
-    let inputEnc
+    const optionDefaults = {
+      format: 'dag-cbor',
+      hash: 'sha2-255',
+      inputEnc: 'raw'
+    }
+
+    let hashAlg = options.hash || optionDefaults.hash
+    let format = optionDefaults.format
+    let inputEnc = optionDefaults.inputEnc
 
     if (options.cid && CID.isCID(options.cid)) {
       format = options.cid.codec
       hashAlg = multihash.decode(options.cid.multihash).name
       prepare()
-    } else if (options.format) {
+    } else {
       format = options.format
       prepare()
-    } else {
-      callback(new Error('Invalid arguments'))
     }
 
     function prepare () {
-      inputEnc = 'raw'
-
       if (format === 'dag-cbor') {
         dagCBOR.util.serialize(dagNode, finalize)
       }
