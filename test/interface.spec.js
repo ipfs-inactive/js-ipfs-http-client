@@ -13,24 +13,24 @@ describe('interface-ipfs-core tests', () => {
   tests.bitswap(defaultCommonFactory, {
     skip: [
       // bitswap.stat
-      isWindows ? {
+      {
         name: 'should not get bitswap stats when offline',
         reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
-      } : null,
+      },
       // bitswap.wantlist
-      isWindows ? {
+      {
         name: 'should not get the wantlist when offline',
         reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
-      } : null,
+      },
       // bitswap.unwant
       {
         name: 'should remove a key from the wantlist',
         reason: 'FIXME why is this skipped?'
       },
-      isWindows ? {
+      {
         name: 'should not remove a key from the wantlist when offline',
         reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
-      } : null
+      }
     ]
   })
 
