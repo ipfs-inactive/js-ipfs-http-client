@@ -2,7 +2,6 @@
 
 const promisify = require('promisify-es6')
 const cleanCID = require('../utils/clean-cid')
-const v = require('is-ipfs')
 const bl = require('bl')
 
 module.exports = (send) => {
@@ -13,11 +12,9 @@ module.exports = (send) => {
     }
 
     try {
-      hash = cleanCID(hash)
+      hash = typeof hash === 'string' ? hash : cleanCID(hash)
     } catch (err) {
-      if (!v.ipfsPath(hash)) {
-        return callback(err)
-      }
+      return callback(err)
     }
 
     const query = {
