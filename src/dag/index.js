@@ -7,6 +7,7 @@ module.exports = (arg) => {
 
   return {
     get: require('./get')(send),
-    put: require('./put')(send)
+    put: require('./put')(send),
+    tree: require('./tree')(send)
   }
 }
