@@ -24,9 +24,9 @@ module.exports = (send) => {
 
     // FIXME: handle case when options.recursive is true
     block(send).get(cid, options, (err, ipfsBlock) => {
-      if (err) return callback(err, null)
+      if (err) return callback(err)
 
-      let codec = ipfsBlock.cid.codec
+      const codec = ipfsBlock.cid.codec
       if (codec in DAGFormats) {
         DAGFormats[codec].resolver.tree(ipfsBlock.data, callback)
       } else {
