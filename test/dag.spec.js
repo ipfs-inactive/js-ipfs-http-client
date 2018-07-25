@@ -39,20 +39,31 @@ describe('.dag', function () {
     ipfsd.stop(done)
   })
 
-  it('.dag.tree', (done) => {
-    const expectedPaths = [
-      'a', 'b', 'b/0', 'b/1', 'b/2', 'c', 'c/ca',
-      'c/ca/0', 'c/ca/1', 'c/ca/2', 'c/cb'
-    ]
-
-    ipfs.dag.put(obj, (err, cid) => {
-      expect(err).to.not.exist()
-      ipfs.dag.tree(cid, {}, (err, paths) => {
+  describe('.dag.tree', () => {
+    it('should return all the paths', (done) => {
+      const expectedPaths = [
+        'a', 'b', 'b/0', 'b/1', 'b/2', 'c', 'c/ca',
+        'c/ca/0', 'c/ca/1', 'c/ca/2', 'c/cb'
+      ]
+      ipfs.dag.put(obj, (err, cid) => {
         expect(err).to.not.exist()
-        expect(paths).deep.equal(expectedPaths)
+        ipfs.dag.tree(cid, (err, paths) => {
+          expect(err).to.not.exist()
+          expect(paths).deep.equal(expectedPaths)
+          done()
+        })
+      })
+    })
+
+    it('should return error when codec for cid is invalid', (done) => {
+      let cid = new CID('zdpuArMWc9Ee3B7zUDucRjvA1bDgYpWt8rpUXXjY3tbmBw619')
+      cid.codec = 'invalid-codec'
+      ipfs.dag.tree(cid, (err, paths) => {
+        expect(err).to.exist()
         done()
       })
     })
+
   })
 
   it('.dag.put', (done) => {
@@ -73,15 +84,6 @@ describe('.dag', function () {
         expect(data.value).deep.equal(obj)
         done()
       })
-    })
-  })
-
-  it('.dag.tree returns error when codec for cid is invalid', (done) => {
-    let cid = new CID('zdpuArMWc9Ee3B7zUDucRjvA1bDgYpWt8rpUXXjY3tbmBw619')
-    cid.codec = 'invalid-codec'
-    ipfs.dag.tree(cid, (err, paths) => {
-      expect(err).to.exist()
-      done()
     })
   })
 })
