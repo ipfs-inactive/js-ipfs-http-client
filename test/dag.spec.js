@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
 const CID = require('cids')
@@ -63,7 +64,6 @@ describe('.dag', function () {
         done()
       })
     })
-
   })
 
   it('.dag.put', (done) => {
