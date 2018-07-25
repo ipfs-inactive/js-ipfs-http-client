@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
+const CID = require('cids')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
@@ -72,6 +73,15 @@ describe('.dag', function () {
         expect(data.value).deep.equal(obj)
         done()
       })
+    })
+  })
+
+  it('.dag.tree returns error when codec for cid is invalid', (done) => {
+    let cid = new CID('zdpuArMWc9Ee3B7zUDucRjvA1bDgYpWt8rpUXXjY3tbmBw619')
+    cid.codec = 'invalid-codec'
+    ipfs.dag.tree(cid, (err, paths) => {
+      expect(err).to.exist()
+      done()
     })
   })
 })
