@@ -30,7 +30,7 @@ module.exports = (send) => {
       if (codec in DAGFormats) {
         DAGFormats[codec].resolver.tree(ipfsBlock.data, callback)
       } else {
-        callback(new Error(`codec ${codec} is not valid`), null)
+        callback(new Error(`codec ${codec} is not valid`))
       }
     })
   })
