@@ -20,7 +20,7 @@ const IPFSApi = require('../src')
 const f = require('./utils/factory')
 const expectTimeout = require('./utils/expect-timeout')
 
-describe.only('.util', () => {
+describe('.util', () => {
   if (!isNode) { return }
 
   let ipfsd
@@ -118,7 +118,7 @@ describe.only('.util', () => {
     })
   })
 
-  describe('.urlAdd', () => {
+  describe.only('.urlAdd', () => {
     let testServers = []
 
     const sslOpts = {
@@ -132,9 +132,9 @@ describe.only('.util', () => {
         opts = {}
       }
 
-      const agent = opts.secure ? https : http
-      const serverOpts = opts.secure ? sslOpts : {}
-      const server = agent.createServer(serverOpts, handler)
+      const server = opts.secure
+        ? https.createServer(sslOpts, handler)
+        : http.createServer(handler)
 
       server.listen((err) => {
         if (err) return cb(err)
