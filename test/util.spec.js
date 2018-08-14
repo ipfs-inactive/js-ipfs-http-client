@@ -118,7 +118,7 @@ describe('.util', () => {
     })
   })
 
-  describe.only('.urlAdd', () => {
+  describe('.urlAdd', () => {
     let testServers = []
 
     const sslOpts = {
