@@ -20,7 +20,7 @@ const IPFSApi = require('../src')
 const f = require('./utils/factory')
 const expectTimeout = require('./utils/expect-timeout')
 
-describe('.util', () => {
+describe.only('.util', () => {
   if (!isNode) { return }
 
   let ipfsd
@@ -145,7 +145,7 @@ describe('.util', () => {
 
     beforeEach(() => {
       // Instructs node to not reject our snake oil SSL certificate when it
-      // can't verify the cerificate authority
+      // can't verify the certificate authority
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
     })
 
@@ -160,36 +160,50 @@ describe('.util', () => {
     })
 
     it('http', (done) => {
-      const handler = (req, res) => {
-        res.write(`TEST${Date.now()}`)
-        res.end()
-      }
+      const data = Buffer.from(`TEST${Date.now()}`)
 
-      startTestServer(handler, (err, server) => {
+      parallel({
+        server: (cb) => {
+          const handler = (req, res) => {
+            res.write(data)
+            res.end()
+          }
+          startTestServer(handler, cb)
+        },
+        expectedResult: (cb) => ipfs.add(data, cb)
+      }, (err, taskResult) => {
         expect(err).to.not.exist()
+        const { server, expectedResult } = taskResult
 
         const url = `http://127.0.0.1:${server.address().port}/`
         ipfs.util.addFromURL(url, (err, result) => {
           expect(err).to.not.exist()
-          expect(result.length).to.equal(1)
+          expect(result).to.deep.equal(expectedResult)
           done()
         })
       })
     })
 
     it('https', (done) => {
-      const handler = (req, res) => {
-        res.write(`TEST${Date.now()}`)
-        res.end()
-      }
+      const data = Buffer.from(`TEST${Date.now()}`)
 
-      startTestServer(handler, { secure: true }, (err, server) => {
+      parallel({
+        server: (cb) => {
+          const handler = (req, res) => {
+            res.write(data)
+            res.end()
+          }
+          startTestServer(handler, { secure: true }, cb)
+        },
+        expectedResult: (cb) => ipfs.add(data, cb)
+      }, (err, taskResult) => {
         expect(err).to.not.exist()
+        const { server, expectedResult } = taskResult
 
         const url = `https://127.0.0.1:${server.address().port}/`
         ipfs.util.addFromURL(url, (err, result) => {
           expect(err).to.not.exist()
-          expect(result.length).to.equal(1)
+          expect(result).to.deep.equal(expectedResult)
           done()
         })
       })
