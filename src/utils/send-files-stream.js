@@ -22,6 +22,10 @@ function headers (file) {
     header['Content-Type'] = 'application/octet-stream'
   }
 
+  if (file.abspath) {
+    header.Abspath = file.abspath
+  }
+
   return header
 }
 
