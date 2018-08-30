@@ -25,7 +25,7 @@ module.exports = (send) => {
     // Transform the response from { Key, Size } objects to { key, size } objects
     const transform = (stats, callback) => {
       callback(null, {
-        key: stats.Key,
+        key: new CID(stats.Key),
         size: stats.Size
       })
     }
