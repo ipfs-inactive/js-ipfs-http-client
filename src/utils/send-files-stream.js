@@ -4,7 +4,7 @@ const Duplex = require('stream').Duplex
 const eachSeries = require('async/eachSeries')
 const isStream = require('is-stream')
 const once = require('once')
-const prepareFile = require('./prepare-file')
+const {prepareFile} = require('./prepare-file')
 const Multipart = require('./multipart')
 
 function headers (file) {

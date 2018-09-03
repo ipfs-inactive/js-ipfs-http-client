@@ -77,30 +77,64 @@ function prepareFile (file, opts) {
   let files = [].concat(file)
 
   return flatmap(files, (file) => {
-    if (typeof file === 'string') {
-      if (!isNode) {
-        throw new Error('Can only add file paths in node')
-      }
-
-      return loadPaths(opts, file)
-    }
-
-    if (file.path && !file.content) {
-      file.dir = true
-      return file
-    }
-
-    if (file.content || file.dir) {
-      return file
-    }
-
-    return {
-      path: '',
-      symlink: false,
-      dir: false,
-      content: file
-    }
+    return prepare(file, opts)
   })
 }
 
-exports = module.exports = prepareFile
+function prepare (file, opts) {
+  if (typeof file === 'string') {
+    if (!isNode) {
+      throw new Error('Can only add file paths in node')
+    }
+
+    return loadPaths(opts, file)
+  }
+
+  if (file.path && !file.content) {
+    file.dir = true
+    return file
+  }
+
+  if (file.content || file.dir) {
+    return file
+  }
+
+  return {
+    path: '',
+    symlink: false,
+    dir: false,
+    content: file
+  }
+}
+
+function prepareWithHeaders (file, opts) {
+  const obj = prepare(file, opts)
+
+  obj.headers = headers(obj)
+  return obj
+}
+
+function headers (file) {
+  const name = file.path
+    ? encodeURIComponent(file.path)
+    : ''
+
+    // console.log('new part', file)
+  const header = { 'Content-Disposition': `file; filename="${name}"` }
+
+  if (!file.content) {
+    header['Content-Type'] = 'application/x-directory'
+  } else if (file.symlink) {
+    header['Content-Type'] = 'application/symlink'
+  } else {
+    header['Content-Type'] = 'application/octet-stream'
+  }
+
+  return header
+}
+
+module.exports = {
+  prepareFile,
+  prepare,
+  prepareWithHeaders
+}

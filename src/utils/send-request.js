@@ -114,7 +114,7 @@ function requestAPI (config, options, callback) {
   delete options.qs.followSymlinks
 
   const method = 'POST'
-  const headers = Object.assign({}, config.headers)
+  const headers = Object.assign({}, config.headers, options.headers)
 
   if (isNode) {
     // Browsers do not allow you to modify the user agent
