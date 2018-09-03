@@ -49,7 +49,7 @@ const sendChunked = (multipartStream, send, options) => {
       ended = true
       console.log('end', size)
 
-      // if multipart already ended and no request is pending send last request
+      // multipart ended and no request is running send last request
       if (!running) {
         // sendChunk('', -1, rangeEnd, rangeEnd, name, boundary, size)
         sendChunkRequest(send, options, '', -1, rangeEnd, rangeEnd, name, boundary, size)
@@ -137,8 +137,8 @@ const sendChunkRequest = (send, options, chunk, id, start, end, name, boundary, 
       qs: qs,
       args: options.args,
       stream: true,
-      //   recursive: true,
-      //   progress: options.progress,
+      recursive: true,
+      progress: options.progress,
       headers: {
         'Content-Type': 'application/octet-stream',
         'Content-Range': `bytes ${start}-${end}/${size}`,
@@ -156,6 +156,7 @@ const sendChunkRequest = (send, options, chunk, id, start, end, name, boundary, 
       resolve(res)
     })
 
-    pump(toStream(chunk), req)
+    req.write(Buffer.from(chunk))
+    req.end()
   })
 }
