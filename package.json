@@ -33,6 +33,7 @@
     "concat-stream": "^1.6.2",
     "debug": "^3.1.0",
     "detect-node": "^2.0.3",
+    "filereader-stream": "^2.0.0",
     "flatmap": "0.0.3",
     "glob": "^7.1.2",
     "ipfs-block": "~0.7.1",

@@ -58,7 +58,7 @@ const sendChunked = (multipartStream, send, options) => {
 
       // multipart ended and no request is running send last request
       if (!state.running) {
-        sendChunkRequest(send, options, '', state)
+        sendChunkRequest(send, options, null, state)
           .then(resolve)
           .catch(reject)
       }
@@ -83,7 +83,7 @@ const sendChunked = (multipartStream, send, options) => {
 
           // if multipart already ended send last request
           if (state.ended) {
-            return sendChunkRequest(send, options, '', state)
+            return sendChunkRequest(send, options, null, state)
               .then(resolve)
           }
         })
@@ -150,7 +150,10 @@ const sendChunkRequest = (send, options, chunk, { boundary, id, index, rangeStar
     })
 
     // write and send
-    req.write(Buffer.from(chunk))
+
+    if (chunk !== null) {
+      req.write(Buffer.from(chunk))
+    }
     req.end()
   })
 }

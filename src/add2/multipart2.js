@@ -33,7 +33,7 @@ const leading = (headers = {}, boundary) => {
 }
 
 class Multipart extends Duplex {
-  constructor ({ chunkSize = 256000 } = {}) {
+  constructor ({ chunkSize = 1024 * 1024 } = {}) {
     super({ writableObjectMode: true, writableHighWaterMark: 1 })
 
     this._boundary = generateBoundary()

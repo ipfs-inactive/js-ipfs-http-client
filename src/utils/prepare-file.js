@@ -2,6 +2,11 @@
 
 const isNode = require('detect-node')
 const flatmap = require('flatmap')
+const fileReaderStream = require('filereader-stream')
+
+const isBrowser = typeof window === 'object' &&
+    typeof document === 'object' &&
+    document.nodeType === 9
 
 function loadPaths (opts, file) {
   const path = require('path')
@@ -97,6 +102,15 @@ function prepare (file, opts) {
 
   if (file.content || file.dir) {
     return file
+  }
+
+  if (isBrowser && file instanceof window.File) {
+    return {
+      path: '',
+      symlink: false,
+      dir: false,
+      content: fileReaderStream(file, opts)
+    }
   }
 
   return {
