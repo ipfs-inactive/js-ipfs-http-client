@@ -13,10 +13,15 @@ module.exports = (send) => {
       opts = {}
     }
 
+    const qs = {
+      recursive: opts.r || opts.recursive,
+      'cid-base': opts['cid-base'] || opts.cidBase
+    }
+
     send.andTransform({
       path: 'resolve',
       args: args,
-      qs: opts
+      qs
     }, transform, callback)
   })
 }
