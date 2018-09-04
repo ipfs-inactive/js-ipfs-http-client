@@ -33,12 +33,12 @@ const leading = (headers = {}, boundary) => {
 }
 
 class Multipart extends Duplex {
-  constructor (options) {
-    super(Object.assign({}, options, { writableObjectMode: true, writableHighWaterMark: 1 }))
+  constructor ({ chunkSize = 256000 } = {}) {
+    super({ writableObjectMode: true, writableHighWaterMark: 1 })
 
     this._boundary = generateBoundary()
     this.source = null
-    this.chunkSize = 256000
+    this.chunkSize = chunkSize
     this.buffer = Buffer.alloc(this.chunkSize)
     this.bufferOffset = 0
     this.running = true
@@ -116,8 +116,8 @@ class Multipart extends Duplex {
       content = toStream.source(content)
     }
     this.source = content
-    // From now on we assume content is a stream
 
+    // From now on we assume content is a stream
     content.on('data', (data) => {
       if (!this.pushChunk(data)) {
         content.pause()
