@@ -1,6 +1,8 @@
 'use strict'
 
 const isNode = require('detect-node')
+const { isSource } = require('is-pull-stream')
+const isStream = require('is-stream')
 const flatmap = require('flatmap')
 const fileReaderStream = require('filereader-stream')
 
@@ -110,6 +112,15 @@ function prepare (file, opts) {
       symlink: false,
       dir: false,
       content: fileReaderStream(file, opts)
+    }
+  }
+
+  if (!isStream(file) && !isSource(file) && !Buffer.isBuffer(file)) {
+    return {
+      path: '',
+      symlink: false,
+      dir: false,
+      content: Buffer.from(file)
     }
   }
 

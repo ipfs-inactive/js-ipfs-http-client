@@ -41,43 +41,67 @@ class Multipart extends Duplex {
     this.chunkSize = chunkSize
     this.buffer = Buffer.alloc(this.chunkSize)
     this.bufferOffset = 0
-    this.running = true
+    this.extraBytes = 0
   }
 
   _read () {
-    if (this.source) {
+    if (this.source && !this.isPaused()) {
       this.source.resume()
     }
   }
 
   _write (file, encoding, callback) {
     this.pushFile(file, () => {
-      this.pushChunk(Buffer.from(PADDING + this._boundary + PADDING + NEW_LINE))
       callback()
     })
   }
 
   _final (callback) {
+    this.pushChunk(Buffer.from(PADDING + this._boundary + PADDING + NEW_LINE), true)
     // Flush the rest and finish
-    if (this.bufferOffset) {
-      this.push(this.buffer.slice(0, this.bufferOffset))
+    if (this.bufferOffset && !this.destroyed) {
+      const slice = this.buffer.slice(0, this.bufferOffset)
+      this.push(slice)
       this.bufferOffset = 0
     }
-    this.running = false
     this.push(null)
     callback()
   }
 
-  pushChunk (chunk) {
-    const bytesNeeded = (this.chunkSize - this.bufferOffset)
+  pauseAll () {
+    this.pause()
+    if (this.source) {
+      this.source.pause()
+    }
+  }
+
+  resumeAll () {
+    this.resume()
+    if (this.source) {
+      this.source.resume()
+    }
+  }
+  /**
+   * Push chunk
+   *
+   * @param {Buffer} chunk
+   * @param {boolean} [isExtra=false]
+   * @return {boolean}
+   */
+  pushChunk (chunk, isExtra = false) {
     let result = true
     if (chunk === null) {
       return this.push(null)
     }
 
+    if (isExtra) {
+      this.extraBytes += chunk.length
+    }
+
     // If we have enough bytes in this chunk to get buffer up to chunkSize,
     // fill in buffer, push it, and reset its offset.
     // Otherwise, just copy the entire chunk in to buffer.
+    const bytesNeeded = (this.chunkSize - this.bufferOffset)
     if (chunk.length >= bytesNeeded) {
       chunk.copy(this.buffer, this.bufferOffset, 0, bytesNeeded)
       result = this.push(this.buffer)
@@ -102,14 +126,14 @@ class Multipart extends Duplex {
   }
 
   pushFile (file, callback) {
-    this.pushChunk(leading(file.headers, this._boundary))
+    this.pushChunk(leading(file.headers, this._boundary), true)
 
     let content = file.content || Buffer.alloc(0)
 
     if (Buffer.isBuffer(content)) {
       this.pushChunk(content)
-      this.pushChunk(NEW_LINE_BUFFER)
-      return callback() // early
+      this.pushChunk(NEW_LINE_BUFFER, true)
+      return callback()
     }
 
     if (isSource(content)) {
@@ -126,7 +150,7 @@ class Multipart extends Duplex {
     content.once('error', this.emit.bind(this, 'error'))
 
     content.once('end', () => {
-      this.pushChunk(NEW_LINE_BUFFER)
+      this.pushChunk(NEW_LINE_BUFFER, true)
       callback()
     })
   }
