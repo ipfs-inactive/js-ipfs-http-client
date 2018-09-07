@@ -33,12 +33,15 @@ const leading = (headers = {}, boundary) => {
 }
 
 class Multipart extends Duplex {
-  constructor ({ chunkSize = 1024 * 1024 } = {}) {
-    super({ writableObjectMode: true, writableHighWaterMark: 1 })
+  constructor ({ chunkSize }) {
+    super({
+      writableObjectMode: true,
+      writableHighWaterMark: 1
+    })
 
     this._boundary = generateBoundary()
     this.source = null
-    this.chunkSize = chunkSize
+    this.chunkSize = chunkSize || 0
     this.buffer = Buffer.alloc(this.chunkSize)
     this.bufferOffset = 0
     this.extraBytes = 0
@@ -92,6 +95,10 @@ class Multipart extends Duplex {
     let result = true
     if (chunk === null) {
       return this.push(null)
+    }
+
+    if (!this.chunkSize) {
+      return this.push(chunk)
     }
 
     if (isExtra) {
