@@ -108,7 +108,7 @@ function prepare (file, opts) {
 
   if (isBrowser && file instanceof window.File) {
     return {
-      path: '',
+      path: file.name,
       symlink: false,
       dir: false,
       content: fileReaderStream(file, opts)
@@ -144,7 +144,6 @@ function headers (file) {
     ? encodeURIComponent(file.path)
     : ''
 
-    // console.log('new part', file)
   const header = { 'Content-Disposition': `file; filename="${name}"` }
 
   if (!file.content) {

@@ -41,7 +41,7 @@ class SendStream extends Duplex {
     this.send = send
     this.multipart = new Multipart(options)
     this.boundary = this.multipart._boundary
-    this.id = uuid()
+    this.uuid = uuid()
     this.index = 0
     this.rangeStart = 0
     this.rangeEnd = 0
@@ -55,6 +55,17 @@ class SendStream extends Duplex {
       'only-hash': this.options.onlyHash,
       'wrap-with-directory': this.options.wrapWithDirectory,
       hash: this.options.hashAlg || this.options.hash
+    }
+
+    this.args = {
+      path: 'add-chunked',
+      qs: this.qs,
+      args: this.options.args,
+      stream: true,
+      recursive: true,
+      progress: Boolean(this.options.progress),
+      multipart: true,
+      multipartBoundary: this.boundary
     }
 
     this.source = prepareTransform(options)
@@ -107,7 +118,7 @@ class SendStream extends Duplex {
   }
 
   onData (chunk) {
-    console.log('Send ', chunk.length)
+    console.log('Send ', chunk.toString())
     // stop producing chunks
     this.multipart.pauseAll()
     this.extraBytes = this.multipart.extraBytes
@@ -124,24 +135,13 @@ class SendStream extends Duplex {
   }
 
   requestChunk (chunk) {
-    const args = {
-      path: 'add-chunked',
-      qs: this.qs,
-      args: this.options.args,
-      stream: true,
-      recursive: true,
-      progress: Boolean(this.options.progress),
-      headers: {
-        'Content-Type': 'application/octet-stream',
-        'Content-Range': `bytes ${this.rangeStart}-${this.rangeEnd}/${this.rangeTotal}`,
-        'X-Ipfs-Chunk-Group-Uuid': this.id,
-        'X-Ipfs-Chunk-Index': this.index,
-        'X-Ipfs-Chunk-Boundary': this.boundary
-      }
+    this.args.headers = {
+      'Content-Range': `bytes ${this.rangeStart}-${this.rangeEnd}/${this.rangeTotal}`,
+      'X-Chunked-Input': `uuid="${this.uuid}"; index=${this.index}`
     }
     return new Promise((resolve, reject) => {
       const progressFn = this.options.progress || noop
-      const req = this.send(args, (err, res) => {
+      const req = this.send(this.args, (err, res) => {
         if (err) {
           return this.emit('error', err)
         }
@@ -178,30 +178,15 @@ class SendStream extends Duplex {
     })
   }
 
-  request (chunk) {
-    const args = {
-      path: 'add-chunked',
-      qs: this.qs,
-      args: this.options.args,
-      stream: true,
-      recursive: true,
-      progress: Boolean(this.options.progress),
-      multipart: true,
-      multipartBoundary: this.boundary,
-      // remove this when daemon supports getting boundary from content-type
-      headers: {
-        'X-Ipfs-Chunk-Boundary': this.boundary
-      }
-    }
-
+  request () {
     const progressFn = this.options.progress || noop
-    return this.send(args, (err, res) => {
+    return this.send(this.args, (err, res) => {
       if (err) {
         return this.emit('error', err)
       }
 
       res.on('data', (d) => {
-        if (d.path) {
+        if (d.hash) {
           // files added reporting
           this.push(d)
         } else {
