@@ -1,26 +1,12 @@
 'use strict'
 const { Duplex, Transform } = require('stream')
 const isStream = require('is-stream')
+const nanoid = require('nanoid')
 const pump = require('pump')
 const Multipart = require('./multipart2')
 const { prepareWithHeaders } = require('./../utils/prepare-file')
 
 const noop = () => {}
-/**
- * Poor man's uuid
- *
- * @returns {String}
- */
-function uuid () {
-  function chr4 () {
-    return Math.random().toString(16).slice(-4)
-  }
-  return chr4() + chr4() +
-        '-' + chr4() +
-        '-' + chr4() +
-        '-' + chr4() +
-        '-' + chr4() + chr4() + chr4()
-}
 
 const prepareTransform = (options) => new Transform({
   objectMode: true,
@@ -41,7 +27,7 @@ class SendStream extends Duplex {
     this.send = send
     this.multipart = new Multipart(options)
     this.boundary = this.multipart._boundary
-    this.uuid = uuid()
+    this.uuid = nanoid()
     this.index = 0
     this.rangeStart = 0
     this.rangeEnd = 0
@@ -118,7 +104,7 @@ class SendStream extends Duplex {
   }
 
   onData (chunk) {
-    console.log('Send ', chunk.toString())
+    console.log('Send ', chunk.length)
     // stop producing chunks
     this.multipart.pauseAll()
     this.extraBytes = this.multipart.extraBytes

@@ -49,6 +49,7 @@
     "multiaddr": "^5.0.0",
     "multibase": "~0.4.0",
     "multihashes": "~0.4.13",
+    "nanoid": "^1.2.3",
     "ndjson": "^1.5.0",
     "once": "^1.4.0",
     "peer-id": "~0.11.0",
