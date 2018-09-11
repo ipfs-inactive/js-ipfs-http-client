@@ -4,10 +4,18 @@ const { Duplex } = require('stream')
 const { isSource } = require('is-pull-stream')
 const toStream = require('pull-stream-to-stream')
 
+/** @private @typedef {import("./add2").AddOptions} AddOptions */
+
 const PADDING = '--'
 const NEW_LINE = '\r\n'
 const NEW_LINE_BUFFER = Buffer.from(NEW_LINE)
 
+/**
+ * Generate a random boundary to use in a multipart request
+ *
+ * @private
+ * @returns {string}
+ */
 const generateBoundary = () => {
   var boundary = '--------------------------'
   for (var i = 0; i < 24; i++) {
@@ -17,6 +25,14 @@ const generateBoundary = () => {
   return boundary
 }
 
+/**
+ * Generate leading section for a multipart body
+ *
+ * @private
+ * @param {Object} [headers={}]
+ * @param {string} boundary
+ * @returns {string}
+ */
 const leading = (headers = {}, boundary) => {
   var leading = [PADDING + boundary]
 
@@ -32,8 +48,19 @@ const leading = (headers = {}, boundary) => {
   return Buffer.from(leadingStr)
 }
 
+/**
+ * Multipart class to generate a multipart body chunked and non chunked
+ *
+ * @private
+ * @class Multipart
+ * @extends {Duplex}
+ */
 class Multipart extends Duplex {
-  constructor ({ chunkSize }) {
+  /**
+   * Creates an instance of Multipart.
+   * @param {AddOptions} options
+   */
+  constructor (options) {
     super({
       writableObjectMode: true,
       writableHighWaterMark: 1
@@ -41,7 +68,7 @@ class Multipart extends Duplex {
 
     this._boundary = generateBoundary()
     this.source = null
-    this.chunkSize = chunkSize || 0
+    this.chunkSize = options.chunkSize || 0
     this.buffer = Buffer.alloc(this.chunkSize)
     this.bufferOffset = 0
     this.extraBytes = 0
@@ -97,7 +124,7 @@ class Multipart extends Duplex {
       return this.push(null)
     }
 
-    if (!this.chunkSize) {
+    if (this.chunkSize === 0) {
       return this.push(chunk)
     }
 

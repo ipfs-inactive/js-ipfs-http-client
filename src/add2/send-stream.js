@@ -6,8 +6,16 @@ const pump = require('pump')
 const Multipart = require('./multipart2')
 const { prepareWithHeaders } = require('./../utils/prepare-file')
 
+/** @private @typedef {import("./add2").AddOptions} AddOptions */
+
 const noop = () => {}
 
+/**
+ * Factory for prepare stream
+ * @private
+ * @param {*} options
+ * @returns {Function}
+ */
 const prepareTransform = (options) => new Transform({
   objectMode: true,
   transform (chunk, encoding, callback) {
@@ -19,8 +27,20 @@ const prepareTransform = (options) => new Transform({
   }
 })
 
+/**
+ * Class to create a stream to send data to the API
+ *
+ * @private
+ * @class SendStream
+ * @extends {Duplex}
+ */
 class SendStream extends Duplex {
-  constructor (send, options) {
+  /**
+   * Creates an instance of SendStream.
+   * @param {Function} send
+   * @param {AddOptions} [options={}]
+   */
+  constructor (send, options = {}) {
     super({ objectMode: true, highWaterMark: 1 })
     this.waiting = null
     this.options = options
