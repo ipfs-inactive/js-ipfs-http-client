@@ -5,7 +5,7 @@ const toPull = require('stream-to-pull-stream')
 const promiseNodeify = require('promise-nodeify')
 const concatStream = require('concat-stream')
 const pump = require('pump')
-const SendStream = require('./send-stream')
+const SendStream = require('../utils/send-stream-experimental')
 
 /** @module api/add */
 
@@ -52,7 +52,6 @@ const arrayToStream = (data) => {
  */
 
 /**
- * This callback is displayed as a global member.
  * @callback AddCallback
  * @param {Error} err
  * @param {AddResult[]} res
@@ -60,9 +59,7 @@ const arrayToStream = (data) => {
 
 /** @typedef {Function} PullStream */
 /** @typedef {(Object[]|Readable|File|PullStream|Buffer)} AddData */
-/**
- * @typedef {function(AddData, AddOptions, AddCallback): (Promise.<AddResult[]>|void)} AddFunction
- */
+/** @typedef {function(AddData, AddOptions, AddCallback): (Promise.<AddResult[]>|void)} AddFunction */
 
 /**
  * Add to data to ipfs
@@ -71,7 +68,7 @@ const arrayToStream = (data) => {
  * @returns {AddFunction}
  * @memberof api/add
  */
-const add = (send) => (files, options, callback) => {
+const add = (send) => (data, options, callback) => {
   if (typeof options === 'function') {
     callback = options
     options = {}
@@ -80,7 +77,7 @@ const add = (send) => (files, options, callback) => {
   let result = []
   const r = new Promise((resolve, reject) => {
     pump(
-      arrayToStream([].concat(files)),
+      arrayToStream([].concat(data)),
       new SendStream(send, options),
       concatStream(r => (result = r)),
       (err) => {

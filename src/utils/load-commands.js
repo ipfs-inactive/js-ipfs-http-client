@@ -64,7 +64,6 @@ function requireCommands () {
       addFromStream: require('../files/add')(send),
       addFromURL: require('../util/url-add')(send),
       getEndpointConfig: require('../util/get-endpoint-config')(config),
-      add2: require('./../add2/add2').add(send),
       crypto: require('libp2p-crypto'),
       isIPFS: require('is-ipfs')
     }

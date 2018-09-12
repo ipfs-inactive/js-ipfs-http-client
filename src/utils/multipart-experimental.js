@@ -4,7 +4,7 @@ const { Duplex } = require('stream')
 const { isSource } = require('is-pull-stream')
 const toStream = require('pull-stream-to-stream')
 
-/** @private @typedef {import("./add2").AddOptions} AddOptions */
+/** @private @typedef {import("../files/add-experimental").AddOptions} AddOptions */
 
 const PADDING = '--'
 const NEW_LINE = '\r\n'

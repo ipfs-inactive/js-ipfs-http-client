@@ -3,10 +3,10 @@ const { Duplex, Transform } = require('stream')
 const isStream = require('is-stream')
 const nanoid = require('nanoid')
 const pump = require('pump')
-const Multipart = require('./multipart2')
-const { prepareWithHeaders } = require('./../utils/prepare-file')
+const Multipart = require('./multipart-experimental')
+const { prepareWithHeaders } = require('./prepare-file')
 
-/** @private @typedef {import("./add2").AddOptions} AddOptions */
+/** @private @typedef {import("../files/add-experimental").AddOptions} AddOptions */
 
 const noop = () => {}
 
