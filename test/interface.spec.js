@@ -178,6 +178,13 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
+  tests.name(CommonFactory.create({
+    spawnOptions: {
+      initOptions: { bits: 1024 },
+      // args: ['--offline']
+    }
+  }))
+
   tests.object(defaultCommonFactory)
 
   tests.pin(defaultCommonFactory)
