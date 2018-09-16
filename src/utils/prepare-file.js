@@ -89,15 +89,13 @@ function prepareFile (file, opts) {
 }
 
 function prepare (file, opts) {
+  // probably it should be valid and would be handled below with Buffer.from
   if (typeof file === 'string') {
-    if (!isNode) {
-      throw new Error('Can only add file paths in node')
-    }
-
-    return loadPaths(opts, file)
+    throw new Error('String isn\'t valid as an input')
   }
 
-  if (file.path && !file.content) {
+  // needs to test for stream because fs.createReadStream has path prop and would handle here
+  if (!isStream(file) && file.path && !file.content) {
     file.dir = true
     return file
   }
@@ -106,7 +104,7 @@ function prepare (file, opts) {
     return file
   }
 
-  if (isBrowser && file instanceof window.File) {
+  if (isBrowser && file instanceof self.File) {
     return {
       path: file.name,
       symlink: false,

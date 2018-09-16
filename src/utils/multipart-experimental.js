@@ -1,8 +1,10 @@
 'use strict'
 
-const { Duplex } = require('stream')
+const { Duplex, PassThrough } = require('stream')
 const { isSource } = require('is-pull-stream')
-const toStream = require('pull-stream-to-stream')
+const pump = require('pump')
+const pullToStream = require('pull-stream-to-stream')
+const bufferToStream = require('buffer-to-stream')
 
 /** @private @typedef {import("../files/add-experimental").AddOptions} AddOptions */
 
@@ -63,7 +65,8 @@ class Multipart extends Duplex {
   constructor (options) {
     super({
       writableObjectMode: true,
-      writableHighWaterMark: 1
+      writableHighWaterMark: 1,
+      readableHighWaterMark: options.chunkSize ? Math.max(136, options.chunkSize) : 16384 // min is 136
     })
 
     this._boundary = generateBoundary()
@@ -72,12 +75,11 @@ class Multipart extends Duplex {
     this.buffer = Buffer.alloc(this.chunkSize)
     this.bufferOffset = 0
     this.extraBytes = 0
+    this.sourceReadable = false
   }
 
   _read () {
-    if (this.source && !this.isPaused()) {
-      this.source.resume()
-    }
+    // empty read
   }
 
   _write (file, encoding, callback) {
@@ -87,30 +89,34 @@ class Multipart extends Duplex {
   }
 
   _final (callback) {
-    this.pushChunk(Buffer.from(PADDING + this._boundary + PADDING + NEW_LINE), true)
     // Flush the rest and finish
-    if (this.bufferOffset && !this.destroyed) {
+    const tail = Buffer.from(PADDING + this._boundary + PADDING + NEW_LINE)
+    if (this.chunkSize === 0) {
+      this.push(tail)
+    } else {
+      this.extraBytes += tail.length
       const slice = this.buffer.slice(0, this.bufferOffset)
-      this.push(slice)
+
       this.bufferOffset = 0
+      this.push(Buffer.concat([slice, tail], slice.length + tail.length))
     }
+
     this.push(null)
     callback()
   }
 
-  pauseAll () {
-    this.pause()
-    if (this.source) {
-      this.source.pause()
+  resume () {
+    super.resume()
+
+    // Chunked mode
+    if (this.chunkSize > 0 && this.sourceReadable) {
+      let chunk
+      while (!this.isPaused() && (chunk = this.source.read(this.chunkSize - this.bufferOffset)) !== null) {
+        this.pushChunk(chunk)
+      }
     }
   }
 
-  resumeAll () {
-    this.resume()
-    if (this.source) {
-      this.source.resume()
-    }
-  }
   /**
    * Push chunk
    *
@@ -119,7 +125,6 @@ class Multipart extends Duplex {
    * @return {boolean}
    */
   pushChunk (chunk, isExtra = false) {
-    let result = true
     if (chunk === null) {
       return this.push(null)
     }
@@ -132,61 +137,65 @@ class Multipart extends Duplex {
       this.extraBytes += chunk.length
     }
 
-    // If we have enough bytes in this chunk to get buffer up to chunkSize,
-    // fill in buffer, push it, and reset its offset.
-    // Otherwise, just copy the entire chunk in to buffer.
-    const bytesNeeded = (this.chunkSize - this.bufferOffset)
-    if (chunk.length >= bytesNeeded) {
-      chunk.copy(this.buffer, this.bufferOffset, 0, bytesNeeded)
-      result = this.push(this.buffer)
-      this.bufferOffset = 0
-      // Handle leftovers from the chunk
-      const leftovers = chunk.slice(0, chunk.length - bytesNeeded)
-      let size = leftovers.length
-      while (size >= this.chunkSize) {
-        result = this.push(chunk.slice(this.bufferOffset, this.bufferOffset + this.chunkSize))
-        this.bufferOffset += this.chunkSize
-        size -= this.chunkSize
-      }
-      // if we still have anything left copy to the buffer
-      chunk.copy(this.buffer, 0, this.bufferOffset, this.bufferOffset + size)
-      this.bufferOffset = size
-    } else {
-      chunk.copy(this.buffer, this.bufferOffset)
-      this.bufferOffset += chunk.length
+    if (this.bufferOffset === 0 && chunk.length === this.chunkSize) {
+      return this.push(chunk)
     }
 
-    return result
+    const bytesNeeded = (this.chunkSize - this.bufferOffset)
+    // make sure we have the correct amount of bytes
+    if (chunk.length === bytesNeeded) {
+      // chunk.copy(this.buffer, this.bufferOffset, 0, bytesNeeded)
+      const slice = this.buffer.slice(0, this.bufferOffset)
+      this.bufferOffset = 0
+      return this.push(Buffer.concat([slice, chunk], slice.length + chunk.length))
+    }
+
+    if (chunk.length > bytesNeeded) {
+      this.emit('error', new RangeError(`Chunk is too big needed ${bytesNeeded} got ${chunk.length}`))
+      return false
+    }
+
+    chunk.copy(this.buffer, this.bufferOffset)
+    this.bufferOffset += chunk.length
+
+    return true
   }
 
   pushFile (file, callback) {
     this.pushChunk(leading(file.headers, this._boundary), true)
 
-    let content = file.content || Buffer.alloc(0)
+    this.source = file.content || Buffer.alloc(0)
 
-    if (Buffer.isBuffer(content)) {
-      this.pushChunk(content)
-      this.pushChunk(NEW_LINE_BUFFER, true)
-      return callback()
+    if (Buffer.isBuffer(this.source)) {
+      this.source = bufferToStream(this.source)
     }
 
-    if (isSource(content)) {
-      content = toStream.source(content)
+    if (isSource(file.content)) {
+      // pull-stream-to-stream doesn't support readable event...
+      this.source = pump([pullToStream.source(file.content), new PassThrough()])
     }
-    this.source = content
 
-    // From now on we assume content is a stream
-    content.on('data', (data) => {
-      if (!this.pushChunk(data)) {
-        content.pause()
+    this.source.on('readable', () => {
+      this.sourceReadable = true
+      let chunk = null
+      if (this.chunkSize === 0) {
+        if ((chunk = this.source.read()) !== null) {
+          this.pushChunk(chunk)
+        }
+      } else {
+        while (!this.isPaused() && (chunk = this.source.read(this.chunkSize - this.bufferOffset)) !== null) {
+          this.pushChunk(chunk)
+        }
       }
     })
-    content.once('error', this.emit.bind(this, 'error'))
 
-    content.once('end', () => {
+    this.source.on('end', () => {
+      this.sourceReadable = false
       this.pushChunk(NEW_LINE_BUFFER, true)
       callback()
     })
+
+    this.source.on('error', err => this.emit('error', err))
   }
 }
 

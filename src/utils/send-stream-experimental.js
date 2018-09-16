@@ -11,6 +11,21 @@ const { prepareWithHeaders } = require('./prepare-file')
 const noop = () => {}
 
 /**
+ * Convert back to the proper schema
+ *
+ * @private
+ * @param {Object} data
+ * @returns {Object}
+ */
+const convert = (data) => {
+  return {
+    path: data.Name,
+    hash: data.Hash,
+    size: data.Size
+  }
+}
+
+/**
  * Factory for prepare stream
  * @private
  * @param {*} options
@@ -42,7 +57,6 @@ class SendStream extends Duplex {
    */
   constructor (send, options = {}) {
     super({ objectMode: true, highWaterMark: 1 })
-    this.waiting = null
     this.options = options
     this.send = send
     this.multipart = new Multipart(options)
@@ -52,9 +66,6 @@ class SendStream extends Duplex {
     this.rangeStart = 0
     this.rangeEnd = 0
     this.rangeTotal = 0
-    this.running = false
-    this.extraBytes = 0
-    this.totalUp = 0
     this.qs = {
       'cid-version': this.options['cid-version'],
       'raw-leaves': this.options['raw-leaves'],
@@ -87,9 +98,12 @@ class SendStream extends Duplex {
     })
 
     if (options.chunkSize) {
-      this.multipart.on('end', this.onEnd.bind(this))
       this.multipart.on('data', this.onData.bind(this))
     }
+  }
+
+  _read () {
+    // empty read
   }
 
   _write (chunk, encoding, callback) {
@@ -101,42 +115,16 @@ class SendStream extends Duplex {
     this.source.end()
   }
 
-  _read (size) {
-    // read
-  }
-
-  onEnd () {
-    console.log('End', this.rangeTotal)
-
-    // wait for all chunks to be sent
-    // doing all this in the end should simplify future concurrent chunk uploads
-    if (this.running && this.waiting === null) {
-      this.waiting = setInterval(() => {
-        if (!this.running) {
-          clearInterval(this.waiting)
-          this.waiting = null
-          this.requestChunk(null)
-        }
-      }, 100)
-    } else {
-      this.requestChunk(null)
-    }
-  }
-
   onData (chunk) {
-    console.log('Send ', chunk.length)
+    // this.multipart.pause()
     // stop producing chunks
-    this.multipart.pauseAll()
-    this.extraBytes = this.multipart.extraBytes
     this.index++
     this.rangeEnd = this.rangeStart + chunk.length
     this.rangeTotal += chunk.length
-    this.running = true
+    this.rangeStart = this.rangeEnd
     this.requestChunk(chunk)
       .then(() => {
-        this.running = false
-        this.rangeStart = this.rangeEnd
-        this.multipart.resumeAll()
+        // this.multipart.resume()
       })
   }
 
@@ -152,15 +140,18 @@ class SendStream extends Duplex {
           return this.emit('error', err)
         }
 
+        // progress upload reporting
+        const totalUp = Math.max((this.rangeTotal - this.multipart.extraBytes) / 2, 0)
+        progressFn(totalUp)
         // we are in the last request
         if (isStream(res)) {
           res.on('data', (d) => {
-            if (d.path) {
-            // files added reporting
-              this.push(d)
+            if (d.Hash) {
+              // files added reporting
+              this.push(convert(d))
             } else {
-            // progress add reporting
-              progressFn((d.Bytes / 2) + this.totalUp)
+              // progress add reporting
+              progressFn((d.Bytes / 2) + totalUp)
             }
           })
           res.on('error', err => this.emit('error', err))
@@ -169,9 +160,6 @@ class SendStream extends Duplex {
             this.push(null)
           })
         } else {
-        // progress upload reporting
-          this.totalUp = (this.rangeTotal - this.extraBytes) / 2
-          progressFn(this.totalUp)
           resolve()
         }
       })
@@ -192,9 +180,9 @@ class SendStream extends Duplex {
       }
 
       res.on('data', (d) => {
-        if (d.hash) {
+        if (d.Hash) {
           // files added reporting
-          this.push(d)
+          this.push(convert(d))
         } else {
           // progress add reporting
           progressFn(d.Bytes)

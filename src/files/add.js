@@ -47,7 +47,7 @@ module.exports = (send) => {
   })
 
   return function (data, options, callback) {
-    if (options.experimental) {
+    if (options && options.experimental) {
       return require('./add-experimental').add(send)(data, options, callback)
     }
 
