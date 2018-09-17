@@ -144,7 +144,6 @@ class Multipart extends Duplex {
     const bytesNeeded = (this.chunkSize - this.bufferOffset)
     // make sure we have the correct amount of bytes
     if (chunk.length === bytesNeeded) {
-      // chunk.copy(this.buffer, this.bufferOffset, 0, bytesNeeded)
       const slice = this.buffer.slice(0, this.bufferOffset)
       this.bufferOffset = 0
       return this.push(Buffer.concat([slice, chunk], slice.length + chunk.length))

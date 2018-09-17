@@ -116,16 +116,16 @@ class SendStream extends Duplex {
   }
 
   onData (chunk) {
-    // this.multipart.pause()
+    this.multipart.pause()
     // stop producing chunks
     this.index++
     this.rangeEnd = this.rangeStart + chunk.length
     this.rangeTotal += chunk.length
-    this.rangeStart = this.rangeEnd
     this.requestChunk(chunk)
       .then(() => {
-        // this.multipart.resume()
+        this.multipart.resume()
       })
+    this.rangeStart = this.rangeEnd
   }
 
   requestChunk (chunk) {
@@ -145,7 +145,7 @@ class SendStream extends Duplex {
         progressFn(totalUp)
         // we are in the last request
         if (isStream(res)) {
-          res.on('data', (d) => {
+          res.on('data', d => {
             if (d.Hash) {
               // files added reporting
               this.push(convert(d))
