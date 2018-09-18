@@ -156,6 +156,13 @@ class Multipart extends Duplex {
     return true
   }
 
+  /**
+   * Consume file and push to readable stream
+   *
+   * @param {(Buffer|Readable|PullStream)} file
+   * @param {function(): void} callback
+   * @return {void}
+   */
   pushFile (file, callback) {
     this.pushChunk(leading(file.headers, this._boundary), true)
 
