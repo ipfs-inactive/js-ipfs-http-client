@@ -6,14 +6,14 @@ const pump = require('pump')
 const Multipart = require('./multipart-experimental')
 const { prepareWithHeaders } = require('./prepare-file')
 
-/** @private @typedef {import("../files/add-experimental").AddOptions} AddOptions */
+/** @ignore @typedef {import("../files/add-experimental").AddOptions} AddOptions */
 
 const noop = () => {}
 
 /**
  * Convert back to the proper schema
  *
- * @private
+ * @ignore
  * @param {Object} data
  * @returns {Object}
  */
@@ -27,7 +27,7 @@ const convert = (data) => {
 
 /**
  * Factory for prepare stream
- * @private
+ * @ignore
  * @param {*} options
  * @returns {Function}
  */
@@ -45,7 +45,7 @@ const prepareTransform = (options) => new Transform({
 /**
  * Class to create a stream to send data to the API
  *
- * @private
+ * @ignore
  * @class SendStream
  * @extends {Duplex}
  */
@@ -103,7 +103,7 @@ class SendStream extends Duplex {
   }
 
   _read () {
-    // empty read
+    // duplex stream needs to implement _read()
   }
 
   _write (chunk, encoding, callback) {

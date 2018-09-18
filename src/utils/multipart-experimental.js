@@ -6,7 +6,7 @@ const pump = require('pump')
 const pullToStream = require('pull-stream-to-stream')
 const bufferToStream = require('buffer-to-stream')
 
-/** @private @typedef {import("../files/add-experimental").AddOptions} AddOptions */
+/** @ignore @typedef {import("../files/add-experimental").AddOptions} AddOptions */
 
 const PADDING = '--'
 const NEW_LINE = '\r\n'
@@ -15,7 +15,7 @@ const NEW_LINE_BUFFER = Buffer.from(NEW_LINE)
 /**
  * Generate a random boundary to use in a multipart request
  *
- * @private
+ * @ignore
  * @returns {string}
  */
 const generateBoundary = () => {
@@ -30,7 +30,7 @@ const generateBoundary = () => {
 /**
  * Generate leading section for a multipart body
  *
- * @private
+ * @ignore
  * @param {Object} [headers={}]
  * @param {string} boundary
  * @returns {string}
@@ -53,7 +53,7 @@ const leading = (headers = {}, boundary) => {
 /**
  * Multipart class to generate a multipart body chunked and non chunked
  *
- * @private
+ * @ignore
  * @class Multipart
  * @extends {Duplex}
  */
@@ -125,11 +125,7 @@ class Multipart extends Duplex {
    * @return {boolean}
    */
   pushChunk (chunk, isExtra = false) {
-    if (chunk === null) {
-      return this.push(null)
-    }
-
-    if (this.chunkSize === 0) {
+    if (chunk === null || this.chunkSize === 0) {
       return this.push(chunk)
     }
 
@@ -167,9 +163,7 @@ class Multipart extends Duplex {
 
     if (Buffer.isBuffer(this.source)) {
       this.source = bufferToStream(this.source)
-    }
-
-    if (isSource(file.content)) {
+    } else if (isSource(file.content)) {
       // pull-stream-to-stream doesn't support readable event...
       this.source = pump([pullToStream.source(file.content), new PassThrough()])
     }

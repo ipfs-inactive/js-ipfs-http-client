@@ -12,7 +12,7 @@ const SendStream = require('../utils/send-stream-experimental')
 /**
  * Converts an array to a stream
  *
- * @private
+ * @ignore
  * @param {Array} data
  * @returns {Readable}
  */
