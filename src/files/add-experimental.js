@@ -46,9 +46,9 @@ const arrayToStream = (data) => {
 
 /**
  * @typedef {Object} AddResult
- * @property {string} path
- * @property {string} hash
- * @property {number} size
+ * @property {string} path - Object path
+ * @property {string} hash - Object CID
+ * @property {number} size - Object size
  */
 
 /**
