@@ -2,12 +2,11 @@
 
 const promisify = require('promisify-es6')
 const Big = require('big.js')
-const CID = require('cids')
 
 const transform = function (res, callback) {
   callback(null, {
     provideBufLen: res.ProvideBufLen,
-    wantlist: (res.Wantlist || []).map(item => new CID(item['/'])),
+    wantlist: (res.Wantlist || []).map(item => item['/']),
     peers: res.Peers || [],
     blocksReceived: new Big(res.BlocksReceived),
     dataReceived: new Big(res.DataReceived),
@@ -26,7 +25,12 @@ module.exports = (send) => {
     }
 
     options = options || {}
+    const qs = {}
 
-    send.andTransform({ path: 'bitswap/stat' }, transform, callback)
+    if (options.cidBase) {
+      qs['cid-base'] = options.cidBase
+    }
+
+    send.andTransform({ path: 'bitswap/stat', qs }, transform, callback)
   })
 }

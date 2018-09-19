@@ -18,6 +18,12 @@ module.exports = (send) => {
       opts = hash
       hash = null
     }
+
+    if (opts.cidBase) {
+      opts['cid-base'] = opts.cidBase
+      delete opts.cidBase
+    }
+
     send({
       path: 'pin/ls',
       args: hash,

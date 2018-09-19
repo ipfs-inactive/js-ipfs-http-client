@@ -28,6 +28,13 @@ module.exports = (send) => {
       args = null
     }
 
+    opts = opts || {}
+
+    if (opts.cidBase) {
+      opts['cid-base'] = opts.cidBase
+      delete opts.cidBase
+    }
+
     return send.andTransform({
       path: 'files/ls',
       args: args,

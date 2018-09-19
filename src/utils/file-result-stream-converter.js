@@ -1,7 +1,6 @@
 'use strict'
 
 const TransformStream = require('readable-stream').Transform
-const CID = require('cids')
 
 /*
   Transforms a stream of {Name, Hash} objects to include size
@@ -36,7 +35,7 @@ class FileResultStreamConverter extends TransformStream {
 
     callback(null, {
       path: obj.Name,
-      hash: new CID(obj.Hash),
+      hash: obj.Hash,
       size: parseInt(obj.Size, 10)
     })
   }

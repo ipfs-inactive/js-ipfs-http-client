@@ -8,6 +8,12 @@ module.exports = (send) => {
       callback = opts
       opts = null
     }
+
+    if (opts.cidBase) {
+      opts['cid-base'] = opts.cidBase
+      delete opts.cidBase
+    }
+
     send({
       path: 'pin/add',
       args: hash,

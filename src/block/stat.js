@@ -2,13 +2,13 @@
 
 const promisify = require('promisify-es6')
 const CID = require('cids')
-const multihash = require('multihashes')
 
 module.exports = (send) => {
-  return promisify((args, opts, callback) => {
-    // TODO this needs to be adjusted with the new go-ipfs http-api
-    if (args && CID.isCID(args)) {
-      args = multihash.toB58String(args.multihash)
+  return promisify((cid, opts, callback) => {
+    try {
+      cid = new CID(cid).toBaseEncodedString()
+    } catch (err) {
+      return callback(err)
     }
 
     if (typeof (opts) === 'function') {
@@ -16,16 +16,23 @@ module.exports = (send) => {
       opts = {}
     }
 
+    opts = opts || {}
+    const qs = {}
+
+    if (opts.cidBase) {
+      qs['cid-base'] = opts.cidBase
+    }
+
     const request = {
       path: 'block/stat',
-      args: args,
+      args: cid,
       qs: opts
     }
 
     // Transform the response from { Key, Size } objects to { key, size } objects
     const transform = (stats, callback) => {
       callback(null, {
-        key: new CID(stats.Key),
+        key: stats.Key,
         size: stats.Size
       })
     }

@@ -6,26 +6,14 @@ const CID = require('cids')
 const streamToValue = require('../utils/stream-to-value')
 
 module.exports = (send) => {
-  return promisify((args, opts, callback) => {
+  return promisify((cid, opts, callback) => {
     if (typeof opts === 'function') {
       callback = opts
       opts = {}
     }
 
-    // TODO this needs to be adjusted with the new go-ipfs http-api
-    let cid
     try {
-      if (CID.isCID(args)) {
-        cid = args
-        args = cid.toBaseEncodedString()
-      } else if (Buffer.isBuffer(args)) {
-        cid = new CID(args)
-        args = cid.toBaseEncodedString()
-      } else if (typeof args === 'string') {
-        cid = new CID(args)
-      } else {
-        return callback(new Error('invalid argument'))
-      }
+      cid = new CID(cid)
     } catch (err) {
       return callback(err)
     }
@@ -53,7 +41,7 @@ module.exports = (send) => {
 
     const request = {
       path: 'block/get',
-      args: args,
+      args: cid.toBaseEncodedString(),
       qs: opts
     }
 

@@ -19,9 +19,16 @@ module.exports = (send) => {
       return callback(err)
     }
 
+    const qs = {}
+
+    if (opts.cidBase) {
+      qs['cid-base'] = opts.cidBase
+    }
+
     send({
       path: 'object/stat',
-      args: multihash
+      args: multihash,
+      qs
     }, callback)
   })
 }
