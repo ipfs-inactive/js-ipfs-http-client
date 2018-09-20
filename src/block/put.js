@@ -55,7 +55,17 @@ module.exports = (send) => {
 
     sendOneFile(block.data, { qs }, (err, result) => {
       if (err) {
-        return callback(err) // early
+        // Retry with "protobuf" format for go-ipfs
+        // TODO: remove when https://github.com/ipfs/go-cid/issues/75 resolved
+        if (qs.format === 'dag-pb') {
+          qs.format = 'protobuf'
+          return sendOneFile(block.data, { qs }, (err, result) => {
+            if (err) return callback(err)
+            callback(null, new Block(block.data, new CID(result.Key)))
+          })
+        }
+
+        return callback(err)
       }
 
       callback(null, new Block(block.data, new CID(result.Key)))
