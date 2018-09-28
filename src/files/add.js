@@ -10,8 +10,6 @@ const FileResultStreamConverter = require('../utils/file-result-stream-converter
 const SendFilesStream = require('../utils/send-files-stream')
 
 module.exports = (send) => {
-  const createAddStream = SendFilesStream(send, 'add')
-
   const add = promisify((_files, options, _callback) => {
     if (typeof options === 'function') {
       _callback = options
@@ -26,11 +24,11 @@ module.exports = (send) => {
     options.converter = FileResultStreamConverter
 
     const ok = Buffer.isBuffer(_files) ||
-               isStream.readable(_files) ||
-               Array.isArray(_files) ||
-               OtherBuffer.isBuffer(_files) ||
-               typeof _files === 'object' ||
-               isSource(_files)
+    isStream.readable(_files) ||
+    Array.isArray(_files) ||
+    OtherBuffer.isBuffer(_files) ||
+    typeof _files === 'object' ||
+    isSource(_files)
 
     if (!ok) {
       return callback(new Error('first arg must be a buffer, readable stream, pull stream, an object or array of objects'))
@@ -38,6 +36,7 @@ module.exports = (send) => {
 
     const files = [].concat(_files)
 
+    const createAddStream = SendFilesStream(send, 'add')
     const stream = createAddStream({ qs: options })
     const concat = ConcatStream((result) => callback(null, result))
     stream.once('error', callback)
@@ -47,7 +46,11 @@ module.exports = (send) => {
     stream.end()
   })
 
-  return function () {
+  return function (data, options, callback) {
+    if (options && options.experimental) {
+      return require('./add-experimental').add(send)(data, options, callback)
+    }
+
     const args = Array.from(arguments)
 
     // If we files.add(<pull stream>), then promisify thinks the pull stream is

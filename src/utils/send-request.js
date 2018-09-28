@@ -4,6 +4,7 @@ const Qs = require('qs')
 const qsDefaultEncoder = require('qs/lib/utils').encode
 const isNode = require('detect-node')
 const ndjson = require('ndjson')
+const { Transform } = require('stream')
 const pump = require('pump')
 const once = require('once')
 const streamToValue = require('./stream-to-value')
@@ -52,22 +53,21 @@ function onRes (buffer, cb) {
       return cb(null, res)
     }
 
-    // Return a stream of JSON objects
     if (chunkedObjects && isJson) {
-      const outputStream = ndjson.parse()
-      pump(res, outputStream)
-      res.on('end', () => {
-        let err = res.trailers['x-stream-error']
-        if (err) {
-          // Not all errors are JSON
-          try {
-            err = JSON.parse(err)
-          } catch (e) {
-            err = { Message: err }
+      const outputStream = pump(
+        res,
+        ndjson.parse(),
+        new Transform({
+          objectMode: true,
+          transform (chunk, encoding, callback) {
+            if (chunk.Type && chunk.Type === 'error') {
+              callback(new Error(chunk.Message))
+            } else {
+              callback(null, chunk)
+            }
           }
-          outputStream.emit('error', new Error(err.Message))
-        }
-      })
+        })
+      )
       return cb(null, outputStream)
     }
 
@@ -114,7 +114,7 @@ function requestAPI (config, options, callback) {
   delete options.qs.followSymlinks
 
   const method = 'POST'
-  const headers = Object.assign({}, config.headers)
+  const headers = Object.assign({}, config.headers, options.headers)
 
   if (isNode) {
     // Browsers do not allow you to modify the user agent
