@@ -1,10 +1,3 @@
-<a name="24.0.3"></a>
-## [24.0.3](https://github.com/ipfs/js-ipfs-api/compare/v24.0.2...v24.0.3) (2018-10-08)
-
-### Bug Fixes
-
-* Should add lodash as a dependency ([#870](https://github.com/ipfs/js-ipfs-api/issues/870)) ([afc5724](https://github.com/ipfs/js-ipfs-api/commit/afc5724))
-
 <a name="24.0.2"></a>
 ## [24.0.2](https://github.com/ipfs/js-ipfs-api/compare/v24.0.1...v24.0.2) (2018-09-21)
 

@@ -1,6 +1,6 @@
 {
   "name": "ipfs-api",
-  "version": "24.0.3",
+  "version": "24.0.2",
   "description": "A client library for the IPFS HTTP API",
   "leadMaintainer": "Alan Shaw <alan@tableflip.io>",
   "main": "src/index.js",
@@ -138,7 +138,6 @@
     "Mitar <mitar.git@tnode.com>",
     "Mithgol <getgit@mithgol.ru>",
     "Mohamed Abdulaziz <mohamed@mohamedabdulaziz.com>",
-    "Níckolas Goline <n@ngoline.com>",
     "Nuno Nogueira <nunofmn@gmail.com>",
     "Oli Evans <oli@tableflip.io>",
     "Orie Steele <orie@ohs.io>",
