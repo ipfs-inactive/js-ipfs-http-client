@@ -195,12 +195,12 @@ describe('interface-ipfs-core tests', () => {
       // name.pubsub.cancel
       {
         name: 'should cancel a subscription correctly returning true',
-        reasone: 'go-ipfs is really slow for publishing and resolving ipns records, unless in offline mode'
+        reason: 'go-ipfs is really slow for publishing and resolving ipns records, unless in offline mode'
       },
       // name.pubsub.subs
       {
         name: 'should get the list of subscriptions updated after a resolve',
-        reasone: 'go-ipfs is really slow for publishing and resolving ipns records, unless in offline mode'
+        reason: 'go-ipfs is really slow for publishing and resolving ipns records, unless in offline mode'
       }
     ]
   })
