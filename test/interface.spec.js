@@ -183,8 +183,7 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  /*
-  TODO: uncomment after https://github.com/ipfs/interface-ipfs-core/pull/361 being merged and a new release
+  // TODO: uncomment after https://github.com/ipfs/interface-ipfs-core/pull/361 being merged and a new release
   tests.namePubsub(CommonFactory.create({
     spawnOptions: {
       args: ['--enable-namesys-pubsub'],
@@ -204,7 +203,6 @@ describe('interface-ipfs-core tests', () => {
       }
     ]
   })
-  */
 
   tests.object(defaultCommonFactory)
 
