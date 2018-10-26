@@ -112,6 +112,36 @@ describe('interface-ipfs-core tests', () => {
         name: 'should add readable stream of valid files and dirs',
         reason: 'FIXME https://github.com/ipfs/js-ipfs-api/issues/339'
       },
+      // .addFromStream
+      isNode ? null : {
+        name: 'same as .add',
+        reason: 'Not designed to run in the Browser'
+      },
+      // .addFromFs
+      isNode ? null : {
+        name: 'a directory',
+        reason: 'Only works in Node.js'
+      },
+      isNode ? null : {
+        name: 'a directory with an odd name',
+        reason: 'Only works in Node.js'
+      },
+      isNode ? null : {
+        name: 'add and ignore a directory',
+        reason: 'Only works in Node.js'
+      },
+      isNode ? null : {
+        name: 'a file',
+        reason: 'Only works in Node.js'
+      },
+      isNode ? null : {
+        name: 'a hidden file in a directory',
+        reason: 'Only works in Node.js'
+      },
+      isNode ? null : {
+        name: 'a with only-hash=true',
+        reason: 'Only works in Node.js'
+      },
       // .catPullStream
       {
         name: 'should export a chunk of a file',
