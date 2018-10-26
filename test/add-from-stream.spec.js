@@ -7,11 +7,13 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 const isNode = require('detect-node')
+const path = require('path')
+const fs = require('fs')
 
 const IPFSApi = require('../src')
 const f = require('./utils/factory')
 
-describe('.util', () => {
+describe('.addFromStream', () => {
   if (!isNode) { return }
 
   let ipfsd
@@ -34,28 +36,15 @@ describe('.util', () => {
     ipfsd.stop(done)
   })
 
-  describe('.getEndpointConfig', () => {
-    it('should return the endpoint configured host and port', function () {
-      const endpoint = ipfs.util.getEndpointConfig()
+  it('same as .add', (done) => {
+    const tfpath = path.join(__dirname, '/fixtures/testfile.txt')
+    const rs = fs.createReadStream(tfpath)
+    rs.path = '' // clean the path for testing purposes
 
-      expect(endpoint).to.have.property('host')
-      expect(endpoint).to.have.property('port')
-    })
-  })
-
-  describe('.crypto', () => {
-    it('should contain the crypto primitives object', function () {
-      const cripto = ipfs.util.crypto
-
-      expect(cripto).to.exist()
-    })
-  })
-
-  describe('.isIPFS', () => {
-    it('should contain the isIPFS utilities object', function () {
-      const isIPFS = ipfs.util.isIPFS
-
-      expect(isIPFS).to.exist()
+    ipfs.addFromStream(rs, (err, result) => {
+      expect(err).to.not.exist()
+      expect(result.length).to.equal(1)
+      done()
     })
   })
 })
