@@ -77,7 +77,6 @@
   "devDependencies": {
     "aegir": "^17.0.1",
     "browser-process-platform": "~0.1.1",
-<<<<<<< HEAD
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "dirty-chai": "^2.0.1",
@@ -87,16 +86,7 @@
     "interface-ipfs-core": "~0.81.0",
     "ipfsd-ctl": "~0.39.5",
     "pull-stream": "^3.6.9",
-    "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1",
     "stream-equal": "^1.1.1"
-=======
-    "chai": "^4.1.2",
-    "dirty-chai": "^2.0.1",
-    "interface-ipfs-core": "~0.80.0",
-    "ipfsd-ctl": "~0.39.0",
-    "pull-stream": "^3.6.8"
->>>>>>> fix: remove unused deps
   },
   "keywords": [
     "ipfs"
