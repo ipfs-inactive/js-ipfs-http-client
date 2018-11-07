@@ -16,7 +16,7 @@ describe('.swarm.peers', function () {
   const apiUrl = 'http://127.0.0.1:5001'
 
   it('handles a peer response', (done) => {
-    const response = { 'Peers': [{ 'Addr': '/ip4/104.131.131.82/tcp/4001', 'Peer': 'QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ', 'Latency': '', 'Muxer': '', 'Streams': null }] }
+    const response = { Peers: [{ Addr: '/ip4/104.131.131.82/tcp/4001', Peer: 'QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ', Latency: '', Muxer: '', Streams: null }] }
 
     const scope = nock(apiUrl)
       .post('/api/v0/swarm/peers')
@@ -36,7 +36,7 @@ describe('.swarm.peers', function () {
   })
 
   it('handles a go-ipfs <= 0.4.4 peer response', (done) => {
-    const response = { 'Strings': ['/ip4/73.109.217.59/tcp/49311/ipfs/QmWjxEGC7BthJrCf7QTModrcsRweHbupdPTY4oGMVoDZXm'] }
+    const response = { Strings: ['/ip4/73.109.217.59/tcp/49311/ipfs/QmWjxEGC7BthJrCf7QTModrcsRweHbupdPTY4oGMVoDZXm'] }
 
     const scope = nock(apiUrl)
       .post('/api/v0/swarm/peers')
@@ -44,7 +44,6 @@ describe('.swarm.peers', function () {
       .reply(200, response)
 
     ipfs.swarm.peers((err, res) => {
-      console.log(res[0].rawPeerInfo)
       expect(err).to.not.exist()
       expect(res).to.be.a('array')
       expect(res.length).to.equal(1)
@@ -57,7 +56,7 @@ describe('.swarm.peers', function () {
   })
 
   it('handles an ip6 quic peer', (done) => {
-    const response = { 'Peers': [{ 'Addr': '/ip6/2001:8a0:7ac5:4201:3ac9:86ff:fe31:7095/udp/4001/quic', 'Peer': 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC', 'Latency': '', 'Muxer': '', 'Streams': null }] }
+    const response = { Peers: [{ Addr: '/ip6/2001:8a0:7ac5:4201:3ac9:86ff:fe31:7095/udp/4001/quic', Peer: 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC', Latency: '', Muxer: '', Streams: null }] }
 
     const scope = nock(apiUrl)
       .post('/api/v0/swarm/peers')
@@ -77,7 +76,7 @@ describe('.swarm.peers', function () {
   })
 
   it('handles unvalidatable peer addr', (done) => {
-    const response = { 'Peers': [{ 'Addr': '/ip4/104.131.131.82/future-tech', 'Peer': 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC', 'Latency': '', 'Muxer': '', 'Streams': null }] }
+    const response = { Peers: [{ Addr: '/ip4/104.131.131.82/future-tech', Peer: 'QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC', Latency: '', Muxer: '', Streams: null }] }
 
     const scope = nock(apiUrl)
       .post('/api/v0/swarm/peers')
