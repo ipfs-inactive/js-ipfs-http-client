@@ -7,7 +7,7 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
-const IPFSApi = require('../src')
+const IPFSApi = require('../../src')
 
 describe('.swarm.peers', function () {
   this.timeout(50 * 1000) // slow CI
