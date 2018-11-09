@@ -17,10 +17,20 @@ module.exports = (send) => {
       opts = {}
     }
 
-    send.andTransform({
+    send({
       path: 'dht/query',
       args: peerId,
       qs: opts
-    }, streamToValue, callback)
+    }, (err, result) => {
+      if (err) {
+        return callback(err)
+      }
+
+      if (typeof result.pipe === 'function') {
+        streamToValue(result, callback)
+      } else {
+        callback(null, result)
+      }
+    })
   })
 }
