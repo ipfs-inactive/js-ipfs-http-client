@@ -178,15 +178,7 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.filesMFS(defaultCommonFactory, {
-    skip: [
-      // files.write
-      {
-        name: 'should write to deeply nested non existent file with create and parents flags',
-        reason: 'TODO remove when 0.4.18 is released https://github.com/ipfs/go-ipfs/pull/5359'
-      }
-    ]
-  })
+  tests.filesMFS(defaultCommonFactory)
 
   tests.key(defaultCommonFactory, {
     skip: [
