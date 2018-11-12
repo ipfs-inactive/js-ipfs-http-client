@@ -7,7 +7,7 @@ const CommonFactory = require('./utils/interface-common-factory')
 const IPFSApi = require('../src')
 const isWindows = process.platform && process.platform === 'win32'
 
-describe('interface-ipfs-core tests', () => {
+describe.only('interface-ipfs-core tests', () => {
   const defaultCommonFactory = CommonFactory.create()
 
   tests.bitswap(defaultCommonFactory, {
@@ -114,33 +114,18 @@ describe('interface-ipfs-core tests', () => {
       },
       // .addFromStream
       isNode ? null : {
-        name: 'same as .add',
-        reason: 'Not designed to run in the Browser'
+        name: 'addFromStream',
+        reason: 'Not designed to run in the browser'
       },
       // .addFromFs
       isNode ? null : {
-        name: 'a directory',
-        reason: 'Only works in Node.js'
+        name: 'addFromFs',
+        reason: 'Not designed to run in the browser'
       },
+      // .addFromUrl
       isNode ? null : {
-        name: 'a directory with an odd name',
-        reason: 'Only works in Node.js'
-      },
-      isNode ? null : {
-        name: 'add and ignore a directory',
-        reason: 'Only works in Node.js'
-      },
-      isNode ? null : {
-        name: 'a file',
-        reason: 'Only works in Node.js'
-      },
-      isNode ? null : {
-        name: 'a hidden file in a directory',
-        reason: 'Only works in Node.js'
-      },
-      isNode ? null : {
-        name: 'a with only-hash=true',
-        reason: 'Only works in Node.js'
+        name: 'addFromUrl',
+        reason: 'Not designed to run in the browser'
       },
       // .catPullStream
       {
