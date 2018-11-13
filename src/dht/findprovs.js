@@ -25,14 +25,23 @@ module.exports = (send) => {
         res = res[0]
       }
 
-      // Type 4 keys
-      if (res.Type !== 4) {
+      // Type 4 keys (inconsistencies between go core and js core)
+      if (res.Type !== 4 && res.type !== 4) {
         const errMsg = `key was not found (type 4)`
 
         return callback(errcode(new Error(errMsg), 'ERR_KEY_TYPE_4_NOT_FOUND'))
       }
 
-      callback(null, res)
+      // inconsistencies between go core and js core
+      const recResponses = res.Responses || res.responses
+
+      // providers array (handling inconsistencies)
+      const responses = recResponses.map((r) => ({
+        id: r.ID || r.id,
+        addrs: r.Addrs || r.addrs
+      }))
+
+      callback(null, { responses })
     }
 
     send({
