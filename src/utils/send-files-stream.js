@@ -43,7 +43,7 @@ module.exports = (send, path) => {
       const next = once(_next)
       try {
         const files = prepareFile(file, options)
-          .map((file) => Object.assign({headers: headers(file)}, file))
+          .map((file) => Object.assign({ headers: headers(file) }, file))
 
         writing = true
         eachSeries(
@@ -80,6 +80,7 @@ module.exports = (send, path) => {
     qs['only-hash'] = propOrProp(options, 'only-hash', 'onlyHash')
     qs['wrap-with-directory'] = propOrProp(options, 'wrap-with-directory', 'wrapWithDirectory')
     qs.hash = propOrProp(options, 'hash', 'hashAlg')
+    qs['cid-base'] = propOrProp(options, 'cid-base', 'cidBase')
 
     const args = {
       path: path,

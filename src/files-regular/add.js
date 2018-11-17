@@ -36,11 +36,6 @@ module.exports = (send) => {
       return callback(new Error('first arg must be a buffer, readable stream, pull stream, an object or array of objects'))
     }
 
-    if (options.cidBase) {
-      options['cid-base'] = options.cidBase
-      delete options.cidBase
-    }
-
     const files = [].concat(_files)
 
     const stream = createAddStream({ qs: options })
