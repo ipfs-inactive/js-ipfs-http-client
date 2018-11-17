@@ -26,7 +26,7 @@ module.exports = (send) => {
     const request = {
       path: 'block/stat',
       args: cid,
-      qs: opts
+      qs
     }
 
     // Transform the response from { Key, Size } objects to { key, size } objects
