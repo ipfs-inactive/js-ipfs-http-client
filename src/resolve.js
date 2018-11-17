@@ -13,6 +13,8 @@ module.exports = (send) => {
       opts = {}
     }
 
+    opts = opts || {}
+
     const qs = {
       recursive: opts.r || opts.recursive,
       'cid-base': opts['cid-base'] || opts.cidBase
