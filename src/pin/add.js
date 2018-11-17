@@ -9,6 +9,8 @@ module.exports = (send) => {
       opts = null
     }
 
+    opts = opts || {}
+
     if (opts.cidBase) {
       opts['cid-base'] = opts.cidBase
       delete opts.cidBase
