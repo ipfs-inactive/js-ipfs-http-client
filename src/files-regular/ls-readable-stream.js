@@ -12,7 +12,13 @@ module.exports = (arg) => {
       opts = {}
     }
 
-    const pt = new Stream.PassThrough({objectMode: true})
+    opts = opts || {}
+
+    if (opts.cidBase) {
+      opts['cid-base'] = opts.cidBase
+    }
+
+    const pt = new Stream.PassThrough({ objectMode: true })
 
     send({ path: 'ls', args: args, qs: opts }, (err, results) => {
       if (err) { return callback(err) }

@@ -1,7 +1,6 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const CID = require('cids')
 const moduleConfig = require('../utils/module-config')
 
 module.exports = (arg) => {
@@ -12,11 +11,14 @@ module.exports = (arg) => {
       callback = opts
       opts = {}
     }
-    send({
-      path: 'ls',
-      args: args,
-      qs: opts
-    }, (err, results) => {
+
+    opts = opts || {}
+
+    if (opts.cidBase) {
+      opts['cid-base'] = opts.cidBase
+    }
+
+    send({ path: 'ls', args: args, qs: opts }, (err, results) => {
       if (err) {
         return callback(err)
       }
@@ -40,7 +42,7 @@ module.exports = (arg) => {
         name: link.Name,
         path: args + '/' + link.Name,
         size: link.Size,
-        hash: new CID(link.Hash),
+        hash: link.Hash,
         type: typeOf(link),
         depth: link.Depth || 1
       }))
