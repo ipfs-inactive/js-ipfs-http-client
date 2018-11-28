@@ -1,5 +1,5 @@
 {
-  "name": "ipfs-http-api",
+  "name": "ipfs-http-client",
   "version": "26.1.2",
   "description": "A client library for the IPFS HTTP API",
   "leadMaintainer": "Alan Shaw <alan@tableflip.io>",
