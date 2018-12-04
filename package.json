@@ -22,7 +22,8 @@
     "release-major": "aegir release --type major ",
     "coverage": "aegir coverage --timeout 100000",
     "coverage-publish": "aegir coverage --provider coveralls --timeout 100000",
-    "dep-check": "npx dependency-check package.json './test/**/*.js' './src/**/*.js'"
+    "dep-check": "npx dependency-check package.json './test/**/*.js' './src/**/*.js'",
+    "size": "bundlesize -f dist/index.min.js -s 329kB"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -79,6 +80,7 @@
   "devDependencies": {
     "aegir": "^18.0.2",
     "browser-process-platform": "~0.1.1",
+    "bundlesize": "^0.17.0",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "dirty-chai": "^2.0.1",
