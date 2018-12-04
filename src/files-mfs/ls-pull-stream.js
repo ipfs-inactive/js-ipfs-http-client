@@ -1,21 +1,12 @@
 'use strict'
 
-const ls = require('./ls')
-const defer = require('pull-defer')
-const values = require('pull-stream/sources/values')
+const toPull = require('stream-to-pull-stream')
+const lsReadableStream = require('./ls-readable-stream')
 
 module.exports = (send) => {
   return (args, opts) => {
-    const deferred = defer.source()
+    opts = opts || {}
 
-    ls(send)(args, opts, (err, entries) => {
-      if (err) {
-        return deferred.abort(err)
-      }
-
-      return deferred.resolve(values(entries))
-    })
-
-    return deferred
+    return toPull.source(lsReadableStream(send)(args, opts))
   }
 }
