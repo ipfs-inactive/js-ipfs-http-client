@@ -1,10 +1,21 @@
 'use strict'
 
 const {
-  Transform
+  Transform,
+  PassThrough
 } = require('stream')
 const pump = require('pump')
 const ndjson = require('ndjson')
+const isStream = require('is-stream')
+
+const toEntry = (entry) => {
+  return {
+    name: entry.Name,
+    type: entry.Type,
+    size: entry.Size,
+    hash: entry.Hash
+  }
+}
 
 module.exports = (send) => {
   return (args, opts) => {
@@ -14,13 +25,12 @@ module.exports = (send) => {
       objectMode: true,
 
       transform (entry, encoding, callback) {
-        callback(null, {
-          name: entry.Name,
-          type: entry.Type,
-          size: entry.Size,
-          hash: entry.Hash
-        })
+        callback(null, toEntry(entry))
       }
+    })
+
+    const output = new PassThrough({
+      objectMode: true
     })
 
     send({
@@ -30,16 +40,26 @@ module.exports = (send) => {
         ...opts,
         stream: true
       }
-    }, (err, stream) => {
+    }, (err, res) => {
       if (err) {
-        return transform.destroy(err)
+        return output.destroy(err)
       }
 
-      const outputStream = ndjson.parse()
+      if (isStream(res)) {
+        const parse = ndjson.parse()
 
-      pump(stream, outputStream, transform)
+        pump(res, parse, transform, output)
+      } else {
+        const entries = res.Entries || []
+
+        entries.forEach((entry) => {
+          output.write(toEntry(entry))
+        })
+
+        output.end()
+      }
     })
 
-    return transform
+    return output
   }
 }
