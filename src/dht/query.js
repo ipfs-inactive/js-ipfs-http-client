@@ -1,7 +1,10 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const streamToValue = require('../utils/stream-to-value')
+const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
+
+const PeerId = require('peer-id')
+const PeerInfo = require('peer-info')
 
 module.exports = (send) => {
   return promisify((peerId, opts, callback) => {
@@ -17,6 +20,12 @@ module.exports = (send) => {
       opts = {}
     }
 
+    const handleResult = (res, callback) => {
+      const peerIds = res.map((r) => (new PeerInfo(PeerId.createFromB58String(r.ID))))
+
+      callback(null, peerIds)
+    }
+
     send({
       path: 'dht/query',
       args: peerId,
@@ -26,11 +35,7 @@ module.exports = (send) => {
         return callback(err)
       }
 
-      if (typeof result.pipe === 'function') {
-        streamToValue(result, callback)
-      } else {
-        callback(null, result)
-      }
+      streamToValueWithTransformer(result, handleResult, callback)
     })
   })
 }

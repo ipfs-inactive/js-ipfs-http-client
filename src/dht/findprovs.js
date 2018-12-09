@@ -3,6 +3,9 @@
 const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
 
+const multiaddr = require('multiaddr')
+const PeerId = require('peer-id')
+const PeerInfo = require('peer-info')
 const errcode = require('err-code')
 
 module.exports = (send) => {
@@ -25,23 +28,26 @@ module.exports = (send) => {
         res = res[0]
       }
 
-      // Type 4 keys (inconsistencies between go core and js core)
-      if (res.Type !== 4 && res.type !== 4) {
+      // Type 4 keys
+      if (res.Type !== 4) {
         const errMsg = `key was not found (type 4)`
 
         return callback(errcode(new Error(errMsg), 'ERR_KEY_TYPE_4_NOT_FOUND'))
       }
 
-      // inconsistencies between go core and js core
-      const recResponses = res.Responses || res.responses
+      const responses = res.Responses.map((r) => {
+        const peerInfo = new PeerInfo(PeerId.createFromB58String(r.ID))
 
-      // providers array (handling inconsistencies)
-      const responses = recResponses.map((r) => ({
-        id: r.ID || r.id,
-        addrs: r.Addrs || r.addrs
-      }))
+        r.Addrs.forEach((addr) => {
+          const ma = multiaddr(addr)
 
-      callback(null, { responses })
+          peerInfo.multiaddrs.add(ma)
+        })
+
+        return peerInfo
+      })
+
+      callback(null, responses)
     }
 
     send({

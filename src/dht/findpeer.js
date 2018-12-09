@@ -3,6 +3,9 @@
 const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
 
+const multiaddr = require('multiaddr')
+const PeerId = require('peer-id')
+const PeerInfo = require('peer-info')
 const errcode = require('err-code')
 
 module.exports = (send) => {
@@ -25,40 +28,23 @@ module.exports = (send) => {
         res = res[0]
       }
 
-      // Type 2 keys (inconsistencies between go core and js core)
-      if (res.Type !== 2 && res.type !== 2) {
+      // Type 2 keys
+      if (res.Type !== 2) {
         const errMsg = `key was not found (type 2)`
 
         return callback(errcode(new Error(errMsg), 'ERR_KEY_TYPE_2_NOT_FOUND'))
       }
 
-      // inconsistencies between go core and js core
-      let id
-      let addrs
+      const responseReceived = res.Responses[0]
+      const peerInfo = new PeerInfo(PeerId.createFromB58String(responseReceived.ID))
 
-      if (res.Responses) {
-        id = res.Responses[0].ID
-        addrs = res.Responses[0].Addrs
-      } else {
-        id = res.responses[0].id
-        addrs = res.responses[0].addrs
-      }
+      responseReceived.Addrs.forEach((addr) => {
+        const ma = multiaddr(addr)
 
-      // inconsistencies js / go - go does not add `/ipfs/{id}` to the address
-      addrs = addrs.map((addr) => {
-        if (addr.split('/ipfs/') > -1) {
-          return addr
-        } else {
-          return `${addr}/ipfs/${id}`
-        }
+        peerInfo.multiaddrs.add(ma)
       })
 
-      callback(null, {
-        responses: [{
-          id,
-          addrs
-        }]
-      })
+      callback(null, peerInfo)
     }
 
     send({
