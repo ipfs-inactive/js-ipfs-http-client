@@ -1,7 +1,7 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const { URL } = require('url')
+const { URL } = require('iso-url')
 const request = require('../utils/request')
 const SendOneFile = require('../utils/send-one-file-multiple-results')
 const FileResultStreamConverter = require('../utils/file-result-stream-converter')
