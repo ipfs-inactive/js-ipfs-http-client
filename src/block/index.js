@@ -8,6 +8,7 @@ module.exports = (arg) => {
   return {
     get: require('./get')(send),
     stat: require('./stat')(send),
-    put: require('./put')(send)
+    put: require('./put')(send),
+    rm: require('./rm')(send)
   }
 }

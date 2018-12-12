@@ -217,6 +217,7 @@ const ipfs = ipfsClient({
 - [block](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md)
   - [`ipfs.block.get(cid, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockget)
   - [`ipfs.block.put(block, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockput)
+  - [`ipfs.block.rm(cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockrm)
   - [`ipfs.block.stat(cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockstat)
 
 #### Graph
