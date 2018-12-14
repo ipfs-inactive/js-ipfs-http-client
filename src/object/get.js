@@ -4,7 +4,6 @@ const promisify = require('promisify-es6')
 const dagPB = require('ipld-dag-pb')
 const DAGNode = dagPB.DAGNode
 const DAGLink = dagPB.DAGLink
-const bs58 = require('bs58')
 const CID = require('cids')
 const LRU = require('lru-cache')
 const lruOptions = {
