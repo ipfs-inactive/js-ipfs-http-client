@@ -70,7 +70,7 @@
     "stream-http": "hugomrdias/stream-http#develop",
     "stream-to-pull-stream": "^1.7.2",
     "streamifier": "~0.1.1",
-    "tar-stream": "^1.6.2",
+    "tar-stream": "hugomrdias/tar-stream#chore/update-bl",
     "through2": "^3.0.0"
   },
   "engines": {
