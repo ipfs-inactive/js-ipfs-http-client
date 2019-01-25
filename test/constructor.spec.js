@@ -74,5 +74,13 @@ describe('ipfs-http-client constructor tests', () => {
 
       clientWorks(ipfsClient(splitted[2], splitted[4], { protocol: 'http' }), done)
     })
+
+    it('error in invalid mutliaddr', () => {
+      const splitted = apiAddr.split('/')
+
+      expect(() => ipfsClient('/dns4')).to.throw('invalid address')
+      expect(() => ipfsClient('/hello')).to.throw('no protocol with name')
+      expect(() => ipfsClient('/dns4/ipfs.io')).to.throw('multiaddr must have a valid format')
+    })
   })
 })

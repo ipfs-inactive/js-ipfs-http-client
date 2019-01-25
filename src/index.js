@@ -8,13 +8,13 @@ const sendRequest = require('./utils/send-request')
 
 function ipfsClient (hostOrMultiaddr, port, opts) {
   const config = getConfig()
-
-  try {
-    const maddr = multiaddr(hostOrMultiaddr).nodeAddress()
-    config.host = maddr.address
-    config.port = maddr.port
-  } catch (e) {
-    if (typeof hostOrMultiaddr === 'string') {
+  if (typeof hostOrMultiaddr === 'string') {
+    if (hostOrMultiaddr[0] === '/') {
+      // throws if multiaddr is malformed or can't be converted to a nodeAddress
+      const maddr = multiaddr(hostOrMultiaddr).nodeAddress()
+      config.host = maddr.address
+      config.port = maddr.port
+    } else {
       config.host = hostOrMultiaddr
       config.port = port && typeof port !== 'object' ? port : config.port
     }
