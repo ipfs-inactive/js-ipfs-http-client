@@ -43,7 +43,6 @@ describe('.util', () => {
       expect(endpoint['api-path']).to.equal('/api/v0/')
       // changes per test run so we just assert it exists.
       expect(endpoint).to.have.property('port')
-
     })
   })
 
