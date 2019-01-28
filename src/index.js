@@ -17,13 +17,10 @@ function ipfsClient (hostOrMultiaddr, port, opts) {
       hostAndPort.host = split[0]
       hostAndPort.port = split[1]
     }
-
   } else if (multiaddr.isMultiaddr(hostOrMultiaddr)) {
     hostAndPort = toHostAndPort(hostOrMultiaddr)
-
   } else if (typeof hostOrMultiaddr === 'object') {
     hostAndPort = hostOrMultiaddr
-
   } else if (typeof hostOrMultiaddr === 'string') {
     if (hostOrMultiaddr[0] === '/') {
       // throws if multiaddr is malformed or can't be converted to a nodeAddress
