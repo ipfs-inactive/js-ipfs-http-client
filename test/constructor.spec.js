@@ -16,8 +16,9 @@ describe('ipfs-http-client constructor tests', () => {
       const host = 'localhost'
       const port = '5001'
       const protocol = 'http'
+      const apiPath = '/api/v0/'
       const ipfs = ipfsClient()
-      expectConfig(ipfs, { host, port, protocol })
+      expectConfig(ipfs, { host, port, protocol, apiPath })
     })
 
     it('opts', () => {
@@ -25,7 +26,7 @@ describe('ipfs-http-client constructor tests', () => {
       const port = '999'
       const protocol = 'https'
       const ipfs = ipfsClient({ host, port, protocol })
-      expectConfig(ipfs, { host, port })
+      expectConfig(ipfs, { host, port, protocol })
     })
 
     it('mutliaddr dns4 string, opts', () => {
@@ -60,12 +61,11 @@ describe('ipfs-http-client constructor tests', () => {
       expectConfig(ipfs, { host, port })
     })
 
-    // TOOD: need to add `api-path` to `getEndpointConfig()` so we can test that setting a non-default value works
-    it.skip('host, port and api path', () => {
+    it('host, port and api path', () => {
       const host = '10.100.100.255'
       const port = '9999'
-      const apiPath = '/future/api/v1'
-      const ipfs = ipfsClient(host, port, {'api-path': apiPath})
+      const apiPath = '/future/api/v1/'
+      const ipfs = ipfsClient(host, port, { 'api-path': apiPath })
       expectConfig(ipfs, { host, port, apiPath })
     })
 
@@ -114,13 +114,8 @@ function clientWorks (client, done) {
 
 function expectConfig (ipfs, {host, port, protocol, apiPath}) {
   const conf = ipfs.util.getEndpointConfig()
-  expect(conf.host).to.equal(host)
-  expect(conf.port).to.equal(port)
-  // TODO: needs https://github.com/ipfs/js-ipfs-http-client/pull/935
-  if (protocol) {
-    expect(conf.protocol).to.equal(protocol)
-  }
-  if (apiPath) {
-    expect(conf['api-path']).to.equal(apiPath)
-  }
+  expect(conf.host).to.equal(host || 'localhost')
+  expect(conf.port).to.equal(port || '5001')
+  expect(conf.protocol).to.equal(protocol || 'http')
+  expect(conf['api-path']).to.equal(apiPath || '/api/v0/')
 }
