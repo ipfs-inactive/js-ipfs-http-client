@@ -10,26 +10,28 @@ function ipfsClient (hostOrMultiaddr, port, opts) {
   // convert all three params to objects that we can merge.
   let hostAndPort = {}
 
-  if (hostOrMultiaddr.host) {
-    hostAndPort = hostOrMultiaddr
+  if (!hostOrMultiaddr) {
+    // autoconfigure host and port in browser
+    if (typeof self !== 'undefined') {
+      const split = self.location.host.split(':')
+      hostAndPort.host = split[0]
+      hostAndPort.port = split[1]
+    }
 
   } else if (multiaddr.isMultiaddr(hostOrMultiaddr)) {
     hostAndPort = toHostAndPort(hostOrMultiaddr)
+
+  } else if (typeof hostOrMultiaddr === 'object') {
+    hostAndPort = hostOrMultiaddr
 
   } else if (typeof hostOrMultiaddr === 'string') {
     if (hostOrMultiaddr[0] === '/') {
       // throws if multiaddr is malformed or can't be converted to a nodeAddress
       hostAndPort = toHostAndPort(multiaddr(hostOrMultiaddr))
     } else {
-      // hostAndPort is domain or ip address as a string
-      hostAndPort = hostOrMultiaddr
+      // hostOrMultiaddr is domain or ip address as a string
+      hostAndPort.host = hostOrMultiaddr
     }
-
-  // autoconfigure host and port in browser
-  } else if (!hostOrMultiaddr && typeof self !== 'undefined') {
-    const split = self.location.host.split(':')
-    hostAndPort.host = split[0]
-    hostAndPort.port = split[1]
   }
 
   if (port && typeof port !== 'object') {
