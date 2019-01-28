@@ -40,8 +40,10 @@ describe('.util', () => {
 
       expect(endpoint.host).to.equal('127.0.0.1')
       expect(endpoint.protocol).to.equal('http')
+      expect(endpoint['api-path']).to.equal('/api/v0/')
       // changes per test run so we just assert it exists.
       expect(endpoint).to.have.property('port')
+
     })
   })
 
