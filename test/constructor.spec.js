@@ -113,7 +113,7 @@ function clientWorks (client, done) {
   })
 }
 
-function expectConfig (ipfs, {host, port, protocol, apiPath}) {
+function expectConfig (ipfs, { host, port, protocol, apiPath }) {
   const conf = ipfs.util.getEndpointConfig()
   expect(conf.host).to.equal(host || 'localhost')
   expect(conf.port).to.equal(port || '5001')
