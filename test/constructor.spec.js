@@ -13,12 +13,13 @@ const ipfsClient = require('../src/index.js')
 describe('ipfs-http-client constructor tests', () => {
   describe('parameter permuations', () => {
     it('none', () => {
-      const host = 'localhost'
-      const port = '5001'
-      const protocol = 'http'
-      const apiPath = '/api/v0/'
       const ipfs = ipfsClient()
-      expectConfig(ipfs, { host, port, protocol, apiPath })
+      if (typeof self !== 'undefined') {
+        const { hostname, port } = self.location
+        expectConfig(ipfs, { host: hostname, port })
+      } else {
+        expectConfig(ipfs, {})
+      }
     })
 
     it('opts', () => {
