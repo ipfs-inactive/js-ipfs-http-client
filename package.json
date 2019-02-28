@@ -25,10 +25,10 @@
   "dependencies": {
     "async": "^2.6.1",
     "bignumber.js": "^8.0.2",
-    "bl": "^2.1.2",
+    "bl": "^3.0.0",
     "bs58": "^4.0.1",
     "cids": "~0.5.5",
-    "concat-stream": "^2.0.0",
+    "concat-stream": "hugomrdias/concat-stream#feat/smaller",
     "debug": "^4.1.0",
     "detect-node": "^2.0.4",
     "end-of-stream": "^1.4.1",
@@ -62,7 +62,7 @@
     "readable-stream": "^3.1.1",
     "stream-http": "hugomrdias/stream-http#develop",
     "stream-to-pull-stream": "^1.7.2",
-    "tar-stream": "^2.0.0",
+    "tar-stream": "^2.0.1",
     "through2": "^3.0.0"
   },
   "engines": {
