@@ -29,7 +29,7 @@
     "bignumber.js": "^8.0.2",
     "bl": "^2.1.2",
     "bs58": "^4.0.1",
-    "cids": "~0.5.5",
+    "cids": "github:multiformats/js-cid#refactor/cidv1base32-default",
     "concat-stream": "^2.0.0",
     "debug": "^4.1.0",
     "detect-node": "^2.0.4",
