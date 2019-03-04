@@ -20,7 +20,8 @@
     "build": "aegir build",
     "release": "aegir release ",
     "release-minor": "aegir release --type minor ",
-    "release-major": "aegir release --type major "
+    "release-major": "aegir release --type major ",
+    "coverage": "npx nyc -r html npm run test:node -- --bail"
   },
   "dependencies": {
     "async": "^2.6.1",
