@@ -348,13 +348,13 @@ This means:
 - See https://github.com/ipfs/js-ipfs for details on
   pubsub in js-ipfs
 
-#### Instance utilities
+#### Instance utils
 
 - `ipfs.getEndpointConfig()`
 
 Call this on your client instance to return an object containing the `host`, `port` and `protocol`.
 
-#### Static types and utilities
+#### Static types and utils
 
 Aside from the default export, `ipfs-http-client` exports various types and utilities that are included in the bundle:
 
