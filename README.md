@@ -352,7 +352,7 @@ This means:
 
 - `ipfs.getEndpointConfig()`
 
-Call this on your client instance to return an object containing the `host`, `port` and `protocol`.
+Call this on your client instance to return an object containing the `host`, `port`, `protocol` and `api-path`.
 
 #### Static types and utils
 
