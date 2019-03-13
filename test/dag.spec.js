@@ -68,16 +68,75 @@ describe('.dag', function () {
     })
   })
 
-  it('should callback with error when missing DAG resolver for raw multicodec', (done) => {
-    ipfs.dag.put(Buffer.from([0, 1, 2, 3]), {
-      // CIDv1 with multicodec = raw
-      cid: new CID('bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy')
+  it('should be able to get part of a dag-cbor node', (done) => {
+    const cbor = {
+      foo: 'dag-cbor-bar'
+    }
+    ipfs.dag.put(cbor, { format: 'dag-cbor', hashAlg: 'sha2-256' }, (err, cid) => {
+      expect(err).to.not.exist()
+      expect(cid.codec).to.equal('dag-cbor')
+      cid = cid.toBaseEncodedString('base32')
+      expect(cid).to.equal('bafyreic6f672hnponukaacmk2mmt7vs324zkagvu4hcww6yba6kby25zce')
+      ipfs.dag.get(cid, 'foo', (err, result) => {
+        expect(err).to.not.exist()
+        expect(result.value).to.equal('dag-cbor-bar')
+        done()
+      })
+    })
+  })
+
+  it('should be able to traverse from one dag-cbor node to another', (done) => {
+    const cbor1 = {
+      foo: 'dag-cbor-bar'
+    }
+
+    ipfs.dag.put(cbor1, { format: 'dag-cbor', hashAlg: 'sha2-256' }, (err, cid1) => {
+      expect(err).to.not.exist()
+
+      const cbor2 = {
+        other: {
+          '/': cid1.toBaseEncodedString('base32')
+        }
+      }
+
+      ipfs.dag.put(cbor2, { format: 'dag-cbor', hashAlg: 'sha2-256' }, (err, cid2) => {
+        expect(err).to.not.exist()
+
+        ipfs.dag.get(cid2, 'other/foo', (err, result) => {
+          expect(err).to.not.exist()
+          expect(result.value).to.equal('dag-cbor-bar')
+          done()
+        })
+      })
+    })
+  })
+
+  it('should be able to put and get a DAG node with format raw', (done) => {
+    const buf = Buffer.from([0, 1, 2, 3])
+
+    ipfs.dag.put(buf, {
+      format: 'raw',
+      hashAlg: 'sha2-256'
     }, (err, cid) => {
       expect(err).to.not.exist()
 
       ipfs.dag.get(cid, (err, result) => {
+        expect(err).to.not.exist()
+        expect(result.value).to.deep.equal(buf)
+        done()
+      })
+    })
+  })
+
+  it('should callback with error when missing DAG resolver for multicodec from requested CID', (done) => {
+    ipfs.block.put(Buffer.from([0, 1, 2, 3]), {
+      cid: new CID('z8mWaJ1dZ9fH5EetPuRsj8jj26pXsgpsr')
+    }, (err, block) => {
+      expect(err).to.not.exist()
+
+      ipfs.dag.get(block.cid, (err, result) => {
         expect(result).to.not.exist()
-        expect(err.message).to.equal('ipfs-http-client is missing DAG resolver for "raw" multicodec')
+        expect(err.message).to.equal('Missing IPLD format "git-raw"')
         done()
       })
     })
