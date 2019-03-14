@@ -5,7 +5,7 @@ const createServer = require('ipfsd-ctl').createServer
 const server = createServer()
 
 module.exports = {
-  bundlesize: { maxSize: '225kB' },
+  bundlesize: { maxSize: '231kB' },
   webpack: {
     resolve: {
       mainFields: ['browser', 'main']
