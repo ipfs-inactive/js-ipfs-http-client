@@ -1,6 +1,6 @@
 'use strict'
 
-const Transform = require('stream').Transform
+const Transform = require('readable-stream').Transform
 const isNode = require('detect-node')
 const isSource = require('is-pull-stream').isSource
 const toStream = require('pull-to-stream')
