@@ -209,6 +209,12 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
+  tests.name(CommonFactory.create({
+    spawnOptions: {
+      args: ['--offline']
+    }
+  }))
+
   // TODO: uncomment after https://github.com/ipfs/interface-ipfs-core/pull/361 being merged and a new release
   tests.namePubsub(CommonFactory.create({
     spawnOptions: {
