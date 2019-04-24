@@ -183,6 +183,9 @@ describe('submodules', () => {
     expect(filesRegular.ls).to.be.a('function')
     expect(filesRegular.lsReadableStream).to.be.a('function')
     expect(filesRegular.lsPullStream).to.be.a('function')
+    expect(filesRegular.refs).to.be.a('function')
+    expect(filesRegular.refs.local).to.be.a('function')
+    expect(filesRegular.refsPullStream).to.be.a('function')
   })
 
   it('files MFS API', () => {
@@ -208,12 +211,5 @@ describe('submodules', () => {
     const mount = require('../src/mount')(config)
 
     expect(mount).to.be.a('function')
-  })
-
-  it('refs', () => {
-    const refs = require('../src/refs')(config)
-
-    expect(refs).to.be.a('function')
-    expect(refs.local).to.be.a('function')
   })
 })
