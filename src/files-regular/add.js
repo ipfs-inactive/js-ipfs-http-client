@@ -2,6 +2,7 @@
 
 const promisify = require('promisify-es6')
 const ConcatStream = require('concat-stream')
+const kindOf = require('kind-of')
 const once = require('once')
 const isStream = require('is-stream')
 const isSource = require('is-pull-stream').isSource
@@ -16,7 +17,6 @@ module.exports = (send) => {
       _callback = options
       options = null
     }
-
     const callback = once(_callback)
 
     if (!options) {
@@ -35,7 +35,7 @@ module.exports = (send) => {
       return Boolean(obj.path) && typeof obj.path === 'string'
     }
     // An input atom: a buffer, stream or content object
-    const isInput = obj => isBufferOrStream(obj) || isContentObject(obj)
+    const isInput = obj => isBufferOrStream(obj) || isContentObject(obj) || kindOf(_files) === 'file'
     // All is ok if data isInput or data is an array of isInput
     const ok = isInput(_files) || (Array.isArray(_files) && _files.every(isInput))
 

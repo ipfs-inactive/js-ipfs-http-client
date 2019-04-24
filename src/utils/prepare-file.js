@@ -2,7 +2,11 @@
 
 const isNode = require('detect-node')
 const flatmap = require('flatmap')
+const { Readable } = require('stream')
+const kindOf = require('kind-of')
 
+// eslint-disable-next-line no-undef
+const supportsFileReader = FileReader in self
 function loadPaths (opts, file) {
   const path = require('path')
   const fs = require('fs')
@@ -73,6 +77,34 @@ function loadPaths (opts, file) {
   }
 }
 
+function streamFromFileReader (file) {
+  class FileStream extends Readable {
+    constructor (file, options = {}) {
+      super(options)
+      this.offset = 0
+      this.chunkSize = 1024 * 1024
+      this.fileReader = new self.FileReader(file)
+      this.fileReader.onloadend = (event) => {
+        const data = event.target.result
+        if (data.byteLength === 0) {
+          this.push(null)
+        }
+        this.push(new Uint8Array(data))
+      }
+      this.fileReader.onerror = (err) => this.emit('error', err)
+    }
+
+    _read (size) {
+      const end = this.offset + this.chunkSize
+      const slice = file.slice(this.offset, end)
+      this.fileReader.readAsArrayBuffer(slice)
+      this.offset = end
+    }
+  }
+
+  return new FileStream(file)
+}
+
 function prepareFile (file, opts) {
   let files = [].concat(file)
 
@@ -92,6 +124,15 @@ function prepareFile (file, opts) {
 
     if (file.content || file.dir) {
       return file
+    }
+
+    if (supportsFileReader && kindOf(file) === 'file') {
+      return {
+        path: '',
+        symlink: false,
+        dir: false,
+        content: streamFromFileReader(file, opts)
+      }
     }
 
     return {
