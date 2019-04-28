@@ -19,6 +19,7 @@ function requireCommands () {
     lsReadableStream: require('../files-regular/ls-readable-stream'),
     lsPullStream: require('../files-regular/ls-pull-stream'),
     refs: require('../files-regular/refs'),
+    refsReadableStream: require('../files-regular/refs-readable-stream'),
     refsPullStream: require('../files-regular/refs-pull-stream'),
 
     // Files MFS (Mutable Filesystem)
