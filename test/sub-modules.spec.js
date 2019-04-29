@@ -185,6 +185,7 @@ describe('submodules', () => {
     expect(filesRegular.lsPullStream).to.be.a('function')
     expect(filesRegular.refs).to.be.a('function')
     expect(filesRegular.refs.local).to.be.a('function')
+    expect(filesRegular.refsReadableStream).to.be.a('function')
     expect(filesRegular.refsPullStream).to.be.a('function')
   })
 
