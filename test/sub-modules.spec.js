@@ -184,9 +184,11 @@ describe('submodules', () => {
     expect(filesRegular.lsReadableStream).to.be.a('function')
     expect(filesRegular.lsPullStream).to.be.a('function')
     expect(filesRegular.refs).to.be.a('function')
-    expect(filesRegular.refs.local).to.be.a('function')
     expect(filesRegular.refsReadableStream).to.be.a('function')
     expect(filesRegular.refsPullStream).to.be.a('function')
+    expect(filesRegular.refs.local).to.be.a('function')
+    expect(filesRegular.refs.localReadableStream).to.be.a('function')
+    expect(filesRegular.refs.localPullStream).to.be.a('function')
   })
 
   it('files MFS API', () => {

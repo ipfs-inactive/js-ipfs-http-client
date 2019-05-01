@@ -6,20 +6,12 @@ const Stream = require('readable-stream')
 const pump = require('pump')
 
 module.exports = (send) => {
-  return (hash, opts) => {
+  return (opts) => {
     opts = opts || {}
 
     const pt = new Stream.PassThrough({ objectMode: true })
 
-    try {
-      hash = cleanCID(hash)
-    } catch (err) {
-      if (!v.ipfsPath(hash)) {
-        return pt.destroy(err)
-      }
-    }
-
-    send({ path: 'refs', args: hash, qs: opts }, (err, stream) => {
+    send({ path: 'refs/local', qs: opts }, (err, stream) => {
       if (err) { return pt.destroy(err) }
 
       pump(stream, pt)

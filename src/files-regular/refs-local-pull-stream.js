@@ -10,20 +10,12 @@ const moduleConfig = require('../utils/module-config')
 module.exports = (send) => {
   send = moduleConfig(send)
 
-  return (hash, opts) => {
+  return (opts) => {
     opts = opts || {}
 
     const p = deferred.source()
 
-    try {
-      hash = cleanCID(hash)
-    } catch (err) {
-      if (!v.ipfsPath(hash)) {
-        return p.end(err)
-      }
-    }
-
-    send({ path: 'refs', args: hash, qs: opts }, (err, stream) => {
+    send({ path: 'refs/local', qs: opts }, (err, stream) => {
       if (err) { return p.resolve(pull.error(err)) }
 
       p.resolve(toPull.source(stream))
