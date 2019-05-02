@@ -1,7 +1,5 @@
 'use strict'
 
-const cleanCID = require('../utils/clean-cid')
-const v = require('is-ipfs')
 const pull = require('pull-stream')
 const toPull = require('stream-to-pull-stream')
 const deferred = require('pull-defer')

@@ -1,7 +1,5 @@
 'use strict'
 
-const cleanCID = require('../utils/clean-cid')
-const v = require('is-ipfs')
 const Stream = require('readable-stream')
 const pump = require('pump')
 const through = require('through2')

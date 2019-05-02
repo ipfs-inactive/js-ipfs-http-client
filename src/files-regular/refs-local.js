@@ -1,10 +1,8 @@
 'use strict'
 
-const IsIpfs = require('is-ipfs')
 const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
 const moduleConfig = require('../utils/module-config')
-const cleanCID = require('../utils/clean-cid')
 
 module.exports = (arg) => {
   const send = moduleConfig(arg)
