@@ -2,8 +2,6 @@
 
 const Transform = require('readable-stream').Transform
 const isNode = require('detect-node')
-const isSource = require('is-pull-stream').isSource
-const toStream = require('pull-to-stream')
 
 const PADDING = '--'
 const NEW_LINE = '\r\n'
