@@ -2,11 +2,14 @@
 
 const isNode = require('detect-node')
 const flatmap = require('flatmap')
-const { Readable } = require('stream')
+const { Readable } = require('readable-stream')
 const kindOf = require('kind-of')
+const { isSource } = require('is-pull-stream')
+const isStream = require('is-stream')
+const pullToStream = require('pull-to-stream')
+const { supportsFileReader } = require('ipfs-utils/src/supports')
+const streamFromFileReader = require('ipfs-utils/src/streams/stream-from-filereader')
 
-// eslint-disable-next-line no-undef
-const supportsFileReader = FileReader in self
 function loadPaths (opts, file) {
   const path = require('path')
   const fs = require('fs')
@@ -77,38 +80,36 @@ function loadPaths (opts, file) {
   }
 }
 
-function streamFromFileReader (file) {
-  class FileStream extends Readable {
-    constructor (file, options = {}) {
-      super(options)
-      this.offset = 0
-      this.chunkSize = 1024 * 1024
-      this.fileReader = new self.FileReader(file)
-      this.fileReader.onloadend = (event) => {
-        const data = event.target.result
-        if (data.byteLength === 0) {
-          this.push(null)
-        }
-        this.push(new Uint8Array(data))
-      }
-      this.fileReader.onerror = (err) => this.emit('error', err)
-    }
-
-    _read (size) {
-      const end = this.offset + this.chunkSize
-      const slice = file.slice(this.offset, end)
-      this.fileReader.readAsArrayBuffer(slice)
-      this.offset = end
-    }
+function contentToStream (content) {
+  if (supportsFileReader && kindOf(content) === 'file') {
+    return streamFromFileReader(content)
   }
 
-  return new FileStream(file)
+  if (kindOf(content) === 'buffer') {
+    return new Readable({
+      read () {
+        this.push(content)
+        this.push(null)
+      }
+    })
+  }
+
+  if (isSource(content)) {
+    return pullToStream.readable(content)
+  }
+
+  if (isStream.readable(content)) {
+    return content
+  }
+
+  throw new Error(`Input not supported. Expected Buffer|ReadableStream|PullStream|File got ${kindOf(content)}. Check the documentation for more info https://github.com/ipfs/interface-js-ipfs-core/blob/master/SPEC/FILES.md#add`)
 }
 
 function prepareFile (file, opts) {
   let files = [].concat(file)
 
   return flatmap(files, (file) => {
+    // add from fs with file path
     if (typeof file === 'string') {
       if (!isNode) {
         throw new Error('Can only add file paths in node')
@@ -117,21 +118,26 @@ function prepareFile (file, opts) {
       return loadPaths(opts, file)
     }
 
-    if (file.path && !file.content) {
-      file.dir = true
-      return file
-    }
+    // add with object syntax { path : <string> , content: <Buffer|ReadableStream|PullStream|File }
+    if (kindOf(file) === 'object') {
+      // treat as an empty directory when path is a string and content undefined
+      if (file.path && kindOf(file.path) === 'string' && !file.content) {
+        file.dir = true
+        return file
+      }
 
-    if (file.content || file.dir) {
-      return file
-    }
+      // just return when directory
+      if (file.dir) {
+        return file
+      }
 
-    if (supportsFileReader && kindOf(file) === 'file') {
-      return {
-        path: '',
-        symlink: false,
-        dir: false,
-        content: streamFromFileReader(file, opts)
+      if (file.content) {
+        return {
+          path: file.path || '',
+          symlink: false,
+          dir: false,
+          content: contentToStream(file.content)
+        }
       }
     }
 
@@ -139,7 +145,7 @@ function prepareFile (file, opts) {
       path: '',
       symlink: false,
       dir: false,
-      content: file
+      content: contentToStream(file)
     }
   })
 }

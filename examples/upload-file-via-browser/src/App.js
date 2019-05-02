@@ -2,16 +2,13 @@
 const React = require('react')
 const ipfsClient = require('../../../src')
 
-// create a stream from a file, which enables uploads of big files without allocating memory twice
-const fileReaderPullStream = require('pull-file-reader')
-
 class App extends React.Component {
   constructor () {
     super()
     this.state = {
       added_file_hash: null
     }
-    this.ipfs = ipfsClient('localhost', '50895')
+    this.ipfs = ipfsClient('localhost', '58041')
 
     // bind methods
     this.captureFile = this.captureFile.bind(this)
@@ -33,7 +30,7 @@ class App extends React.Component {
   // Add file to IPFS and return a CID
   saveToIpfs (files) {
     let ipfsId
-    this.ipfs.add([...files][0], { progress: (prog) => console.log(`received: ${prog}`) })
+    this.ipfs.add([...files], { progress: (prog) => console.log(`received: ${prog}`) })
       .then((response) => {
         console.log(response)
         ipfsId = response[0].hash
@@ -46,12 +43,12 @@ class App extends React.Component {
 
   // Example #2
   // Add file to IPFS and wrap it in a directory to keep the original filename
-  saveToIpfsWithFilename (file) {
+  saveToIpfsWithFilename (files) {
+    const file = [...files][0]
     let ipfsId
-    const fileStream = fileReaderPullStream(file)
     const fileDetails = {
       path: file.name,
-      content: fileStream
+      content: file
     }
     const options = {
       wrapWithDirectory: true,

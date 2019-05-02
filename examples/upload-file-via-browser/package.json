@@ -16,8 +16,6 @@
     "@babel/preset-react": "^7.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.11.1",
-    "ipfs-http-client": "../../",
-    "pull-file-reader": "~1.0.2",
     "react": "~16.6.3",
     "react-dom": "~16.6.3",
     "webpack": "~4.30.0",

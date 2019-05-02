@@ -77,12 +77,7 @@ class Multipart extends Transform {
       return callback() // early
     }
 
-    if (isSource(content)) {
-      content = toStream.readable(content)
-    }
-
     // From now on we assume content is a stream
-
     content.once('error', this.emit.bind(this, 'error'))
 
     content.once('end', () => {
