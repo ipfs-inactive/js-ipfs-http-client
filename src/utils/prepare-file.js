@@ -7,8 +7,8 @@ const kindOf = require('kind-of')
 const { isSource } = require('is-pull-stream')
 const isStream = require('is-stream')
 const pullToStream = require('pull-to-stream')
-const { supportsFileReader } = require('ipfs-utils/src/supports')
-const streamFromFileReader = require('ipfs-utils/src/streams/stream-from-filereader')
+const { supportsFileReader } = require('js-ipfs-utils/src/supports')
+const streamFromFileReader = require('js-ipfs-utils/src/streams/stream-from-filereader')
 
 function loadPaths (opts, file) {
   const path = require('path')
