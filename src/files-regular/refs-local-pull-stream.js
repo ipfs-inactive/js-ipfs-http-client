@@ -18,7 +18,10 @@ module.exports = (send) => {
     send({ path: 'refs/local', qs: opts }, (err, stream) => {
       if (err) { return p.resolve(pull.error(err)) }
 
-      p.resolve(toPull.source(stream))
+      p.resolve(pull(
+        toPull.source(stream),
+        pull.map(r => ({ ref: r.Ref, err: r.Err }))
+      ))
     })
 
     return p
