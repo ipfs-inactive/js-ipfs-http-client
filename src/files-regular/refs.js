@@ -14,13 +14,12 @@ module.exports = (arg) => {
       callback = opts
       opts = {}
     }
+    opts = module.exports.normalizeOpts(opts)
 
     try {
-      args = cleanCID(args)
+      args = module.exports.checkArgs(args)
     } catch (err) {
-      if (!IsIpfs.ipfsPath(args)) {
-        return callback(err)
-      }
+      return callback(err)
     }
 
     const transform = (res, cb) => {
@@ -28,8 +27,8 @@ module.exports = (arg) => {
     }
 
     const request = {
+      args,
       path: 'refs',
-      args: args,
       qs: opts
     }
     send(request, (err, result) => {
@@ -46,4 +45,31 @@ module.exports = (arg) => {
   refs.localPullStream = require('./refs-local-pull-stream')(arg)
 
   return refs
+}
+
+module.exports.checkArgs = (args) => {
+  const isArray = Array.isArray(args)
+  args = isArray ? args : [args]
+
+  const res = []
+  for (let arg of args) {
+    try {
+      arg = cleanCID(arg)
+    } catch (err) {
+      if (!IsIpfs.ipfsPath(arg)) {
+        throw err
+      }
+    }
+    res.push(arg)
+  }
+
+  return isArray ? res : res[0]
+}
+
+module.exports.normalizeOpts = (opts) => {
+  opts = opts || {}
+  if (typeof opts.maxDepth === 'number') {
+    opts['max-depth'] = opts.maxDepth
+  }
+  return opts
 }

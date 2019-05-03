@@ -1,29 +1,26 @@
 'use strict'
 
-const cleanCID = require('../utils/clean-cid')
-const v = require('is-ipfs')
 const pull = require('pull-stream')
 const toPull = require('stream-to-pull-stream')
 const deferred = require('pull-defer')
 const moduleConfig = require('../utils/module-config')
+const { checkArgs, normalizeOpts } = require('./refs')
 
 module.exports = (send) => {
   send = moduleConfig(send)
 
-  return (hash, opts) => {
-    opts = opts || {}
+  return (args, opts) => {
+    opts = normalizeOpts(opts)
 
     const p = deferred.source()
 
     try {
-      hash = cleanCID(hash)
+      args = checkArgs(args)
     } catch (err) {
-      if (!v.ipfsPath(hash)) {
-        return p.end(err)
-      }
+      return p.end(err)
     }
 
-    send({ path: 'refs', args: hash, qs: opts }, (err, stream) => {
+    send({ path: 'refs', args, qs: opts }, (err, stream) => {
       if (err) { return p.resolve(pull.error(err)) }
 
       p.resolve(pull(
