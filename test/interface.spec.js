@@ -173,6 +173,36 @@ describe('interface-ipfs-core tests', () => {
       isNode ? null : {
         name: 'should readable stream ls with a base58 encoded CID',
         reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
+      },
+      // .refs
+      {
+        name: 'refs',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
+      },
+      // .refsReadableStream
+      {
+        name: 'refsReadableStream',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
+      },
+      // .refsPullStream
+      {
+        name: 'refsPullStream',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
+      },
+      // .refs.local
+      {
+        name: 'refsLocal',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
+      },
+      // .refs.localReadableStream
+      {
+        name: 'refsLocalReadableStream',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
+      },
+      // .refs.localPullStream
+      {
+        name: 'refsLocalPullStream',
+        reason: 'FIXME unskip when https://github.com/ipfs/js-ipfs-http-client/pull/978 is merged'
       }
     ]
   })

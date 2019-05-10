@@ -1,8 +1,7 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const dagPB = require('ipld-dag-pb')
-const DAGLink = dagPB.DAGLink
+const { DAGLink } = require('ipld-dag-pb')
 const CID = require('cids')
 const LRU = require('lru-cache')
 const lruOptions = {
