@@ -6,7 +6,7 @@ const once = require('once')
 const { isSource } = require('is-pull-stream')
 const FileResultStreamConverter = require('../utils/file-result-stream-converter')
 const SendFilesStream = require('../utils/send-files-stream')
-const validateAddInput = require('js-ipfs-utils/src/files/add-input-validation')
+const validateAddInput = require('ipfs-utils/src/files/add-input-validation')
 
 module.exports = (send) => {
   const createAddStream = SendFilesStream(send, 'add')
