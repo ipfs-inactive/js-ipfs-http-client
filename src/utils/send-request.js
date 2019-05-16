@@ -21,7 +21,7 @@ function parseError (res, cb, isJson = true) {
       // the `err` here refers to errors in stream processing, which
       // we ignore here, since we already have a valid `error` response
       // from the server above that we have to report to the caller.
-      if (data) {
+      if (data && data.length) {
         error.message = data.toString()
       }
       cb(error)
