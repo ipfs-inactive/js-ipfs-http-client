@@ -13,9 +13,21 @@ const log = require('debug')('ipfs-http-client:request')
 
 // -- Internal
 
-function parseError (res, cb) {
+function parseError (res, cb, isJson = true) {
   const error = new Error(`Server responded with ${res.statusCode}`)
 
+  if (!isJson) {
+    return streamToValue(res, (err, data) => {
+      // the `err` here refers to errors in stream processing, which
+      // we ignore here, since we already have a valid `error` response
+      // from the server above that we have to report to the caller.
+      if (data) {
+        error.message = data.toString()
+      }
+      cb(error)
+    })
+  }
+  
   streamToJsonValue(res, (err, payload) => {
     if (err) {
       return cb(err)
@@ -44,7 +56,7 @@ function onRes (buffer, cb) {
     }
 
     if (res.statusCode >= 400 || !res.statusCode) {
-      return parseError(res, cb)
+      return parseError(res, cb, isJson)
     }
 
     // Return the response stream directly
