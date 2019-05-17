@@ -32,7 +32,7 @@ function parseError (res, cb) {
       cb(error)
     })
   }
-  
+
   streamToJsonValue(res, (err, payload) => {
     if (err) {
       return cb(err)
