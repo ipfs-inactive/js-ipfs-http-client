@@ -3,8 +3,8 @@
 const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
 
-const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
+const PeerId = require('peer-id-lite')
+const PeerInfo = require('peer-info-lite')
 
 module.exports = (send) => {
   return promisify((peerId, opts, callback) => {

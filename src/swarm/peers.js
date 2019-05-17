@@ -2,7 +2,7 @@
 
 const promisify = require('promisify-es6')
 const multiaddr = require('multiaddr')
-const PeerId = require('peer-id')
+const PeerId = require('peer-id-lite')
 
 module.exports = (send) => {
   return promisify((opts, callback) => {

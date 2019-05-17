@@ -1,8 +1,8 @@
 'use strict'
 
 const promisify = require('promisify-es6')
-const PeerInfo = require('peer-info')
-const PeerId = require('peer-id')
+const PeerInfo = require('peer-info-lite')
+const PeerId = require('peer-id-lite')
 const multiaddr = require('multiaddr')
 
 module.exports = (send) => {

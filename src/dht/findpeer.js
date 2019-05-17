@@ -4,8 +4,8 @@ const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
 
 const multiaddr = require('multiaddr')
-const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
+const PeerId = require('peer-id-lite')
+const PeerInfo = require('peer-info-lite')
 const errcode = require('err-code')
 
 module.exports = (send) => {
