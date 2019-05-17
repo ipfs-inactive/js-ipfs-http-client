@@ -13,10 +13,15 @@ const log = require('debug')('ipfs-http-client:request')
 
 // -- Internal
 
-function parseError (res, cb, isJson = true) {
+function hasJSONHeaders (res) {
+  return res.headers['content-type'] &&
+    res.headers['content-type'].indexOf('application/json') === 0
+}
+
+function parseError (res, cb) {
   const error = new Error(`Server responded with ${res.statusCode}`)
 
-  if (!isJson) {
+  if (!hasJSONHeaders(res)) {
     return streamToValue(res, (err, data) => {
       // the `err` here refers to errors in stream processing, which
       // we ignore here, since we already have a valid `error` response
@@ -46,8 +51,7 @@ function onRes (buffer, cb) {
   return (res) => {
     const stream = Boolean(res.headers['x-stream-output'])
     const chunkedObjects = Boolean(res.headers['x-chunked-output'])
-    const isJson = res.headers['content-type'] &&
-                   res.headers['content-type'].indexOf('application/json') === 0
+    const isJson = hasJSONHeaders(res)
 
     if (res.req) {
       log(res.req.method, `${res.req.getHeaders().host}${res.req.path}`, res.statusCode, res.statusMessage)
@@ -56,7 +60,7 @@ function onRes (buffer, cb) {
     }
 
     if (res.statusCode >= 400 || !res.statusCode) {
-      return parseError(res, cb, isJson)
+      return parseError(res, cb)
     }
 
     // Return the response stream directly
