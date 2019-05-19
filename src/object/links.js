@@ -43,7 +43,9 @@ module.exports = (send) => {
       let links = []
 
       if (result.Links) {
-        links = result.Links.map((l) => new DAGLink(l.Name, l.Size, l.Hash))
+        links = result.Links.map((l) => {
+          return new DAGLink(l.Name, l.Size, l.Hash)
+        })
       }
       callback(null, links)
     })

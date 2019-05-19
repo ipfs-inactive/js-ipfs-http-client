@@ -21,8 +21,8 @@ module.exports = (send) => {
 
     const args = [
       cid.toString(),
-      dLink.name || dLink.Name || null,
-      (dLink.cid || dLink.Hash || '').toString() || null
+      dLink.Name || dLink.name || null,
+      (dLink.Hash || dLink.cid || '').toString() || null
     ]
 
     send({ path: 'object/patch/add-link', args }, (err, result) => {
