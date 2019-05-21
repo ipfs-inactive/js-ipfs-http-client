@@ -20,16 +20,16 @@ function hasJSONHeaders (res) {
 
 function parseError (res, cb) {
   const error = new Error(`Server responded with ${res.statusCode}`)
+  error.statusCode = res.statusCode
 
   if (!hasJSONHeaders(res)) {
-    return streamToValue(res, (err, data) => {
+    return streamToValue(res, (err, data) => { // eslint-disable-line handle-callback-err
       // the `err` here refers to errors in stream processing, which
       // we ignore here, since we already have a valid `error` response
       // from the server above that we have to report to the caller.
       if (data && data.length) {
         error.message = data.toString()
       }
-      error.code = res.statusCode
       cb(error)
     })
   }
