@@ -29,6 +29,7 @@ function parseError (res, cb) {
       if (data && data.length) {
         error.message = data.toString()
       }
+      error.code = res.statusCode
       cb(error)
     })
   }
