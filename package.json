@@ -26,7 +26,7 @@
     "coverage": "npx nyc -r html npm run test:node -- --bail"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.0.1",
     "bignumber.js": "^8.0.2",
     "bl": "^3.0.0",
     "bs58": "^4.0.1",
