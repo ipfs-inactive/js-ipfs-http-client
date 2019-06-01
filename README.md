@@ -34,17 +34,28 @@
 
 ## Table of Contents
 
+- [Lead Maintainer](#lead-maintainer)
+- [Table of Contents](#table-of-contents)
 - [Install](#install)
   - [Running the daemon with the right port](#running-the-daemon-with-the-right-port)
   - [Importing the module and usage](#importing-the-module-and-usage)
   - [Importing a sub-module and usage](#importing-a-sub-module-and-usage)
-  - [In a web browser through Browserify](#in-a-web-browser-through-browserify)
-  - [In a web browser from CDN](#in-a-web-browser-from-cdn)
+  - [In a web browser](#in-a-web-browser)
   - [CORS](#cors)
+  - [Custom Headers](#custom-headers)
 - [Usage](#usage)
-  - [API Docs](#api)
-  - [Callbacks and promises](#callbacks-and-promises)
+  - [API](#api)
+    - [Files](#files)
+    - [Graph](#graph)
+    - [Network](#network)
+    - [Node Management](#node-management)
+    - [Pubsub Caveat](#pubsub-caveat)
+    - [Instance utils](#instance-utils)
+    - [Static types and utils](#static-types-and-utils)
+- [Development](#development)
+  - [Testing](#testing)
 - [Contribute](#contribute)
+- [Historical context](#historical-context)
 - [License](#license)
 
 ## Install
@@ -218,6 +229,7 @@ const ipfs = ipfsClient({
 - [block](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md)
   - [`ipfs.block.get(cid, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockget)
   - [`ipfs.block.put(block, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockput)
+  - [`ipfs.block.rm(cids, [options], [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockrm)
   - [`ipfs.block.stat(cid, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/BLOCK.md#blockstat)
 
 - [refs](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/REFS.md)
