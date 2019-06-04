@@ -21,6 +21,9 @@ jobs:
     - os: windows
       filter_secrets: false
       cache: false
+    
+    - allow_failures:
+      - name: electron-renderer
 
     - stage: check
       script:
@@ -47,7 +50,6 @@ jobs:
     
     - stage: test
       name: electron-renderer
-      allow_failures: true
       script:
         - xvfb-run npx aegir test -t electron-renderer -- --bail
 
