@@ -17,13 +17,16 @@ script: npx nyc -s npm run test:node -- --bail
 after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
 
 jobs:
+  allow_failures:
+    - name: electron-renderer
+
+  fast_finish: true
+  
   include:
     - os: windows
       filter_secrets: false
       cache: false
     
-    - allow_failures:
-      - name: electron-renderer
 
     - stage: check
       script:
