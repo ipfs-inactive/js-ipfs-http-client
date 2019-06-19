@@ -240,7 +240,22 @@ describe('interface-ipfs-core tests', () => {
 
   tests.pin(defaultCommonFactory)
 
-  tests.ping(defaultCommonFactory)
+  tests.ping(defaultCommonFactory, {
+    skip: [
+      {
+        name: 'should fail when pinging an unknown peer over pull stream',
+        reason: 'FIXME go-ipfs return success with text: Looking up peer <cid>'
+      },
+      {
+        name: 'should fail when pinging peer that is not available over readable stream',
+        reason: 'FIXME go-ipfs return success with text: Looking up peer <cid>'
+      },
+      {
+        name: 'should fail when pinging a peer that is not available',
+        reason: 'FIXME go-ipfs return success with text: Looking up peer <cid>'
+      }
+    ]
+  })
 
   tests.pubsub(CommonFactory.create({
     spawnOptions: {
