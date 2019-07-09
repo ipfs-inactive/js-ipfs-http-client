@@ -2,11 +2,12 @@
 
 const promisify = require('promisify-es6')
 const streamToValueWithTransformer = require('../utils/stream-to-value-with-transformer')
+const CID = require('cids')
 
 const transform = function (res, callback) {
   callback(null, res.map(r => ({
-    err: r.Err,
-    cid: (r.Key || {})['/']
+    err: r.Err ? new Error(r.Err) : null,
+    cid: r.Key ? new CID(r.Key) : null
   })))
 }
 
