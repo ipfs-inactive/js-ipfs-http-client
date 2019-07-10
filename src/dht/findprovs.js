@@ -28,6 +28,8 @@ module.exports = (send) => {
       }
 
       // callback with an empty array if no providers are found
+      // 4 = Provider
+      // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L20
       if (!res || res.Type !== 4) {
         return callback(null, [])
       }

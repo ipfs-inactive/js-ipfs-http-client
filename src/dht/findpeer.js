@@ -28,6 +28,8 @@ module.exports = (send) => {
       }
 
       // Type 2 keys
+      // 2 = FinalPeer
+      // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L18
       if (!res || res.Type !== 2) {
         return callback()
       }
