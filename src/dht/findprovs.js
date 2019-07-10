@@ -6,7 +6,6 @@ const streamToValueWithTransformer = require('../utils/stream-to-value-with-tran
 const multiaddr = require('multiaddr')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
-const errcode = require('err-code')
 
 module.exports = (send) => {
   return promisify((cid, opts, callback) => {
@@ -25,20 +24,12 @@ module.exports = (send) => {
     const handleResult = (res, callback) => {
       // Inconsistent return values in the browser vs node
       if (Array.isArray(res)) {
-        res = res[0]
+        res = res.find(r => r.Type === 4)
       }
 
       // callback with an empty array if no providers are found
-      if (!res) {
-        const responses = []
-        return callback(null, responses)
-      }
-
-      // Type 4 keys
-      if (res.Type !== 4) {
-        const errMsg = `key was not found (type 4)`
-
-        return callback(errcode(new Error(errMsg), 'ERR_KEY_TYPE_4_NOT_FOUND'))
+      if (!res || res.Type !== 4) {
+        return callback(null, [])
       }
 
       const responses = res.Responses.map((r) => {
