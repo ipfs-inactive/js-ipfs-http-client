@@ -6,6 +6,7 @@ const streamToValueWithTransformer = require('../utils/stream-to-value-with-tran
 const multiaddr = require('multiaddr')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
+const errcode = require('error-code')
 
 module.exports = (send) => {
   return promisify((peerId, opts, callback) => {
@@ -31,7 +32,8 @@ module.exports = (send) => {
       // 2 = FinalPeer
       // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L18
       if (!res || res.Type !== 2) {
-        return callback()
+        const errMsg = `key was not found (type 4)`
+        return callback(errcode(new Error(errMsg), 'ERR_KEY_TYPE_4_NOT_FOUND'))
       }
 
       const responseReceived = res.Responses[0]
