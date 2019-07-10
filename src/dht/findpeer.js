@@ -6,7 +6,7 @@ const streamToValueWithTransformer = require('../utils/stream-to-value-with-tran
 const multiaddr = require('multiaddr')
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
-const errcode = require('error-code')
+const errcode = require('err-code')
 
 module.exports = (send) => {
   return promisify((peerId, opts, callback) => {
