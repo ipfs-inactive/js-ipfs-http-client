@@ -46,7 +46,7 @@ module.exports = (send) => {
 
     send({
       path: 'dht/findpeer',
-      args: peerId,
+      args: peerId.toString(),
       qs: opts
     }, (err, result) => {
       if (err) {

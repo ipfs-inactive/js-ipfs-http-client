@@ -51,7 +51,7 @@ module.exports = (send) => {
 
     send({
       path: 'dht/findprovs',
-      args: cid,
+      args: cid.toString(),
       qs: opts
     }, (err, result) => {
       if (err) {
