@@ -10,11 +10,10 @@ module.exports = create => config => {
 
   if (typeof config === 'string') {
     config = { apiAddr: config }
-  }
-
-  // Multiaddr instance
-  if (config.constructor && config.constructor.isMultiaddr) {
+  } else if (config.constructor && config.constructor.isMultiaddr) {
     config = { apiAddr: config }
+  } else {
+    config = { ...config }
   }
 
   config.fetch = config.fetch || require('./fetch').fetch

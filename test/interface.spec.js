@@ -231,7 +231,7 @@ describe('interface-ipfs-core tests', () => {
   tests.namePubsub(CommonFactory.create({
     spawnOptions: {
       args: ['--enable-namesys-pubsub'],
-      initOptions: { bits: 1024 }
+      initOptions: { bits: 1024, profile: 'test' }
     }
   }), {
     skip: [
@@ -272,7 +272,7 @@ describe('interface-ipfs-core tests', () => {
   tests.pubsub(CommonFactory.create({
     spawnOptions: {
       args: ['--enable-pubsub-experiment'],
-      initOptions: { bits: 1024 }
+      initOptions: { bits: 1024, profile: 'test' }
     }
   }), {
     skip: isWindows ? [
