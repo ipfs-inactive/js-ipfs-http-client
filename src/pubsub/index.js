@@ -1,3 +1,5 @@
+'use strict'
+
 const callbackify = require('../lib/callbackify')
 
 // This file is temporary and for compatibility with legacy usage
