@@ -169,10 +169,6 @@ describe('interface-ipfs-core tests', () => {
         name: 'should ls with a base58 encoded CID',
         reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
       },
-      {
-        name: 'should ls directory with long option',
-        reason: 'TODO unskip when go-ipfs supports --long https://github.com/ipfs/go-ipfs/pull/6528'
-      },
       // .lsPullStream
       isNode ? null : {
         name: 'should pull stream ls with a base58 encoded CID',
