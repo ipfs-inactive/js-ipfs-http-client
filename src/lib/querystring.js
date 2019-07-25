@@ -1,6 +1,6 @@
 'use strict'
 
-const QueryString = require('querystring')
+const Qs = require('qs')
 
 // Convert an object to a query string INCLUDING leading ?
 // Excludes null/undefined values
@@ -12,5 +12,5 @@ exports.objectToQuery = obj => {
     return obj
   }, {})
 
-  return Object.keys(qs).length ? `?${QueryString.stringify(qs)}` : ''
+  return Object.keys(qs).length ? `?${Qs.stringify(qs, { arrayFormat: 'repeat' })}` : ''
 }
