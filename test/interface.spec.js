@@ -275,19 +275,17 @@ describe('interface-ipfs-core tests', () => {
       initOptions: { bits: 1024 }
     }
   }), {
-    skip: isNode ? [
+    skip: isWindows ? [
       // pubsub.subscribe
-      isWindows ? {
+      {
         name: 'should send/receive 100 messages',
         reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
-      } : null,
-      isWindows ? {
+      },
+      {
         name: 'should receive multiple messages',
         reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
-      } : null
-    ] : {
-      reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-http-client/issues/518'
-    }
+      }
+    ] : null
   })
 
   tests.repo(defaultCommonFactory)
