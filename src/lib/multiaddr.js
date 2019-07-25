@@ -1,3 +1,5 @@
+'use strict'
+
 // Convert a multiaddr to a URI
 // Assumes multiaddr is in a format that can be converted to a HTTP(s) URI
 exports.toUri = ma => {
