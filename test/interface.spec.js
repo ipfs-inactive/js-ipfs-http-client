@@ -182,7 +182,14 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.filesMFS(defaultCommonFactory)
+  tests.filesMFS(defaultCommonFactory, {
+    skip: [
+      {
+        name: 'should ls directory with long option',
+        reason: 'TODO unskip when go-ipfs supports --long https://github.com/ipfs/go-ipfs/pull/6528'
+      }
+    ]
+  })
 
   tests.key(defaultCommonFactory, {
     skip: [
