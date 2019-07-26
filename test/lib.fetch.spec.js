@@ -67,12 +67,12 @@ describe('lib/fetch', () => {
         getReader () {
           let i = 0
           return {
-            read: async () => {
+            read () {
               return i === inputData.length
                 ? { done: true }
                 : { value: inputData[i++] }
             },
-            releaseLock: () => {}
+            releaseLock () {}
           }
         }
       }
