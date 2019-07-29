@@ -5,7 +5,9 @@
 exports.objectToQuery = obj => {
   if (!obj) return ''
 
-  let qs = Object.entries(obj).forEach(([key, value]) => {
+  let qs = new URLSearchParams()
+
+  Object.entries(obj).forEach(([key, value]) => {
     if (value != null) {
       if (Array.isArray(value)) {
         value.forEach(v => qs.append(key, v))
