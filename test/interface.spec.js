@@ -116,6 +116,14 @@ describe('interface-ipfs-core tests', () => {
         name: 'should add a nested directory as array of tupples with progress',
         reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
       },
+      {
+        name: 'should not be able to add a string',
+        reason: 'FIXME test needs to change to inspect error code ERR_UNEXPECTED_INPUT'
+      },
+      {
+        name: 'should not be able to add a non-Buffer TypedArray',
+        reason: 'TODO remove test, this should be supported'
+      },
       // .addPullStream
       isNode ? null : {
         name: 'should add pull stream of valid files and dirs',
@@ -130,6 +138,10 @@ describe('interface-ipfs-core tests', () => {
       isNode ? null : {
         name: 'addFromStream',
         reason: 'Not designed to run in the browser'
+      },
+      {
+        name: 'should add from a stream',
+        reason: 'TODO change test to use readable-stream@3 with async iterator support'
       },
       // .addFromFs
       isNode ? null : {
