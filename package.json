@@ -18,7 +18,8 @@
     "glob": false,
     "fs": false,
     "stream": "readable-stream",
-    "./src/lib/configure.js": "./src/lib/configure.browser.js"
+    "./src/lib/configure.js": "./src/lib/configure.browser.js",
+    "./src/lib/querystring.js": "./src/lib/querystring.browser.js"
   },
   "repository": "github:ipfs/js-ipfs-http-client",
   "scripts": {
