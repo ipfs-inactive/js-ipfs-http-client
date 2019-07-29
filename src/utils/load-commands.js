@@ -1,14 +1,49 @@
 'use strict'
 
+const nodeify = require('promise-nodeify')
+const { collectify, pullify } = require('../lib/iterable')
+
 function requireCommands () {
   return {
     // Files Regular (not MFS)
-    add: require('../files-regular/add'),
+    add: (_, config) => {
+      const add = collectify(require('../add')(config))
+      return (input, options, callback) => {
+        if (typeof options === 'function') {
+          callback = options
+          options = {}
+        }
+        return nodeify(add(input, options), callback)
+      }
+    },
+    // TODO: convert
     addReadableStream: require('../files-regular/add-readable-stream'),
-    addPullStream: require('../files-regular/add-pull-stream'),
+    addPullStream: (_, config) => {
+      const add = require('../add')(config)
+      return pullify.transform(add)
+    },
+    // TODO: convert
     addFromFs: require('../files-regular/add-from-fs'),
-    addFromURL: require('../files-regular/add-from-url'),
-    addFromStream: require('../files-regular/add'),
+    addFromURL: (_, config) => {
+      const addFromURL = collectify(require('../add-from-url')(config))
+      return (url, options, callback) => {
+        if (typeof options === 'function') {
+          callback = options
+          options = {}
+        }
+        return nodeify(addFromURL(url, options), callback)
+      }
+    },
+    addFromStream: (_, config) => {
+      const add = collectify(require('../add')(config))
+      return (input, options, callback) => {
+        if (typeof options === 'function') {
+          callback = options
+          options = {}
+        }
+        return nodeify(add(input, options), callback)
+      }
+    },
     _addAsyncIterator: require('../files-regular/add-async-iterator'),
     cat: require('../files-regular/cat'),
     catReadableStream: require('../files-regular/cat-readable-stream'),
