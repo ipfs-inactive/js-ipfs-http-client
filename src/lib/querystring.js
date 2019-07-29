@@ -7,10 +7,12 @@ const Qs = require('qs')
 exports.objectToQuery = obj => {
   if (!obj) return ''
 
-  const qs = Object.entries(obj).reduce((obj, [key, value]) => {
+  let qs = Object.entries(obj).reduce((obj, [key, value]) => {
     if (value != null) obj[key] = value
     return obj
   }, {})
 
-  return Object.keys(qs).length ? `?${Qs.stringify(qs, { arrayFormat: 'repeat' })}` : ''
+  qs = Qs.stringify(qs, { arrayFormat: 'repeat' })
+
+  return qs ? `?${qs}` : qs
 }
