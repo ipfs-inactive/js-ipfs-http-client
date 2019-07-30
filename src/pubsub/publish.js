@@ -14,11 +14,13 @@ module.exports = configure(({ ky }) => {
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', topic)
 
-    return ky.post(`pubsub/pub?${searchParams}&arg=${encodeBuffer(data)}`, {
+    const res = await ky.post(`pubsub/pub?${searchParams}&arg=${encodeBuffer(data)}`, {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers
     }).text()
+
+    return res
   }
 })
 
