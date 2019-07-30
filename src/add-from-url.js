@@ -1,21 +1,20 @@
 'use strict'
 
+const kyDefault = require('ky-universal').default
 const configure = require('./lib/configure')
-const { ok, toIterable } = require('./lib/fetch')
+const toIterable = require('./lib/stream-to-iterable')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
-  const add = require('./add')({ fetch, apiAddr, apiPath, headers })
+module.exports = configure(({ ky }) => {
+  const add = require('./add')({ ky })
 
   return (url, options) => (async function * () {
     options = options || {}
-    const res = await ok(fetch(url, {
-      signal: options.signal,
-      headers: options.headers || headers
-    }))
+
+    const { body } = await kyDefault.get(url)
 
     const input = {
       path: decodeURIComponent(new URL(url).pathname.split('/').pop() || ''),
-      content: toIterable(res.body)
+      content: toIterable(body)
     }
 
     for await (const file of add(input, options)) {
