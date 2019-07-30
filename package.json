@@ -17,9 +17,7 @@
   "browser": {
     "glob": false,
     "fs": false,
-    "stream": "readable-stream",
-    "./src/lib/configure.js": "./src/lib/configure.browser.js",
-    "./src/lib/querystring.js": "./src/lib/querystring.browser.js"
+    "stream": "readable-stream"
   },
   "repository": "github:ipfs/js-ipfs-http-client",
   "scripts": {
@@ -64,13 +62,14 @@
     "just-kebab-case": "^1.1.0",
     "just-map-keys": "^1.1.0",
     "kind-of": "^6.0.2",
+    "ky": "^0.11.2",
+    "ky-universal": "^0.2.2",
     "lru-cache": "^5.1.1",
     "multiaddr": "^6.0.6",
     "multibase": "~0.6.0",
     "multicodec": "~0.5.1",
     "multihashes": "~0.4.14",
     "ndjson": "github:hugomrdias/ndjson#feat/readable-stream3",
-    "node-fetch": "^2.6.0",
     "once": "^1.4.0",
     "peer-id": "~0.12.3",
     "peer-info": "~0.15.1",

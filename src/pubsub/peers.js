@@ -1,10 +1,8 @@
 'use strict'
 
-const { objectToQuery } = require('../lib/querystring')
 const configure = require('../lib/configure')
-const { ok } = require('../lib/fetch')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
+module.exports = configure(({ ky }) => {
   return async (topic, options) => {
     if (!options && typeof topic === 'object') {
       options = topic
@@ -13,17 +11,16 @@ module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
 
     options = options || {}
 
-    const qs = objectToQuery({
-      arg: topic,
-      ...(options.qs || {})
-    })
+    const searchParams = new URLSearchParams(options.searchParams)
+    searchParams.set('arg', topic)
 
-    const url = `${apiAddr}${apiPath}/pubsub/peers${qs}`
-    const res = await ok(fetch(url, {
+    const { Strings } = await ky.get('pubsub/peers', {
+      timeout: options.timeout,
       signal: options.signal,
-      headers: options.headers || headers
-    }))
-    const data = await res.json()
-    return data.Strings || []
+      headers: options.headers,
+      searchParams
+    }).json()
+
+    return Strings || []
   }
 })

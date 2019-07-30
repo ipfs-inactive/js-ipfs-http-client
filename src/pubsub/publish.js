@@ -2,10 +2,8 @@
 
 const { Buffer } = require('buffer')
 const configure = require('../lib/configure')
-const { objectToQuery } = require('../lib/querystring')
-const { ok } = require('../lib/fetch')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
+module.exports = configure(({ ky }) => {
   return async (topic, data, options) => {
     options = options || {}
 
@@ -13,17 +11,14 @@ module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
       throw new Error('data must be a Buffer')
     }
 
-    let qs = objectToQuery(options.qs)
-    qs = qs ? `&${qs.slice(1)}` : qs
+    const searchParams = new URLSearchParams(options.searchParams)
+    searchParams.set('arg', topic)
 
-    const url = `${apiAddr}${apiPath}/pubsub/pub?arg=${encodeURIComponent(topic)}&arg=${encodeBuffer(data)}${qs}`
-    const res = await ok(fetch(url, {
-      method: 'POST',
+    return ky.post(`pubsub/pub?${searchParams}&arg=${encodeBuffer(data)}`, {
+      timeout: options.timeout,
       signal: options.signal,
-      headers: options.headers || headers
-    }))
-
-    return res.text()
+      headers: options.headers
+    }).text()
   }
 })
 

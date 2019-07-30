@@ -1,20 +1,18 @@
 'use strict'
 
 const configure = require('../lib/configure')
-const { ok } = require('../lib/fetch')
-const { objectToQuery } = require('../lib/querystring')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
+module.exports = configure(({ ky }) => {
   return async (options) => {
     options = options || {}
 
-    const qs = objectToQuery(options.qs)
-    const url = `${apiAddr}${apiPath}/pubsub/ls${qs}`
-    const res = await ok(fetch(url, {
+    const { Strings } = await ky.get('pubsub/ls', {
+      timeout: options.timeout,
       signal: options.signal,
-      headers: options.headers || headers
-    }))
-    const data = await res.json()
-    return data.Strings || []
+      headers: options.headers,
+      searchParams: options.searchParams
+    }).json()
+
+    return Strings || []
   }
 })

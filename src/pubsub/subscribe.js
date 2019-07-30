@@ -5,26 +5,22 @@ const explain = require('explain-error')
 const bs58 = require('bs58')
 const { Buffer } = require('buffer')
 const log = require('debug')('ipfs-http-client:pubsub:subscribe')
-const { objectToQuery } = require('../lib/querystring')
 const configure = require('../lib/configure')
-const { ok, toIterable } = require('../lib/fetch')
+const toIterable = require('../lib/stream-to-iterable')
 const SubscriptionTracker = require('./subscription-tracker')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
+module.exports = configure(({ ky }) => {
   const subsTracker = SubscriptionTracker.singleton()
-  const publish = require('./publish')({ fetch, apiAddr, apiPath, headers })
+  const publish = require('./publish')({ ky })
 
   return async (topic, handler, options) => {
     options = options || {}
     options.signal = subsTracker.subscribe(topic, handler, options.signal)
 
-    const qs = objectToQuery({
-      arg: topic,
-      discover: options.discover,
-      ...(options.qs || {})
-    })
+    const searchParams = new URLSearchParams(options.searchParams)
+    searchParams.set('arg', topic)
+    if (options.discover != null) searchParams.set('discover', options.discover)
 
-    const url = `${apiAddr}${apiPath}/pubsub/sub${qs}`
     let res
 
     // In Firefox, the initial call to fetch does not resolve until some data
@@ -40,11 +36,12 @@ module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
     }, 1000)
 
     try {
-      res = await ok(fetch(url, {
-        method: 'POST',
+      res = await ky.post('pubsub/sub', {
+        timeout: options.timeout,
         signal: options.signal,
-        headers: options.headers || headers
-      }))
+        headers: options.headers,
+        searchParams
+      })
     } catch (err) { // Initial subscribe fail, ensure we clean up
       subsTracker.unsubscribe(topic, handler)
       throw err
