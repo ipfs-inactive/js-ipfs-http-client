@@ -14,7 +14,7 @@ describe('lib/configure', () => {
   it('should accept no config', () => {
     configure(config => {
       if (isBrowser || isWebWorker) {
-        expect(config.apiAddr).to.eql(location.origin)
+        expect(config.apiAddr).to.eql('')
       } else {
         expect(config.apiAddr).to.eql('http://localhost:5001')
       }
@@ -48,7 +48,7 @@ describe('lib/configure', () => {
       if (isBrowser || isWebWorker) {
         expect(config.apiAddr).to.eql(`https://${location.host}`)
       } else {
-        expect(config.apiAddr).to.eql('https://localhost')
+        expect(config.apiAddr).to.eql('https://localhost:5001')
       }
     })(input)
   })
@@ -59,7 +59,7 @@ describe('lib/configure', () => {
       if (isBrowser || isWebWorker) {
         expect(config.apiAddr).to.eql(`http://ipfs.io:${location.port}`)
       } else {
-        expect(config.apiAddr).to.eql('http://ipfs.io')
+        expect(config.apiAddr).to.eql('http://ipfs.io:5001')
       }
     })(input)
   })

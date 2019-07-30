@@ -1,7 +1,7 @@
 'use strict'
 /* eslint-env browser */
 
-const ky = require('ky-universal')
+const ky = require('ky-universal').default
 const { isBrowser, isWebWorker } = require('ipfs-utils/src/env')
 const { toUri } = require('./multiaddr')
 const errorHandler = require('./error-handler')
@@ -18,11 +18,6 @@ module.exports = create => config => {
     config = { ...config }
   }
 
-  if (config.protocol || config.host || config.port) {
-    const port = config.port ? `:${config.port}` : ''
-    config.apiAddr = `${config.protocol || 'http'}://${config.host || 'localhost'}${port}`
-  }
-
   config.apiAddr = (config.apiAddr || getDefaultApiAddr(config)).toString()
   config.apiAddr = config.apiAddr.startsWith('/') ? toUri(config.apiAddr) : config.apiAddr
   config.apiPath = config.apiPath || config['api-path'] || '/api/v0'
@@ -37,7 +32,8 @@ module.exports = create => config => {
       hooks: {
         afterResponse: [errorHandler]
       }
-    })
+    }),
+    ...config
   })
 }
 
