@@ -1,43 +1,41 @@
 'use strict'
 
 const ndjson = require('iterable-ndjson')
-const { objectToQuery } = require('../lib/querystring')
 const configure = require('../lib/configure')
-const { ok, toIterable } = require('../lib/fetch')
+const toIterable = require('../lib/stream-to-iterable')
 const { toFormData } = require('./form-data')
 const toCamel = require('../lib/object-to-camel')
 
-module.exports = configure(({ fetch, apiAddr, apiPath, headers }) => {
+module.exports = configure(({ ky }) => {
   return (input, options) => (async function * () {
     options = options || {}
 
-    const qs = objectToQuery({
-      'stream-channels': true,
-      chunker: options.chunker,
-      'cid-version': options.cidVersion,
-      'cid-base': options.cidBase,
-      'enable-sharding-experiment': options.enableShardingExperiment,
-      hash: options.hashAlg,
-      'only-hash': options.onlyHash,
-      pin: options.pin,
-      progress: options.progress ? true : null,
-      quiet: options.quiet,
-      quieter: options.quieter,
-      'raw-leaves': options.rawLeaves,
-      'shard-split-threshold': options.shardSplitThreshold,
-      silent: options.silent,
-      trickle: options.trickle,
-      'wrap-with-directory': options.wrapWithDirectory,
-      ...(options.qs || {})
-    })
+    const searchParams = new URLSearchParams(options.searchParams)
 
-    const url = `${apiAddr}${apiPath}/add${qs}`
-    const res = await ok(fetch(url, {
-      method: 'POST',
+    searchParams.set('stream-channels', true)
+    if (options.chunker) searchParams.set('chunker', options.chunker)
+    if (options.cidVersion) searchParams.set('cid-version', options.cidVersion)
+    if (options.cidBase) searchParams.set('cid-base', options.cidBase)
+    if (options.enableShardingExperiment != null) searchParams.set('enable-sharding-experiment', options.enableShardingExperiment)
+    if (options.hashAlg) searchParams.set('hash', options.hashAlg)
+    if (options.onlyHash != null) searchParams.set('only-hash', options.onlyHash)
+    if (options.pin != null) searchParams.set('pin', options.pin)
+    if (options.progress) searchParams.set('progress', true)
+    if (options.quiet != null) searchParams.set('quiet', options.quiet)
+    if (options.quieter != null) searchParams.set('quieter', options.quieter)
+    if (options.rawLeaves != null) searchParams.set('raw-leaves', options.rawLeaves)
+    if (options.shardSplitThreshold) searchParams.set('shard-split-threshold', options.shardSplitThreshold)
+    if (options.silent) searchParams.set('silent', options.silent)
+    if (options.trickle != null) searchParams.set('trickle', options.trickle)
+    if (options.wrapWithDirectory != null) searchParams.set('wrap-with-directory', options.wrapWithDirectory)
+
+    const res = await ky.post('add', {
+      timeout: options.timeout,
       signal: options.signal,
-      headers: options.headers || headers,
+      headers: options.headers,
+      searchParams,
       body: await toFormData(input)
-    }))
+    })
 
     for await (let file of ndjson(toIterable(res.body))) {
       file = toCamel(file)
