@@ -2,8 +2,8 @@
 
 const FormData = require('form-data')
 const { Buffer } = require('buffer')
+const toStream = require('it-to-stream')
 const normaliseInput = require('./normalise-input')
-const toStream = require('../lib/iterable-to-readable-stream')
 
 exports.toFormData = async (input) => {
   const files = normaliseInput(input)
@@ -19,7 +19,7 @@ exports.toFormData = async (input) => {
         // a Content-Length header that is only the sum of the size of the
         // header/footer when knownLength option (below) is null.
         Object.assign(
-          toStream(file.content),
+          toStream.readable(file.content),
           { path: file.path || `file-${i}` }
         ),
         {
