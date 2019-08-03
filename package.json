@@ -65,6 +65,7 @@
     "is-stream": "^2.0.0",
     "iso-stream-http": "~0.1.2",
     "iso-url": "~0.4.6",
+    "it-to-stream": "^0.1.1",
     "iterable-ndjson": "^1.1.0",
     "just-kebab-case": "^1.1.0",
     "just-map-keys": "^1.1.0",

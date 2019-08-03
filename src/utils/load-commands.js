@@ -1,7 +1,7 @@
 'use strict'
 
 const nodeify = require('promise-nodeify')
-const { collectify, pullify } = require('../lib/iterable')
+const { collectify, pullify, streamify } = require('../lib/iterable')
 
 function requireCommands () {
   return {
@@ -16,8 +16,10 @@ function requireCommands () {
         return nodeify(add(input, options), callback)
       }
     },
-    // TODO: convert
-    addReadableStream: require('../files-regular/add-readable-stream'),
+    addReadableStream: (_, config) => {
+      const add = require('../add')(config)
+      return streamify.transform(add)
+    },
     addPullStream: (_, config) => {
       const add = require('../add')(config)
       return pullify.transform(add)
