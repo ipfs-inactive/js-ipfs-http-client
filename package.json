@@ -19,7 +19,8 @@
     "fs": false,
     "stream": "readable-stream",
     "ky-universal": "ky/umd",
-    "./src/add/form-data.js": "./src/add/form-data.browser.js"
+    "./src/add/form-data.js": "./src/add/form-data.browser.js",
+    "./src/add-from-fs/index.js": "./src/add-from-fs/index.browser.js"
   },
   "repository": "github:ipfs/js-ipfs-http-client",
   "scripts": {
@@ -65,6 +66,7 @@
     "is-stream": "^2.0.0",
     "iso-stream-http": "~0.1.2",
     "iso-url": "~0.4.6",
+    "it-pushable": "^1.2.1",
     "it-to-stream": "^0.1.1",
     "iterable-ndjson": "^1.1.0",
     "just-kebab-case": "^1.1.0",
