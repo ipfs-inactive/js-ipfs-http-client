@@ -24,8 +24,16 @@ function requireCommands () {
       const add = require('../add')(config)
       return pullify.transform(add)
     },
-    // TODO: convert
-    addFromFs: require('../files-regular/add-from-fs'),
+    addFromFs: (_, config) => {
+      const addFromFs = collectify(require('../add-from-fs')(config))
+      return (path, options, callback) => {
+        if (typeof options === 'function') {
+          callback = options
+          options = {}
+        }
+        return nodeify(addFromFs(path, options), callback)
+      }
+    },
     addFromURL: (_, config) => {
       const addFromURL = collectify(require('../add-from-url')(config))
       return (url, options, callback) => {
