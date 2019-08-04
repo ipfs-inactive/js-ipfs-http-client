@@ -6,13 +6,6 @@ module.exports = (arg) => {
   const send = moduleConfig(arg)
 
   return {
-    add: require('../files-regular/add')(send),
-    addReadableStream: require('../files-regular/add-readable-stream')(send),
-    addPullStream: require('../files-regular/add-pull-stream')(send),
-    addFromFs: require('../files-regular/add-from-fs')(send),
-    addFromURL: require('../files-regular/add-from-url')(send),
-    addFromStream: require('../files-regular/add')(send),
-    _addAsyncIterator: require('../files-regular/add-async-iterator')(send),
     cat: require('../files-regular/cat')(send),
     catReadableStream: require('../files-regular/cat-readable-stream')(send),
     catPullStream: require('../files-regular/cat-pull-stream')(send),
