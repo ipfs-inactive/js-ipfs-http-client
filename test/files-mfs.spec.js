@@ -96,7 +96,7 @@ describe('.files (the MFS API part)', function () {
 
   it('.add with cid-version=1 and raw-leaves=false', (done) => {
     const expectedCid = 'bafybeifogzovjqrcxvgt7g36y7g63hvwvoakledwk4b2fr2dl4wzawpnny'
-    const options = { 'cid-version': 1, 'raw-leaves': false }
+    const options = { cidVersion: 1, rawLeaves: false }
 
     ipfs.add(testfile, options, (err, res) => {
       expect(err).to.not.exist()
@@ -174,7 +174,7 @@ describe('.files (the MFS API part)', function () {
         path: content + '.txt',
         content: Buffer.from(content)
       }
-      const options = { hash: name, 'raw-leaves': false }
+      const options = { hashAlg: name, rawLeaves: false }
 
       ipfs.add([file], options, (err, res) => {
         if (err) return done(err)
@@ -264,7 +264,7 @@ describe('.files (the MFS API part)', function () {
         path: content + '.txt',
         content: Buffer.from(content)
       }
-      const options = { hash: name, 'raw-leaves': false }
+      const options = { hashAlg: name, rawLeaves: false }
 
       ipfs.add([file], options, (err, res) => {
         expect(err).to.not.exist()
