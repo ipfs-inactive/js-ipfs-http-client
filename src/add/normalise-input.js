@@ -1,9 +1,9 @@
 'use strict'
-/* eslint-env browser */
 
-const { Buffer } = require('buffer')
 const errCode = require('err-code')
 const toAsyncIterable = require('../lib/file-data-to-async-iterable')
+const isBytes = require('../lib/is-bytes')
+const isBloby = require('../lib/is-bloby')
 
 /*
 Transform one of:
@@ -16,6 +16,8 @@ Blob|File
 { path, content: AsyncIterable<Buffer> }
 { path, content: PullStream<Buffer> }
 Iterable<Number>
+Iterable<Buffer>
+Iterable<Blob>
 Iterable<{ path, content: Buffer }>
 Iterable<{ path, content: Blob }>
 Iterable<{ path, content: Iterable<Number> }>
@@ -36,20 +38,16 @@ AsyncIterable<{ path, content: AsyncIterable<Buffer> }>
 
 module.exports = function normalizeInput (input) {
   // Buffer|ArrayBuffer|TypedArray
-  if (Buffer.isBuffer(input) || ArrayBuffer.isView(input) || input instanceof ArrayBuffer) {
-    return (async function * () { // eslint-disable-line require-await
-      yield normalizeTuple({ path: '', content: input })
-    })()
-  }
-
   // Blob|File
-  if (typeof Blob !== 'undefined' && input instanceof Blob) {
+  if (isBytes(input) || isBloby(input)) {
     return (async function * () { // eslint-disable-line require-await
       yield normalizeTuple({ path: '', content: input })
     })()
   }
 
   // Iterable<Number>
+  // Iterable<Buffer>
+  // Iterable<Blob>
   // Iterable<{ path, content: Buffer }>
   // Iterable<{ path, content: Blob }>
   // Iterable<{ path, content: Iterable<Number> }>
@@ -58,7 +56,9 @@ module.exports = function normalizeInput (input) {
   if (input[Symbol.iterator]) {
     return (async function * () { // eslint-disable-line require-await
       for (const chunk of input) {
-        if (typeof chunk === 'object' && (chunk.path || chunk.content)) {
+        if (isBytes(chunk) || isBloby(chunk)) {
+          yield normalizeTuple({ path: '', content: chunk })
+        } else if (isFileObject(chunk)) {
           yield normalizeTuple(chunk)
         } else if (Number.isInteger(chunk)) { // Must be an Iterable<Number> i.e. Buffer/ArrayBuffer/Array of bytes
           yield normalizeTuple({ path: '', content: input })
@@ -79,7 +79,7 @@ module.exports = function normalizeInput (input) {
   if (input[Symbol.asyncIterator]) {
     return (async function * () {
       for await (const chunk of input) {
-        if (typeof chunk === 'object' && (chunk.path || chunk.content)) {
+        if (isFileObject(chunk)) {
           yield normalizeTuple(chunk)
         } else { // Must be an AsyncIterable<Buffer> i.e. a Stream
           let path = ''
@@ -110,7 +110,7 @@ module.exports = function normalizeInput (input) {
   // { path, content: Iterable<Buffer> }
   // { path, content: AsyncIterable<Buffer> }
   // { path, content: PullStream<Buffer> }
-  if (typeof input === 'object' && (input.path || input.content)) {
+  if (isFileObject(input)) {
     // eslint-disable-next-line require-await
     return (async function * () { yield normalizeTuple(input) })()
   }
@@ -127,4 +127,9 @@ module.exports = function normalizeInput (input) {
 
 function normalizeTuple ({ path, content }) {
   return { path: path || '', content: content ? toAsyncIterable(content) : null }
+}
+
+// An object with a path or content property
+function isFileObject (obj) {
+  return typeof obj === 'object' && (obj.path || obj.content)
 }
