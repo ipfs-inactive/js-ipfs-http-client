@@ -4,6 +4,7 @@
 const toIterator = require('pull-stream-to-async-iterator')
 const { Buffer } = require('buffer')
 const blobToAsyncIterable = require('../lib/blob-to-async-iterable')
+const isBloby = require('../lib/is-bloby')
 
 /*
 Transform one of:
@@ -29,7 +30,7 @@ module.exports = function toAsyncIterable (input) {
   }
 
   // Blob|File
-  if (typeof Blob !== 'undefined' && input instanceof Blob) {
+  if (isBloby(input)) {
     return Object.assign(
       blobToAsyncIterable(input),
       { length: input.size }
