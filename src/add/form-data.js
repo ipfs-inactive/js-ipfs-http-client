@@ -23,14 +23,14 @@ exports.toFormData = async (input) => {
           { path: file.path || `file-${i}` }
         ),
         {
-          filepath: file.path,
+          filepath: encodeURIComponent(file.path),
           contentType: 'application/octet-stream',
           knownLength: file.content.length // Send Content-Length header if known
         }
       )
     } else {
       formData.append(`dir-${i}`, Buffer.alloc(0), {
-        filepath: file.path,
+        filepath: encodeURIComponent(file.path),
         contentType: 'application/x-directory'
       })
     }
