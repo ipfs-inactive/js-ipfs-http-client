@@ -70,7 +70,7 @@
     "peer-info": "~0.15.1",
     "promisify-es6": "^1.0.3",
     "pull-defer": "~0.2.3",
-    "pull-stream": "^3.6.9",
+    "pull-stream": "^3.6.14",
     "pull-to-stream": "~0.1.1",
     "pump": "^3.0.0",
     "qs": "^6.5.2",
