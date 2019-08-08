@@ -9,7 +9,7 @@
   "author": "Tara Vancil <tbvanc@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^16.2.3",
+    "browserify": "^16.4.0",
     "extatic": "^4.1.3"
   }
 }
