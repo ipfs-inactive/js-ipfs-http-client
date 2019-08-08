@@ -10,7 +10,7 @@
   "author": "Friedel Ziegelmayer",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^16.2.3",
+    "browserify": "^16.4.0",
     "ipfs-http-client": "../../",
     "http-server": "~0.11.1"
   },
