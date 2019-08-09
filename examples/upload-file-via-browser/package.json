@@ -16,7 +16,7 @@
     "@babel/preset-react": "^7.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.11.1",
-    "react": "~16.6.3",
+    "react": "~16.9.0",
     "react-dom": "~16.6.3",
     "webpack": "~4.30.0",
     "webpack-dev-server": "~3.3.1"
