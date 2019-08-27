@@ -16,7 +16,7 @@
     "ipfs-http-client": "../../",
     "react": "~16.8.6",
     "react-dom": "~16.8.6",
-    "react-hot-loader": "~4.8.4",
+    "react-hot-loader": "~4.12.12",
     "webpack": "~4.31.0",
     "webpack-dev-server": "~3.3.1"
   },
