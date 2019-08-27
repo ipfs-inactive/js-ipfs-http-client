@@ -12,6 +12,6 @@
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.5.2",
     "babili": "~0.1.4",
-    "webpack": "~4.31.0"
+    "webpack": "~4.39.3"
   }
 }
