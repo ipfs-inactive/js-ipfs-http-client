@@ -6,10 +6,7 @@ const configure = require('../lib/configure')
 module.exports = configure(({ ky }) => {
   return async (topic, data, options) => {
     options = options || {}
-
-    if (!Buffer.isBuffer(data)) {
-      throw new Error('data must be a Buffer')
-    }
+    data = Buffer.from(data)
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', topic)

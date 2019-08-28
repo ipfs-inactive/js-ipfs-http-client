@@ -76,7 +76,7 @@
     "multihashes": "~0.4.14",
     "ndjson": "github:hugomrdias/ndjson#feat/readable-stream3",
     "once": "^1.4.0",
-    "peer-id": "~0.12.2",
+    "peer-id": "~0.12.3",
     "peer-info": "~0.15.1",
     "promise-nodeify": "^3.0.1",
     "promisify-es6": "^1.0.3",
@@ -92,13 +92,13 @@
     "through2": "^3.0.1"
   },
   "devDependencies": {
-    "aegir": "^19.0.3",
+    "aegir": "^20.0.0",
     "browser-process-platform": "~0.1.1",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "dirty-chai": "^2.0.1",
-    "go-ipfs-dep": "~0.4.21",
-    "interface-ipfs-core": "github:ipfs/interface-js-ipfs-core#fix/max-pubsub-reqs-browser",
+    "go-ipfs-dep": "0.4.21",
+    "interface-ipfs-core": "^0.111.0",
     "ipfsd-ctl": "~0.43.0",
     "nock": "^10.0.2",
     "stream-equal": "^1.1.1"
