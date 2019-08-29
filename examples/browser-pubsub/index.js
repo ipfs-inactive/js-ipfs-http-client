@@ -1,4 +1,5 @@
 'use strict'
+
 const IpfsHttpClient = require('ipfs-http-client')
 
 async function main () {
@@ -23,12 +24,14 @@ async function main () {
     consoleEl.scrollTop = consoleEl.scrollHeight
   }
 
-  function clear () {
-    consoleEl.innerHTML = ''
-  }
-
   let topic
   let peerId
+
+  function clear () {
+    consoleEl.innerHTML = ''
+    topic = null
+    peerId = null
+  }
 
   async function nodeConnect (url) {
     clear()
