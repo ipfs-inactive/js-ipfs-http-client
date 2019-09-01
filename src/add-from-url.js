@@ -17,8 +17,6 @@ module.exports = configure(({ ky }) => {
       content: toIterable(body)
     }
 
-    for await (const file of add(input, options)) {
-      yield file
-    }
+    yield * add(input, options)
   })()
 })
