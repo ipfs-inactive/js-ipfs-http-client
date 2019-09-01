@@ -3,9 +3,9 @@
 const FormData = require('form-data')
 const { Buffer } = require('buffer')
 const toStream = require('it-to-stream')
-const normaliseInput = require('./normalise-input')
+const normaliseInput = require('ipfs-utils/src/files/normalise-input')
 
-exports.toFormData = async (input) => {
+exports.toFormData = async input => {
   const files = normaliseInput(input)
   const formData = new FormData()
   let i = 0
