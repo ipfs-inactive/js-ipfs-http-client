@@ -4,7 +4,7 @@ const toPull = require('async-iterator-to-pull-stream')
 const all = require('async-iterator-all')
 const toStream = require('it-to-stream')
 
-exports.collectify = fn => async (...args) => all(fn(...args))
+exports.collectify = fn => (...args) => all(fn(...args))
 
 exports.pullify = {
   source: fn => (...args) => toPull(fn(...args)),
