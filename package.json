@@ -70,7 +70,7 @@
     "ky": "^0.11.2",
     "ky-universal": "^0.2.2",
     "lru-cache": "^5.1.1",
-    "multiaddr": "^6.0.6",
+    "multiaddr": "^7.0.0",
     "multibase": "~0.6.0",
     "multicodec": "~0.5.1",
     "multihashes": "~0.4.14",
