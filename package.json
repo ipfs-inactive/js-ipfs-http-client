@@ -59,7 +59,7 @@
     "fs-extra": "^8.1.0",
     "glob": "^7.1.3",
     "ipfs-block": "~0.8.1",
-    "ipfs-utils": "github:ipfs/js-ipfs-utils#norm-in-pullstream",
+    "ipfs-utils": "github:ipfs/js-ipfs-utils#normalise-input",
     "ipld-dag-cbor": "~0.15.0",
     "ipld-dag-pb": "~0.17.3",
     "ipld-raw": "^4.0.0",
