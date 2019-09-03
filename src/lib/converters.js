@@ -1,13 +1,10 @@
 'use strict'
 
 const toPull = require('async-iterator-to-pull-stream')
+const all = require('async-iterator-all')
 const toStream = require('it-to-stream')
 
-exports.collectify = fn => async (...args) => {
-  const items = []
-  for await (const item of fn(...args)) items.push(item)
-  return items
-}
+exports.collectify = fn => async (...args) => all(fn(...args))
 
 exports.pullify = {
   source: fn => (...args) => toPull(fn(...args)),

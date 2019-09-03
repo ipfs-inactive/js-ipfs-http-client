@@ -34,7 +34,8 @@ module.exports = async function * globSource (...args) {
   for (const path of paths) {
     const stat = await fs.stat(path)
     const prefix = Path.dirname(path)
-    yield * toGlobSource({ path, type: stat.isDirectory() ? 'dir' : 'file', prefix }, globSourceOptions))
+    const type = stat.isDirectory() ? 'dir' : 'file'
+    yield * toGlobSource({ path, type, prefix }, globSourceOptions)
   }
 }
 

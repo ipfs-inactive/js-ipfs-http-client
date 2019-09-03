@@ -1,7 +1,7 @@
 'use strict'
 
 const nodeify = require('promise-nodeify')
-const { collectify, pullify, streamify } = require('../lib/iterable')
+const { collectify, pullify, streamify } = require('../lib/converters')
 
 function requireCommands () {
   return {
@@ -54,7 +54,7 @@ function requireCommands () {
         return nodeify(add(input, options), callback)
       }
     },
-    _addAsyncIterator: require('../files-regular/add-async-iterator'),
+    _addAsyncIterator: (_, config) => require('../add')(config),
     cat: require('../files-regular/cat'),
     catReadableStream: require('../files-regular/cat-readable-stream'),
     catPullStream: require('../files-regular/cat-pull-stream'),
