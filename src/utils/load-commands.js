@@ -1,72 +1,9 @@
 'use strict'
 
-const nodeify = require('promise-nodeify')
-const { collectify, pullify, streamify } = require('../lib/converters')
-
 function requireCommands () {
   return {
     // Files Regular (not MFS)
-    add: (_, config) => {
-      const add = collectify(require('../add')(config))
-      return (input, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(add(input, options), callback)
-      }
-    },
-    addReadableStream: (_, config) => {
-      const add = require('../add')(config)
-      return streamify.transform(add)
-    },
-    addPullStream: (_, config) => {
-      const add = require('../add')(config)
-      return pullify.transform(add)
-    },
-    addFromFs: (_, config) => {
-      const addFromFs = collectify(require('../add-from-fs')(config))
-      return (path, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(addFromFs(path, options), callback)
-      }
-    },
-    addFromURL: (_, config) => {
-      const addFromURL = collectify(require('../add-from-url')(config))
-      return (url, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(addFromURL(url, options), callback)
-      }
-    },
-    addFromStream: (_, config) => {
-      const add = collectify(require('../add')(config))
-      return (input, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(add(input, options), callback)
-      }
-    },
-    _addAsyncIterator: (_, config) => require('../add')(config),
-    cat: require('../files-regular/cat'),
-    catReadableStream: require('../files-regular/cat-readable-stream'),
-    catPullStream: require('../files-regular/cat-pull-stream'),
-    get: require('../files-regular/get'),
-    getReadableStream: require('../files-regular/get-readable-stream'),
-    getPullStream: require('../files-regular/get-pull-stream'),
-    ls: require('../files-regular/ls'),
-    lsReadableStream: require('../files-regular/ls-readable-stream'),
-    lsPullStream: require('../files-regular/ls-pull-stream'),
-    refs: require('../files-regular/refs'),
-    refsReadableStream: require('../files-regular/refs-readable-stream'),
-    refsPullStream: require('../files-regular/refs-pull-stream'),
+    ...require('../files-regular'),
 
     // Files MFS (Mutable Filesystem)
     files: require('../files-mfs'),
