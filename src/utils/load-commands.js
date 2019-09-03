@@ -1,10 +1,12 @@
 'use strict'
 
-function requireCommands () {
-  return {
-    // Files Regular (not MFS)
-    ...require('../files-regular'),
+function requireCommands (send, config) {
+  const cmds = {
+    ...require('../files-regular')(config),
+    getEndpointConfig: require('../get-endpoint-config')(config)
+  }
 
+  const subCmds = {
     // Files MFS (Mutable Filesystem)
     files: require('../files-mfs'),
 
@@ -42,21 +44,14 @@ function requireCommands () {
     stats: require('../stats'),
     update: require('../update'),
     version: require('../version'),
-    resolve: require('../resolve'),
-    // ipfs-http-client instance
-    getEndpointConfig: (send, config) => require('../get-endpoint-config')(config)
+    resolve: require('../resolve')
   }
-}
 
-function loadCommands (send, config) {
-  const files = requireCommands()
-  const cmds = {}
-
-  Object.keys(files).forEach((file) => {
-    cmds[file] = files[file](send, config)
+  Object.keys(subCmds).forEach((file) => {
+    cmds[file] = subCmds[file](send, config)
   })
 
   return cmds
 }
 
-module.exports = loadCommands
+module.exports = requireCommands

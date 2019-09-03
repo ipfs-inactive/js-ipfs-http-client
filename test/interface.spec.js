@@ -131,10 +131,6 @@ describe('interface-ipfs-core tests', () => {
         name: 'addFromFs',
         reason: 'Not designed to run in the browser'
       },
-      {
-        name: 'should ignore a directory from the file system',
-        reason: 'FIXME bug in it-glob'
-      },
       // .addFromURL
       isNode ? null : {
         name: 'addFromURL',

@@ -6,57 +6,42 @@ const { collectify, pullify, streamify } = require('../lib/converters')
 
 module.exports = (arg) => {
   const send = moduleConfig(arg)
+  const add = require('../add')(arg)
+  const addFromFs = require('../add-from-fs')(arg)
+  const addFromURL = require('../add-from-url')(arg)
 
   return {
-    add: (_, config) => {
-      const add = collectify(require('../add')(config))
-      return (input, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(add(input, options), callback)
+    add: (input, options, callback) => {
+      if (typeof options === 'function') {
+        callback = options
+        options = {}
       }
+      return nodeify(collectify(add)(input, options), callback)
     },
-    addReadableStream: (_, config) => {
-      const add = require('../add')(config)
-      return streamify.transform(add)
-    },
-    addPullStream: (_, config) => {
-      const add = require('../add')(config)
-      return pullify.transform(add)
-    },
-    addFromFs: (_, config) => {
-      const addFromFs = collectify(require('../add-from-fs')(config))
-      return (path, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(addFromFs(path, options), callback)
+    addReadableStream: streamify.transform(add),
+    addPullStream: pullify.transform(add),
+    addFromFs: (path, options, callback) => {
+      if (typeof options === 'function') {
+        callback = options
+        options = {}
       }
+      return nodeify(collectify(addFromFs)(path, options), callback)
     },
-    addFromURL: (_, config) => {
-      const addFromURL = collectify(require('../add-from-url')(config))
-      return (url, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(addFromURL(url, options), callback)
+    addFromURL: (url, options, callback) => {
+      if (typeof options === 'function') {
+        callback = options
+        options = {}
       }
+      return nodeify(collectify(addFromURL)(url, options), callback)
     },
-    addFromStream: (_, config) => {
-      const add = collectify(require('../add')(config))
-      return (input, options, callback) => {
-        if (typeof options === 'function') {
-          callback = options
-          options = {}
-        }
-        return nodeify(add(input, options), callback)
+    addFromStream: (input, options, callback) => {
+      if (typeof options === 'function') {
+        callback = options
+        options = {}
       }
+      return nodeify(collectify(add)(input, options), callback)
     },
-    _addAsyncIterator: (_, config) => require('../add')(config),
+    _addAsyncIterator: add,
     cat: require('../files-regular/cat')(send),
     catReadableStream: require('../files-regular/cat-readable-stream')(send),
     catPullStream: require('../files-regular/cat-pull-stream')(send),

@@ -46,7 +46,7 @@ async function * toGlobSource ({ path, type, prefix }, options) {
 
   if (type === 'file') {
     yield {
-      path: baseName.replace(prefix, ''),
+      path: baseName,
       content: fs.createReadStream(
         Path.isAbsolute(path) ? path : Path.join(process.cwd(), path)
       )
@@ -71,8 +71,8 @@ async function * toGlobSource ({ path, type, prefix }, options) {
 
   for await (const p of glob(path, '**/*', globOptions)) {
     yield {
-      path: toPosix(p.replace(prefix, '')),
-      content: fs.createReadStream(p)
+      path: toPosix(Path.join(baseName, p)),
+      content: fs.createReadStream(Path.join(path, p))
     }
   }
 }
