@@ -9,7 +9,7 @@ chai.use(dirtyChai)
 const throwsAsync = require('./utils/throws-async')
 const errorHandler = require('../src/lib/error-handler')
 
-describe.only('lib/error-handler', () => {
+describe('lib/error-handler', () => {
   it('should parse json error response', async () => {
     const res = {
       ok: false,
