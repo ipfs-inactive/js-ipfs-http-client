@@ -1,7 +1,7 @@
 'use strict'
 
 const configure = require('../lib/configure')
-const globSource = require('./glob-source')
+const globSource = require('ipfs-utils/src/files/glob-source')
 
 module.exports = configure(({ ky }) => {
   const add = require('../add')({ ky })
