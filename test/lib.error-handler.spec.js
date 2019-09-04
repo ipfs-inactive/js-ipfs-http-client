@@ -9,7 +9,7 @@ chai.use(dirtyChai)
 const throwsAsync = require('./utils/throws-async')
 const errorHandler = require('../src/lib/error-handler')
 
-describe('lib/error-handler', () => {
+describe.only('lib/error-handler', () => {
   it('should parse json error response', async () => {
     const res = {
       ok: false,
@@ -22,7 +22,7 @@ describe('lib/error-handler', () => {
       status: 500
     }
 
-    const err = await throwsAsync(errorHandler(res))
+    const err = await throwsAsync(errorHandler(null, null, res))
 
     expect(err.message).to.eql('boom')
     expect(err.status).to.eql(500)
@@ -36,7 +36,7 @@ describe('lib/error-handler', () => {
       status: 500
     }
 
-    const err = await throwsAsync(errorHandler(res))
+    const err = await throwsAsync(errorHandler(null, null, res))
     expect(err instanceof HTTPError).to.be.true()
   })
 
@@ -48,7 +48,7 @@ describe('lib/error-handler', () => {
       status: 500
     }
 
-    const err = await throwsAsync(errorHandler(res))
+    const err = await throwsAsync(errorHandler(null, null, res))
     expect(err instanceof HTTPError).to.be.true()
   })
 })
