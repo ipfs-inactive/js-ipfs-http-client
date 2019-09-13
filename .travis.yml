@@ -1,5 +1,6 @@
 language: node_js
-cache: npm
+# cache: npm
+cache: false
 stages:
   - check
   - test
