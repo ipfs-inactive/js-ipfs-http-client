@@ -16,6 +16,7 @@ module.exports = (arg) => {
       path: 'id',
       args: opts
     }, (err, result) => {
+      console.log('TCL: result', result)
       if (err) {
         return callback(err)
       }
