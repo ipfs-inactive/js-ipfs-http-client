@@ -19,7 +19,6 @@ module.exports = (arg) => {
       if (err) {
         return callback(err)
       }
-      console.log('IDDDDDDDDDDDDDDD', result)
       const identity = {
         id: result.ID,
         publicKey: result.PublicKey,
