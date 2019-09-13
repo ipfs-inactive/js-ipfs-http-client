@@ -11,6 +11,7 @@ module.exports = (arg) => {
       callback = opts
       opts = undefined
     }
+
     send({
       path: 'id',
       args: opts
@@ -18,6 +19,7 @@ module.exports = (arg) => {
       if (err) {
         return callback(err)
       }
+      console.log('IDDDDDDDDDDDDDDD', result)
       const identity = {
         id: result.ID,
         publicKey: result.PublicKey,
