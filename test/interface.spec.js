@@ -187,6 +187,11 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.miscellaneous(defaultCommonFactory, {
+    only: [
+      {
+        name: 'should resolve an IPFS hash'
+      }
+    ],
     skip: [
       // stop
       {
