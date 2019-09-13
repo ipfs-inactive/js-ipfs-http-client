@@ -6,8 +6,8 @@ const EchoServer = require('interface-ipfs-core/src/utils/echo-http-server')
 const server = createServer()
 const echoServer = EchoServer.createServer()
 
-const echoServeStart = promisify(echoServer.start)
-const echoServeStop = promisify(echoServer.stop)
+const echoServerStart = promisify(echoServer.start)
+const echoServerStop = promisify(echoServer.stop)
 module.exports = {
   bundlesize: { maxSize: '245kB' },
   webpack: {
@@ -27,21 +27,21 @@ module.exports = {
   },
   hooks: {
     node: {
-      pre: () => echoServeStart(),
-      post: () => echoServeStop()
+      pre: () => echoServerStart(),
+      post: () => echoServerStop()
     },
     browser: {
       pre: () => {
         return Promise.all([
           server.start(),
-          echoServeStart()
+          echoServerStart()
 
         ])
       },
       post: () => {
         return Promise.all([
           server.stop(),
-          echoServeStop()
+          echoServerStop()
         ])
       }
     }
