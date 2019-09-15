@@ -80,25 +80,25 @@ describe.only('interface-ipfs-core tests', () => {
     ]
   })
 
-  // tests.dht(defaultCommonFactory, {
-  //   skip: [
-  //     // dht.findpeer
-  //     {
-  //       name: 'should fail to find other peer if peer does not exist',
-  //       reason: 'FIXME checking what is exactly go-ipfs returning https://github.com/ipfs/go-ipfs/issues/3862#issuecomment-294168090'
-  //     },
-  //     // dht.findprovs
-  //     {
-  //       name: 'should take options to override timeout config',
-  //       reason: 'FIXME go-ipfs does not support a timeout option'
-  //     },
-  //     // dht.get
-  //     {
-  //       name: 'should get a value after it was put on another node',
-  //       reason: 'FIXME go-ipfs errors with  Error: key was not found (type 6) https://github.com/ipfs/go-ipfs/issues/3862'
-  //     }
-  //   ]
-  // })
+  tests.dht(defaultCommonFactory, {
+    skip: [
+      // dht.findpeer
+      {
+        name: 'should fail to find other peer if peer does not exist',
+        reason: 'FIXME checking what is exactly go-ipfs returning https://github.com/ipfs/go-ipfs/issues/3862#issuecomment-294168090'
+      },
+      // dht.findprovs
+      {
+        name: 'should take options to override timeout config',
+        reason: 'FIXME go-ipfs does not support a timeout option'
+      },
+      // dht.get
+      {
+        name: 'should get a value after it was put on another node',
+        reason: 'FIXME go-ipfs errors with  Error: key was not found (type 6) https://github.com/ipfs/go-ipfs/issues/3862'
+      }
+    ]
+  })
 
   tests.filesRegular(defaultCommonFactory, {
     skip: [
@@ -267,31 +267,11 @@ describe.only('interface-ipfs-core tests', () => {
 
   tests.stats(defaultCommonFactory)
 
-  tests.swarm(CommonFactory.create({
-    createSetup ({ ipfsFactory, nodes }) {
-      return callback => {
-        callback(null, {
-          spawnNode (repoPath, config, cb) {
-            if (typeof repoPath === 'function') {
-              cb = repoPath
-              repoPath = undefined
-            }
-
-            if (typeof config === 'function') {
-              cb = config
-              config = undefined
-            }
-
-            const spawnOptions = { repoPath, config, initOptions: { bits: 1024, profile: 'test' } }
-
-            ipfsFactory.spawn(spawnOptions)
-              .then(ipfsd => {
-                nodes.push(ipfsd)
-                cb(null, ipfsClient(ipfsd.apiAddr))
-              }, cb)
-          }
-        })
+  tests.swarm(defaultCommonFactory, {
+    only: [
+      {
+        name: 'should connect to a peer (promised)'
       }
-    }
-  }))
+    ]
+  })
 })
