@@ -26,7 +26,7 @@ function createFactory (options) {
             ipfsFactory.spawn(options.spawnOptions)
               .then((ipfsd) => {
                 nodes.push(ipfsd)
-                console.log('TCL: spawnNode -> ipfsd', ipfsd.apiAddr)
+                console.log('TCL: spawnNode -> ipfsd', ipfsd._apiAddr)
                 console.log('TCL: spawnNode -> ipfsd', ipfsd.initialized)
                 console.log('TCL: spawnNode -> ipfsd', ipfsd.started)
 

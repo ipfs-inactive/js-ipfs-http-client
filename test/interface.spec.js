@@ -187,7 +187,11 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.miscellaneous(defaultCommonFactory, {
-    only: true,
+    only: [
+      { name: 'should get the node ID (promised)' },
+      { name: 'should get the node version' },
+      { name: 'should resolve an IPFS hash' }
+    ],
     skip: [
       // stop
       {
