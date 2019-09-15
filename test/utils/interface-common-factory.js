@@ -8,7 +8,7 @@ const ipfsClient = require('../../src')
 function createFactory (options) {
   options = options || {}
 
-  options.factoryOptions = options.factoryOptions || {}
+  options.factoryOptions = options.factoryOptions || { IpfsClient: ipfsClient }
   options.spawnOptions = options.spawnOptions || { initOptions: { bits: 1024, profile: 'test' } }
 
   const ipfsFactory = IPFSFactory.create(options.factoryOptions)
@@ -23,14 +23,15 @@ function createFactory (options) {
       setup = (callback) => {
         callback(null, {
           spawnNode (cb) {
+            console.log('TCL: spawnNode -> spawn')
             ipfsFactory.spawn(options.spawnOptions)
               .then((ipfsd) => {
                 nodes.push(ipfsd)
-                console.log('TCL: spawnNode -> ipfsd', ipfsd._apiAddr)
+                console.log('TCL: spawnNode -> ipfsd', ipfsd._apiAddr.toString())
                 console.log('TCL: spawnNode -> ipfsd', ipfsd.initialized)
                 console.log('TCL: spawnNode -> ipfsd', ipfsd.started)
 
-                setImmediate(() => cb(null, ipfsClient(ipfsd.apiAddr)))
+                setImmediate(() => cb(null, ipfsd.api))
               })
               .catch(err => {
                 console.log('TCL: spawnNode -> err', err)
