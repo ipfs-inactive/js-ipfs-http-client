@@ -28,8 +28,6 @@ function createFactory (options) {
               .then((ipfsd) => {
                 nodes.push(ipfsd)
                 console.log('TCL: spawnNode -> ipfsd', ipfsd._apiAddr.toString())
-                console.log('TCL: spawnNode -> ipfsd', ipfsd.initialized)
-                console.log('TCL: spawnNode -> ipfsd', ipfsd.started)
 
                 setImmediate(() => cb(null, ipfsd.api))
               })
