@@ -72,6 +72,7 @@ function create2 () {
       const id = await node.api.id()
       node.api.peerId = id
 
+      console.log('spawned', id.id)
       return node.api
     }
 
