@@ -54,6 +54,8 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dag(defaultCommonFactory, {
+    only: true,
+
     skip: [
       // dag.tree
       {
@@ -81,7 +83,6 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dht(defaultCommonFactory, {
-    only: true,
     skip: [
       // dht.findpeer
       {
