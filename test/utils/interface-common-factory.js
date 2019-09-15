@@ -58,14 +58,19 @@ function createFactory (options) {
 
 exports.create = createFactory
 
-function create2 () {
+function create2 (createFactoryOptions, createSpawnOptions) {
   return () => {
     const nodes = []
     const setup = async (factoryOptions = {}, spawnOptions) => {
-      const ipfsFactory = IPFSFactory.create(merge({ IpfsClient: ipfsClient }, factoryOptions))
+      const ipfsFactory = IPFSFactory.create(merge(
+        { IpfsClient: ipfsClient },
+        factoryOptions,
+        createFactoryOptions
+      ))
       const node = await ipfsFactory.spawn(merge(
         { initOptions: { profile: 'test' } },
-        spawnOptions
+        spawnOptions,
+        createSpawnOptions
       ))
       nodes.push(node)
 

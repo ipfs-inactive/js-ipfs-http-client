@@ -51,6 +51,7 @@
     "cids": "~0.7.1",
     "concat-stream": "github:hugomrdias/concat-stream#feat/smaller",
     "debug": "^4.1.0",
+    "delay": "^4.3.0",
     "detect-node": "^2.0.4",
     "end-of-stream": "^1.4.1",
     "err-code": "^2.0.0",
