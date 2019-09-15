@@ -266,5 +266,5 @@ describe('interface-ipfs-core tests', () => {
 
   tests.stats(defaultCommonFactory)
 
-  tests.swarm(CommonFactory.create2())
+  tests.swarm(CommonFactory.createAsync())
 })
