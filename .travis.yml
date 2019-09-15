@@ -47,7 +47,7 @@ jobs:
     - stage: test
       name: electron-renderer
       script:
-        - xvfb-run npx aegir test -t electron-renderer -- --timeout 80000
+        - xvfb-run npx aegir test -t electron-renderer
 
 notifications:
   email: false
