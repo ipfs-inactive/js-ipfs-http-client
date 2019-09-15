@@ -45,7 +45,12 @@ function createFactory (options) {
     if (options.createTeardown) {
       teardown = options.createTeardown({ ipfsFactory, nodes }, options)
     } else {
-      teardown = callback => each(nodes, (node, cb) => node.stop().then(cb, cb), callback)
+      teardown = callback => each(nodes, (node, cb) => {
+        node
+          .stop()
+          .then(() => setImmediate(() => cb()))
+          .catch(err => setImmediate(() => cb(err)))
+      }, callback)
     }
 
     return { setup, teardown }
