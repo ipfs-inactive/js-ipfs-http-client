@@ -54,7 +54,6 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dag(defaultCommonFactory, {
-    only: true,
     skip: [
       // dag.tree
       {
@@ -188,7 +187,11 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.miscellaneous(defaultCommonFactory, {
-    only: true,
+    only: [
+      {
+        name: 'should get the node version'
+      }
+    ],
     skip: [
       // stop
       {
