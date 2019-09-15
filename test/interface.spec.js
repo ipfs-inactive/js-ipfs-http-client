@@ -81,6 +81,7 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dht(defaultCommonFactory, {
+    only: true,
     skip: [
       // dht.findpeer
       {
@@ -187,11 +188,7 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.miscellaneous(defaultCommonFactory, {
-    only: [
-      { name: 'should get the node ID (promised)' },
-      { name: 'should get the node version' },
-      { name: 'should resolve an IPFS hash' }
-    ],
+    only: true,
     skip: [
       // stop
       {
