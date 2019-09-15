@@ -42,7 +42,7 @@ jobs:
       name: electron-main
       os: osx
       script:
-        - xvfb-run npx aegir test -t electron-main --bail
+        - npx aegir test -t electron-main --bail
 
     - stage: test
       name: electron-renderer
