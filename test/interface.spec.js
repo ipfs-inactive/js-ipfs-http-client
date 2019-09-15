@@ -101,25 +101,6 @@ describe('interface-ipfs-core tests', () => {
 
   tests.filesRegular(defaultCommonFactory, {
     skip: [
-      // // .add
-      // isNode ? null : {
-      //   name: 'should add a nested directory as array of tupples',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // isNode ? null : {
-      //   name: 'should add a nested directory as array of tupples with progress',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // // .addPullStream
-      // isNode ? null : {
-      //   name: 'should add pull stream of valid files and dirs',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // // .addReadableStream
-      // isNode ? null : {
-      //   name: 'should add readable stream of valid files and dirs',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
       // .addFromFs
       isNode ? null : {
         name: 'addFromFs',
@@ -138,26 +119,6 @@ describe('interface-ipfs-core tests', () => {
         name: 'should export a chunk of a file in a Readable Stream',
         reason: 'TODO not implemented in go-ipfs yet'
       }
-      // // .get
-      // isNode ? null : {
-      //   name: 'should get a directory',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // // .ls
-      // isNode ? null : {
-      //   name: 'should ls with a base58 encoded CID',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // // .lsPullStream
-      // isNode ? null : {
-      //   name: 'should pull stream ls with a base58 encoded CID',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // },
-      // // .lsReadableStream
-      // isNode ? null : {
-      //   name: 'should readable stream ls with a base58 encoded CID',
-      //   reason: 'FIXME https://github.com/ipfs/js-ipfs-http-client/issues/339'
-      // }
     ]
   })
 
