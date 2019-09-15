@@ -54,7 +54,6 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dag(defaultCommonFactory, {
-    only: true,
     skip: [
       // dag.tree
       {
