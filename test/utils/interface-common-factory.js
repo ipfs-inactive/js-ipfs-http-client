@@ -52,9 +52,7 @@ function createFactory (options) {
   }
 }
 
-exports.create = createFactory
-
-function create2 (createFactoryOptions, createSpawnOptions) {
+function createAsync (createFactoryOptions, createSpawnOptions) {
   return () => {
     const nodes = []
     const setup = async (factoryOptions = {}, spawnOptions) => {
@@ -85,5 +83,7 @@ function create2 (createFactoryOptions, createSpawnOptions) {
     }
   }
 }
-
-exports.create2 = create2
+module.exports = {
+  createAsync,
+  create: createFactory
+}

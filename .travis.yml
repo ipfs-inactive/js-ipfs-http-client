@@ -40,6 +40,7 @@ jobs:
 
     - stage: test
       name: electron-main
+      os: osx
       script:
         - xvfb-run npx aegir test -t electron-main --bail
 
