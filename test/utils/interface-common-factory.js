@@ -4,6 +4,7 @@
 const each = require('async/each')
 const IPFSFactory = require('ipfsd-ctl')
 const ipfsClient = require('../../src')
+const merge = require('merge-options')
 
 function createFactory (options) {
   options = options || {}
@@ -56,3 +57,32 @@ function createFactory (options) {
 }
 
 exports.create = createFactory
+
+function create2 () {
+  return () => {
+    const nodes = []
+    const setup = async (factoryOptions = {}, spawnOptions) => {
+      const ipfsFactory = IPFSFactory.create(merge({ IpfsClient: ipfsClient }, factoryOptions))
+      const node = await ipfsFactory.spawn(merge(
+        { initOptions: { profile: 'test' } },
+        spawnOptions
+      ))
+      nodes.push(node)
+
+      const id = await node.api.id()
+      node.api.peerId = id
+
+      return node.api
+    }
+
+    const teardown = () => {
+      return Promise.all(nodes.map(n => n.stop()))
+    }
+    return {
+      setup,
+      teardown
+    }
+  }
+}
+
+exports.create2 = create2

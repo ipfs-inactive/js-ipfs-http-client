@@ -267,10 +267,13 @@ describe.only('interface-ipfs-core tests', () => {
 
   tests.stats(defaultCommonFactory)
 
-  tests.swarm(defaultCommonFactory, {
+  tests.swarm(CommonFactory.create2(), {
     only: [
       {
         name: 'should connect to a peer (promised)'
+      },
+      {
+        name: 'should connect to a peer'
       }
     ]
   })
