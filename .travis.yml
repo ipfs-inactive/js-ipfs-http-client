@@ -46,8 +46,9 @@ jobs:
 
     - stage: test
       name: electron-renderer
+      os: osx
       script:
-        - xvfb-run npx aegir test -t electron-renderer
+        - npx aegir test -t electron-renderer
 
 notifications:
   email: false

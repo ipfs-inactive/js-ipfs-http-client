@@ -35,7 +35,6 @@ module.exports = {
         return Promise.all([
           server.start(),
           echoServerStart()
-
         ])
       },
       post: () => {
