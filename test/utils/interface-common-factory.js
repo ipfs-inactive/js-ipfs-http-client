@@ -24,16 +24,12 @@ function createFactory (options) {
       setup = (callback) => {
         callback(null, {
           spawnNode (cb) {
-            console.log('TCL: spawnNode -> spawn')
             ipfsFactory.spawn(options.spawnOptions)
               .then((ipfsd) => {
                 nodes.push(ipfsd)
-                console.log('TCL: spawnNode -> ipfsd', ipfsd._apiAddr.toString())
-
                 setImmediate(() => cb(null, ipfsd.api))
               })
               .catch(err => {
-                console.log('TCL: spawnNode -> err', err)
                 setImmediate(() => cb(err))
               })
           }
@@ -77,7 +73,6 @@ function create2 (createFactoryOptions, createSpawnOptions) {
       const id = await node.api.id()
       node.api.peerId = id
 
-      console.log('spawned', id.id)
       return node.api
     }
 

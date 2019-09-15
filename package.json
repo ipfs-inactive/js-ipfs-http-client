@@ -101,7 +101,7 @@
     "through2": "^3.0.1"
   },
   "devDependencies": {
-    "aegir": "ipfs/aegir#chore/update-deps2",
+    "aegir": "ipfs/aegir#master",
     "browser-process-platform": "~0.1.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -109,7 +109,7 @@
     "dirty-chai": "^2.0.1",
     "go-ipfs-dep": "^0.4.22",
     "interface-ipfs-core": "github:ipfs/interface-ipfs-core#fix/fix-electron",
-    "ipfsd-ctl": "github:ipfs/js-ipfsd-ctl#fix/fix-electron",
+    "ipfsd-ctl": "^0.46.2",
     "nock": "^11.3.2",
     "stream-equal": "^1.1.1"
   },

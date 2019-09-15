@@ -1,9 +1,8 @@
 language: node_js
-# cache: npm
-cache: false
+cache: npm
 
 stages:
-  # - check
+  - check
   - test
   - cov
 
@@ -21,11 +20,11 @@ after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codeco
 
 jobs:
   include:
-    # - stage: check
-    #   script:
-    #     - npx aegir build --bundlesize
-    #     - npx aegir dep-check
-    #     - npm run lint
+    - stage: check
+      script:
+        - npx aegir build --bundlesize
+        - npx aegir dep-check
+        - npm run lint
 
     - stage: test
       name: chrome
@@ -42,13 +41,13 @@ jobs:
     - stage: test
       name: electron-main
       script:
-        - xvfb-run npx aegir test -t electron-main -- --bail
+        - xvfb-run npx aegir test -t electron-main --bail
 
     - stage: test
       name: electron-renderer
       os: osx
       script:
-        - npx aegir test -t electron-renderer
+        - npx aegir test -t electron-renderer --bail
 
 notifications:
   email: false
