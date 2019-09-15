@@ -54,6 +54,7 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.dag(defaultCommonFactory, {
+    only: true,
     skip: [
       // dag.tree
       {
@@ -187,11 +188,7 @@ describe('interface-ipfs-core tests', () => {
   })
 
   tests.miscellaneous(defaultCommonFactory, {
-    only: [
-      {
-        name: 'should resolve an IPFS hash'
-      }
-    ],
+    only: true,
     skip: [
       // stop
       {
