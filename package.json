@@ -106,7 +106,7 @@
     "cross-env": "^5.2.0",
     "dirty-chai": "^2.0.1",
     "go-ipfs-dep": "^0.4.22",
-    "interface-ipfs-core": "^0.112.0",
+    "interface-ipfs-core": "^0.114.0",
     "ipfsd-ctl": "~0.45.0",
     "nock": "^11.3.2",
     "stream-equal": "^1.1.1"
