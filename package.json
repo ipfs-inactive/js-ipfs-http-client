@@ -101,7 +101,7 @@
     "through2": "^3.0.1"
   },
   "devDependencies": {
-    "aegir": "^20.2.0",
+    "aegir": "^20.3.0",
     "browser-process-platform": "~0.1.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
