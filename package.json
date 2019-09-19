@@ -86,7 +86,7 @@
     "ndjson": "github:hugomrdias/ndjson#feat/readable-stream3",
     "once": "^1.4.0",
     "peer-id": "~0.12.3",
-    "peer-info": "~0.15.1",
+    "peer-info": "~0.16.2",
     "promise-nodeify": "^3.0.1",
     "promisify-es6": "^1.0.3",
     "pull-defer": "~0.2.3",
