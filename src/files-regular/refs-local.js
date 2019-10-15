@@ -9,10 +9,17 @@ module.exports = configure(({ ky }) => {
   return async function * refsLocal (options) {
     options = options || {}
 
+    const searchParams = new URLSearchParams()
+
+    if (options.multihash !== undefined) {
+      searchParams.set('multihash', options.multihash)
+    }
+
     const res = await ky.get('refs/local', {
       timeout: options.timeout,
       signal: options.signal,
-      headers: options.headers
+      headers: options.headers,
+      searchParams
     })
 
     for await (const file of ndjson(toIterable(res.body))) {
