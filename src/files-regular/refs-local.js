@@ -10,7 +10,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const res = await ky.get('refs/local', {
-      timeout: options.timeout,
+      timeout: options.timeout || false,
       signal: options.signal,
       headers: options.headers
     })

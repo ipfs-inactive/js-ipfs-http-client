@@ -50,7 +50,7 @@ module.exports = configure(({ ky }) => {
     }
 
     const res = await ky.get('refs', {
-      timeout: options.timeout,
+      timeout: options.timeout || false,
       signal: options.signal,
       headers: options.headers,
       searchParams

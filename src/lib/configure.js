@@ -27,7 +27,7 @@ module.exports = create => config => {
     // https://github.com/sindresorhus/ky/pull/153
     ky: ky.extend({
       prefixUrl: config.apiAddr + config.apiPath,
-      timeout: config.timeout || 60 * 1000,
+      timeout: config.timeout || false,
       headers: config.headers,
       hooks: {
         afterResponse: [errorHandler]
