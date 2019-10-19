@@ -5,7 +5,7 @@ const ky = require('ky-universal').default
 const { isBrowser, isWebWorker } = require('ipfs-utils/src/env')
 const { toUri } = require('./multiaddr')
 const errorHandler = require('./error-handler')
-const mergeOptions = require('merge-options')
+const mergeOptions = require('merge-options').bind({ ignoreUndefined: true })
 
 // Set default configuration and call create function with them
 module.exports = create => config => {
@@ -72,6 +72,6 @@ function getDefaultApiAddr ({ protocol, host, port }) {
 // undefined values in the passed `options` object
 function wrap (fn, defaults) {
   return (input, options) => {
-    return fn(input, mergeOptions.call({ ignoreUndefined: true }, (defaults, options)))
+    return fn(input, mergeOptions(defaults, options))
   }
 }

@@ -81,7 +81,7 @@
     "ky": "^0.15.0",
     "ky-universal": "^0.3.0",
     "lru-cache": "^5.1.1",
-    "merge-options": "github:achingbrain/merge-options#add-ignore-undefined-config-option",
+    "merge-options": "^2.0.0",
     "multiaddr": "^6.0.6",
     "multibase": "~0.6.0",
     "multicodec": "~0.5.1",
