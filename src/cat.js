@@ -21,7 +21,7 @@ module.exports = configure(({ ky }) => {
     if (options.length) searchParams.set('length', options.length)
 
     const res = await ky.get('cat', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams

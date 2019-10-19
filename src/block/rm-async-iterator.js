@@ -24,7 +24,7 @@ module.exports = configure(({ ky }) => {
     })
 
     const res = await ky.post('block/rm', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams

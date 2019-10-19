@@ -7,7 +7,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const { Strings } = await ky.get('pubsub/ls', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams: options.searchParams

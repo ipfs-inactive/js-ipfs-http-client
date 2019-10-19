@@ -38,7 +38,7 @@ module.exports = configure((config) => {
 
     try {
       res = await ky.post('pubsub/sub', {
-        timeout: options.timeout || false,
+        timeout: options.timeout,
         signal: options.signal,
         headers: options.headers,
         searchParams

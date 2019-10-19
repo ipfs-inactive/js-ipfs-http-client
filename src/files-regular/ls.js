@@ -32,7 +32,7 @@ module.exports = configure(({ ky }) => {
     }
 
     const res = await ky.get('ls', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams

@@ -9,7 +9,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const res = await ky.get('config/profile/list', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers
     })

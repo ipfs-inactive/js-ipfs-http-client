@@ -31,7 +31,7 @@ module.exports = configure(({ ky }) => {
     if (options.preload !== null) searchParams.set('preload', options.preload)
 
     const res = await ky.post('add', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams,

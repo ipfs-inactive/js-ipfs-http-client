@@ -8,7 +8,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const res = await ky.post('config/profile/apply', {
-      timeout: options.timeout || false,
+      timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams: {
