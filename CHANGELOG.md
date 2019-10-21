@@ -1,3 +1,13 @@
+<a name="38.2.1"></a>
+## [38.2.1](https://github.com/ipfs/js-ipfs-http-client/compare/v38.2.0...v38.2.1) (2019-10-21)
+
+
+### Bug Fixes
+
+* increase default timeout and respect value passed to `ky.extend` ([#1130](https://github.com/ipfs/js-ipfs-http-client/issues/1130)) ([586cb49](https://github.com/ipfs/js-ipfs-http-client/commit/586cb49))
+
+
+
 <a name="38.2.0"></a>
 # [38.2.0](https://github.com/ipfs/js-ipfs-http-client/compare/v38.1.0...v38.2.0) (2019-10-06)
 
