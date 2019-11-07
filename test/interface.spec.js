@@ -247,7 +247,14 @@ describe('interface-ipfs-core tests', () => {
     ] : null
   })
 
-  tests.repo(defaultCommonFactory)
+  tests.repo(defaultCommonFactory, {
+    skip: [
+      {
+        name: 'should get human readable repo stats',
+        reason: 'FIXME go-ipfs only has human option implemented for the cli'
+      }
+    ]
+  })
 
   tests.stats(defaultCommonFactory)
 
