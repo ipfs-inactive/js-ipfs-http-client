@@ -13,5 +13,5 @@ module.exports = buf => {
 // https://github.com/sindresorhus/ky-universal/issues/9
 // also this should only be necessary when nodeIntegration is false in electron renderer
 if (isElectronRenderer) {
-  exports.toFormData = require('./buffer-to-form-data.browser').toFormData
+  module.exports = require('./buffer-to-form-data.browser')
 }
