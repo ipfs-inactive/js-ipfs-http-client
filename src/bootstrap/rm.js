@@ -16,7 +16,7 @@ module.exports = configure(({ ky }) => {
     if (addr) searchParams.set('arg', `${addr}`)
     if (options.all != null) searchParams.set('all', options.all)
 
-    const res = await ky.delete('bootstrap/rm', {
+    const res = await ky.post('bootstrap/rm', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
