@@ -1,74 +1,58 @@
 'use strict'
 
-const promisify = require('promisify-es6')
+const FormData = require('form-data')
 const Block = require('ipfs-block')
 const CID = require('cids')
 const multihash = require('multihashes')
-const SendOneFile = require('../utils/send-one-file')
+const configure = require('../lib/configure')
 
-module.exports = (send) => {
-  const sendOneFile = SendOneFile(send, 'block/put')
-
-  return promisify((block, options, callback) => {
-    if (typeof options === 'function') {
-      callback = options
-      options = {}
-    }
-
+module.exports = configure(({ ky }) => {
+  async function put (data, options) {
     options = options || {}
 
-    if (Array.isArray(block)) {
-      return callback(new Error('block.put accepts only one block'))
+    if (Block.isBlock(data)) {
+      const { name, length } = multihash.decode(data.cid.multihash)
+      options = {
+        ...options,
+        format: data.cid.codec,
+        mhtype: name,
+        mhlen: length
+      }
+      data = data.data
     }
 
-    if (Buffer.isBuffer(block)) {
-      block = { data: block }
-    }
+    const searchParams = new URLSearchParams(options.searchParams)
+    if (options.format) searchParams.set('format', options.format)
+    if (options.format) searchParams.set('mhtype', options.mhtype)
+    if (options.mhlen) searchParams.set('mhlen', options.mhlen)
+    if (options.pin != null) searchParams.set('pin', options.pin)
 
-    if (!block || !block.data) {
-      return callback(new Error('invalid block arg'))
-    }
+    const body = new FormData()
+    body.append('file', data)
 
-    const qs = {}
-
-    if (block.cid || options.cid) {
-      let cid
-
-      try {
-        cid = new CID(block.cid || options.cid)
-      } catch (err) {
-        return callback(err)
+    let res
+    try {
+      res = await ky.post('block/put', {
+        timeout: options.timeout,
+        signal: options.signal,
+        headers: options.headers,
+        searchParams,
+        body
+      }).json()
+    } catch (err) {
+      // Retry with "protobuf"/"cbor" format for go-ipfs
+      // TODO: remove when https://github.com/ipfs/go-cid/issues/75 resolved
+      if (options.format === 'dag-pb') {
+        return put(data, { ...options, format: 'protobuf' })
+      } else if (options.format === 'dag-cbor') {
+        return put(data, { ...options, format: 'cbor' })
       }
 
-      const { name, length } = multihash.decode(cid.multihash)
-
-      qs.format = cid.codec
-      qs.mhtype = name
-      qs.mhlen = length
-      qs.version = cid.version
-    } else {
-      if (options.format) qs.format = options.format
-      if (options.mhtype) qs.mhtype = options.mhtype
-      if (options.mhlen) qs.mhlen = options.mhlen
-      if (options.version != null) qs.version = options.version
+      throw err
     }
 
-    sendOneFile(block.data, { qs }, (err, result) => {
-      if (err) {
-        // Retry with "protobuf"/"cbor" format for go-ipfs
-        // TODO: remove when https://github.com/ipfs/go-cid/issues/75 resolved
-        if (qs.format === 'dag-pb' || qs.format === 'dag-cbor') {
-          qs.format = qs.format === 'dag-pb' ? 'protobuf' : 'cbor'
-          return sendOneFile(block.data, { qs }, (err, result) => {
-            if (err) return callback(err)
-            callback(null, new Block(block.data, new CID(result.Key)))
-          })
-        }
+    return new Block(data, new CID(res.Key))
+  }
 
-        return callback(err)
-      }
-
-      callback(null, new Block(block.data, new CID(result.Key)))
-    })
-  })
-}
+  return put
+})
