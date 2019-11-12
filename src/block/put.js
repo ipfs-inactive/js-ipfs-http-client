@@ -20,11 +20,22 @@ module.exports = configure(({ ky }) => {
         version: data.cid.version
       }
       data = data.data
+    } else if (options.cid) {
+      const cid = new CID(options.cid)
+      const { name, length } = multihash.decode(cid.multihash)
+      options = {
+        ...options,
+        format: cid.codec,
+        mhtype: name,
+        mhlen: length,
+        version: cid.version
+      }
+      delete options.cid
     }
 
     const searchParams = new URLSearchParams(options.searchParams)
     if (options.format) searchParams.set('format', options.format)
-    if (options.format) searchParams.set('mhtype', options.mhtype)
+    if (options.mhtype) searchParams.set('mhtype', options.mhtype)
     if (options.mhlen) searchParams.set('mhlen', options.mhlen)
     if (options.pin != null) searchParams.set('pin', options.pin)
     if (options.version != null) searchParams.set('version', options.version)

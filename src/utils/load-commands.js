@@ -90,7 +90,8 @@ function requireCommands (send, config) {
     _refsAsyncIterator: refs,
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
-    block: require('../block')(config)
+    block: require('../block')(config),
+    dag: require('../dag')(config)
   }
 
   Object.assign(cmds.refs, {
@@ -105,7 +106,6 @@ function requireCommands (send, config) {
     files: require('../files'),
 
     // Graph
-    dag: require('../dag'),
     object: require('../object'),
     pin: require('../pin'),
 
