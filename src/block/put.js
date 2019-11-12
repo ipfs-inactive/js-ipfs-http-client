@@ -1,10 +1,10 @@
 'use strict'
 
-const FormData = require('form-data')
 const Block = require('ipfs-block')
 const CID = require('cids')
 const multihash = require('multihashes')
 const configure = require('../lib/configure')
+const toFormData = require('../lib/buffer-to-form-data')
 
 module.exports = configure(({ ky }) => {
   async function put (data, options) {
@@ -40,9 +40,6 @@ module.exports = configure(({ ky }) => {
     if (options.pin != null) searchParams.set('pin', options.pin)
     if (options.version != null) searchParams.set('version', options.version)
 
-    const body = new FormData()
-    body.append('file', data)
-
     let res
     try {
       res = await ky.post('block/put', {
@@ -50,7 +47,7 @@ module.exports = configure(({ ky }) => {
         signal: options.signal,
         headers: options.headers,
         searchParams,
-        body
+        body: toFormData(data)
       }).json()
     } catch (err) {
       // Retry with "protobuf"/"cbor" format for go-ipfs

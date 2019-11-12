@@ -1,10 +1,10 @@
 'use strict'
 
 const dagCBOR = require('ipld-dag-cbor')
-const FormData = require('form-data')
 const CID = require('cids')
 const multihash = require('multihashes')
 const configure = require('../lib/configure')
+const toFormData = require('../lib/buffer-to-form-data')
 
 module.exports = configure(({ ky }) => {
   return async (dagNode, options) => {
@@ -53,16 +53,14 @@ module.exports = configure(({ ky }) => {
     searchParams.set('format', options.format)
     searchParams.set('hash', options.hashAlg)
     searchParams.set('input-enc', options.inputEnc)
-
-    const body = new FormData()
-    body.append('file', serialized)
+    if (options.pin != null) searchParams.set('pin', options.pin)
 
     const res = await ky.post('dag/put', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams,
-      body
+      body: toFormData(serialized)
     }).json()
 
     return new CID(res.Cid['/'])
