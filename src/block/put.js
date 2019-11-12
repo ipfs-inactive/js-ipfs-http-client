@@ -16,7 +16,8 @@ module.exports = configure(({ ky }) => {
         ...options,
         format: data.cid.codec,
         mhtype: name,
-        mhlen: length
+        mhlen: length,
+        version: data.cid.version
       }
       data = data.data
     }
@@ -26,6 +27,7 @@ module.exports = configure(({ ky }) => {
     if (options.format) searchParams.set('mhtype', options.mhtype)
     if (options.mhlen) searchParams.set('mhlen', options.mhlen)
     if (options.pin != null) searchParams.set('pin', options.pin)
+    if (options.version != null) searchParams.set('version', options.version)
 
     const body = new FormData()
     body.append('file', data)
