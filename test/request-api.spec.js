@@ -127,7 +127,9 @@ describe('error handling', () => {
     })
 
     server.listen(6001, () => {
+      console.log('requesting...')
       ipfsClient('/ip4/127.0.0.1/tcp/6001').config.replace('test/fixtures/r-config.json', (err) => {
+        console.log(err)
         expect(err).to.exist()
         expect(err.message).to.match(/invalid json/i)
         server.close(done)
