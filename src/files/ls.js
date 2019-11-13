@@ -8,7 +8,7 @@ const transform = function (res, callback) {
   callback(null, entries.map((entry) => {
     return {
       name: entry.Name,
-      type: entry.Type,
+      type: (entry.Type === 0) ? 'file' : 'directory',
       size: entry.Size,
       hash: entry.Hash
     }
