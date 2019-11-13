@@ -112,7 +112,7 @@ describe('error handling', () => {
     })
   })
 
-  it.only('should handle JSON error response with invalid JSON', function (done) {
+  it('should handle JSON error response with invalid JSON', function (done) {
     if (!isNode) return this.skip()
 
     const server = require('http').createServer((req, res) => {
@@ -127,13 +127,9 @@ describe('error handling', () => {
     })
 
     server.listen(6001, () => {
-      console.log('requesting...')
       ipfsClient('/ip4/127.0.0.1/tcp/6001').config.replace('test/fixtures/r-config.json', (err) => {
-        console.log(err)
-        console.log('err.message=', err.message)
         expect(err).to.exist()
-        expect(err.message).to.match(/invalid json/i)
-        console.log('closing...')
+        expect(err.message).to.include('Unexpected token M in JSON at position 2')
         server.close(done)
       })
     })
