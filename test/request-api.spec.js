@@ -112,7 +112,7 @@ describe('error handling', () => {
     })
   })
 
-  it('should handle JSON error response with invalid JSON', function (done) {
+  it.only('should handle JSON error response with invalid JSON', function (done) {
     if (!isNode) return this.skip()
 
     const server = require('http').createServer((req, res) => {
@@ -130,8 +130,10 @@ describe('error handling', () => {
       console.log('requesting...')
       ipfsClient('/ip4/127.0.0.1/tcp/6001').config.replace('test/fixtures/r-config.json', (err) => {
         console.log(err)
+        console.log('err.message=', err.message)
         expect(err).to.exist()
         expect(err.message).to.match(/invalid json/i)
+        console.log('closing...')
         server.close(done)
       })
     })
