@@ -91,6 +91,7 @@ function requireCommands (send, config) {
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
+    bootstrap: require('../bootstrap')(config),
     config: require('../config')(config),
     dag: require('../dag')(config)
   }
@@ -111,7 +112,6 @@ function requireCommands (send, config) {
     pin: require('../pin'),
 
     // Network
-    bootstrap: require('../bootstrap'),
     dht: require('../dht'),
     name: require('../name'),
     ping: require('../ping'),
