@@ -29,7 +29,7 @@ module.exports = configure(({ ky }) => {
       if (message.responses) {
         message.responses = message.responses.map(({ ID, Addrs }) => {
           const peerInfo = new PeerInfo(PeerId.createFromB58String(ID))
-          Addrs.forEach(addr => peerInfo.multiaddrs.add(multiaddr(addr)))
+          if (Addrs) Addrs.forEach(addr => peerInfo.multiaddrs.add(multiaddr(addr)))
           return peerInfo
         })
       }
