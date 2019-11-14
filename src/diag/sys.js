@@ -3,16 +3,14 @@
 const configure = require('../lib/configure')
 
 module.exports = configure(({ ky }) => {
-  return async (options) => {
+  return options => {
     options = options || {}
 
-    const data = await ky.get('diag/sys', {
+    return ky.get('diag/sys', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams: options.searchParams
     }).json()
-
-    return data
   }
 })
