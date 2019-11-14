@@ -4,7 +4,6 @@ const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const multiaddr = require('multiaddr')
 const ndjson = require('iterable-ndjson')
-const log = require('debug')('ipfs-http-client:dht:put')
 const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 const encodeBufferURIComponent = require('../lib/encode-buffer-uri-component')
@@ -28,7 +27,6 @@ module.exports = configure(({ ky }) => {
     })
 
     for await (let message of ndjson(toIterable(res.body))) {
-      log(message)
       message = toCamel(message)
       if (message.responses) {
         message.responses = message.responses.map(({ ID, Addrs }) => {

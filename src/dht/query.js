@@ -3,7 +3,6 @@
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const ndjson = require('iterable-ndjson')
-const log = require('debug')('ipfs-http-client:dht:query')
 const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 
@@ -23,7 +22,6 @@ module.exports = configure(({ ky }) => {
     })
 
     for await (const message of ndjson(toIterable(res.body))) {
-      log(message)
       yield new PeerInfo(PeerId.createFromB58String(message.ID))
     }
   })()

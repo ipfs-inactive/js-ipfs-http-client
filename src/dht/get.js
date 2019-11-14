@@ -1,7 +1,6 @@
 'use strict'
 
 const ndjson = require('iterable-ndjson')
-const log = require('debug')('ipfs-http-client:dht:get')
 const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 
@@ -21,7 +20,6 @@ module.exports = configure(({ ky }) => {
     })
 
     for await (const message of ndjson(toIterable(res.body))) {
-      log(message)
       // 5 = Value
       // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L21
       if (message.Type === 5) {
