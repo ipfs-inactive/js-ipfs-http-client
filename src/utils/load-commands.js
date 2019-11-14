@@ -94,6 +94,7 @@ function requireCommands (send, config) {
     bootstrap: require('../bootstrap')(config),
     config: require('../config')(config),
     dag: require('../dag')(config),
+    dht: require('../dht')(config),
     diag: require('../diag')(config)
   }
 
@@ -113,7 +114,6 @@ function requireCommands (send, config) {
     pin: require('../pin'),
 
     // Network
-    dht: require('../dht'),
     name: require('../name'),
     ping: require('../ping'),
     pingReadableStream: require('../ping-readable-stream'),
