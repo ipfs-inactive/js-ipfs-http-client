@@ -17,7 +17,7 @@ module.exports = (arg, config) => {
       }
       throw errCode(new Error('value not found'), 'ERR_TYPE_5_NOT_FOUND')
     }),
-    put: require('./put')(send),
+    put: callbackify.variadic(collectify(require('./put')(config))),
     findProvs: callbackify.variadic(collectify(require('./find-provs')(config))),
     findPeer: callbackify.variadic(async (peerId, options) => {
       for await (const peerInfo of findPeer(peerId, options)) {
