@@ -1,3 +1,5 @@
+'use strict'
+
 // https://github.com/ipfs/js-ipfs-http-client/issues/569
 module.exports = function encodeBuffer (buf) {
   let uriEncoded = ''
