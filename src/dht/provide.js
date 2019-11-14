@@ -1,37 +1,42 @@
 'use strict'
 
-const promisify = require('promisify-es6')
-const CID = require('cids')
+const PeerId = require('peer-id')
+const PeerInfo = require('peer-info')
+const multiaddr = require('multiaddr')
+const ndjson = require('iterable-ndjson')
+const log = require('debug')('ipfs-http-client:dht:provide')
+const configure = require('../lib/configure')
+const toIterable = require('../lib/stream-to-iterable')
+const toCamel = require('../lib/object-to-camel')
 
-module.exports = (send) => {
-  return promisify((cids, opts, callback) => {
-    if (typeof opts === 'function' && !callback) {
-      callback = opts
-      opts = {}
+module.exports = configure(({ ky }) => {
+  return (cids, options) => (async function * () {
+    cids = Array.isArray(cids) ? cids : [cids]
+    options = options || {}
+
+    const searchParams = new URLSearchParams(options.searchParams)
+    cids.forEach(cid => searchParams.append('arg', `${cid}`))
+    if (options.recursive != null) searchParams.set('recursive', options.recursive)
+    if (options.verbose != null) searchParams.set('verbose', options.verbose)
+
+    const res = await ky.get('dht/provide', {
+      timeout: options.timeout,
+      signal: options.signal,
+      headers: options.headers,
+      searchParams
+    })
+
+    for await (let message of ndjson(toIterable(res.body))) {
+      log(message)
+      message = toCamel(message)
+      if (message.responses) {
+        message.responses = message.responses.map(({ ID, Addrs }) => {
+          const peerInfo = new PeerInfo(PeerId.createFromB58String(ID))
+          if (Addrs) Addrs.forEach(a => peerInfo.multiaddrs.add(multiaddr(a)))
+          return peerInfo
+        })
+      }
+      yield message
     }
-
-    // opts is the real callback --
-    // 'callback' is being injected by promisify
-    if (typeof opts === 'function' && typeof callback === 'function') {
-      callback = opts
-      opts = {}
-    }
-
-    if (!Array.isArray(cids)) {
-      cids = [cids]
-    }
-
-    // Validate CID(s) and serialize
-    try {
-      cids = cids.map(cid => new CID(cid).toBaseEncodedString('base58btc'))
-    } catch (err) {
-      return callback(err)
-    }
-
-    send({
-      path: 'dht/provide',
-      args: cids,
-      qs: opts
-    }, callback)
-  })
-}
+  })()
+})

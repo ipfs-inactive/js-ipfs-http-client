@@ -8,7 +8,6 @@ const moduleConfig = require('../utils/module-config')
 module.exports = (arg, config) => {
   const send = moduleConfig(arg)
   const get = require('./get')(config)
-  const findProvs = require('./find-provs')(config)
   const findPeer = require('./find-peer')(config)
 
   return {
@@ -19,14 +18,14 @@ module.exports = (arg, config) => {
       throw errCode(new Error('value not found'), 'ERR_TYPE_5_NOT_FOUND')
     }),
     put: require('./put')(send),
-    findProvs: callbackify.variadic(collectify(findProvs)),
+    findProvs: callbackify.variadic(collectify(require('./find-provs')(config))),
     findPeer: callbackify.variadic(async (peerId, options) => {
       for await (const peerInfo of findPeer(peerId, options)) {
         return peerInfo
       }
       throw errCode(new Error('final peer not found'), 'ERR_TYPE_2_NOT_FOUND')
     }),
-    provide: require('./provide')(send),
+    provide: callbackify.variadic(collectify(require('./provide')(config))),
     // find closest peerId to given peerId
     query: require('./query')(send)
   }
