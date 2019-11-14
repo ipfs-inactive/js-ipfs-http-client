@@ -91,7 +91,8 @@ function requireCommands (send, config) {
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
-    dag: require('../dag')(config)
+    dag: require('../dag')(config),
+    dht: require('../dht')(config)
   }
 
   Object.assign(cmds.refs, {
@@ -111,7 +112,6 @@ function requireCommands (send, config) {
 
     // Network
     bootstrap: require('../bootstrap'),
-    dht: require('../dht'),
     name: require('../name'),
     ping: require('../ping'),
     pingReadableStream: require('../ping-readable-stream'),

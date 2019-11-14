@@ -3,10 +3,8 @@
 const callbackify = require('callbackify')
 const errCode = require('err-code')
 const { collectify } = require('../lib/converters')
-const moduleConfig = require('../utils/module-config')
 
-module.exports = (arg, config) => {
-  const send = moduleConfig(arg)
+module.exports = config => {
   const get = require('./get')(config)
   const findPeer = require('./find-peer')(config)
 
@@ -27,6 +25,6 @@ module.exports = (arg, config) => {
     }),
     provide: callbackify.variadic(collectify(require('./provide')(config))),
     // find closest peerId to given peerId
-    query: require('./query')(send)
+    query: callbackify.variadic(collectify(require('./query')(config)))
   }
 }
