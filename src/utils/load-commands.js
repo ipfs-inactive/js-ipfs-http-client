@@ -91,7 +91,8 @@ function requireCommands (send, config) {
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
-    dag: require('../dag')(config)
+    dag: require('../dag')(config),
+    diag: require('../diag')(config)
   }
 
   Object.assign(cmds.refs, {
@@ -123,7 +124,6 @@ function requireCommands (send, config) {
     // Miscellaneous
     commands: require('../commands'),
     config: require('../config'),
-    diag: require('../diag'),
     id: require('../id'),
     key: require('../key'),
     log: require('../log'),
