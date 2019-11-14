@@ -8,7 +8,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     if (typeof key !== 'string') {
-      throw new Error('invalid key')
+      throw new Error('Invalid key type')
     }
 
     const searchParams = new URLSearchParams(options.searchParams)
