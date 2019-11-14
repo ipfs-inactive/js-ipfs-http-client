@@ -4,9 +4,9 @@ const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const multiaddr = require('multiaddr')
 const ndjson = require('iterable-ndjson')
+const log = require('debug')('ipfs-http-client:dht:find-provs')
 const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
-const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
   return (cid, options) => (async function * () {
@@ -24,16 +24,17 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (let message of ndjson(toIterable(res.body))) {
-      message = toCamel(message)
-      if (message.responses) {
-        message.responses = message.responses.map(({ ID, Addrs }) => {
+    for await (const message of ndjson(toIterable(res.body))) {
+      log(message)
+      // 4 = Provider
+      // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L20
+      if (message.Type === 4 && message.Responses) {
+        for (const { ID, Addrs } of message.Responses) {
           const peerInfo = new PeerInfo(PeerId.createFromB58String(ID))
           if (Addrs) Addrs.forEach(addr => peerInfo.multiaddrs.add(multiaddr(addr)))
-          return peerInfo
-        })
+          yield peerInfo
+        }
       }
-      yield message
     }
   })()
 })
