@@ -1,8 +1,9 @@
 'use strict'
 
+const callbackify = require('callbackify')
 const moduleConfig = require('../utils/module-config')
 
-module.exports = (arg) => {
+module.exports = (arg, config) => {
   const send = moduleConfig(arg)
 
   return {
@@ -17,7 +18,7 @@ module.exports = (arg) => {
     read: require('./read')(send),
     readReadableStream: require('./read-readable-stream')(send),
     readPullStream: require('./read-pull-stream')(send),
-    write: require('./write')(send),
+    write: callbackify.variadic(require('./write')(config)),
     mv: require('./mv')(send)
   }
 }

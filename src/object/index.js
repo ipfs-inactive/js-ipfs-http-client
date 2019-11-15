@@ -1,13 +1,14 @@
 'use strict'
 
+const callbackify = require('callbackify')
 const moduleConfig = require('../utils/module-config')
 
-module.exports = (arg) => {
+module.exports = (arg, config) => {
   const send = moduleConfig(arg)
 
   return {
     get: require('./get')(send),
-    put: require('./put')(send),
+    put: callbackify.variadic(require('./put')(config)),
     data: require('./data')(send),
     links: require('./links')(send),
     stat: require('./stat')(send),
@@ -15,8 +16,8 @@ module.exports = (arg) => {
     patch: {
       addLink: require('./addLink')(send),
       rmLink: require('./rmLink')(send),
-      setData: require('./setData')(send),
-      appendData: require('./appendData')(send)
+      setData: callbackify.variadic(require('./setData')(config)),
+      appendData: callbackify.variadic(require('./appendData')(config))
     }
   }
 }

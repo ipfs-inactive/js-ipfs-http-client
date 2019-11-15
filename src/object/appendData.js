@@ -1,35 +1,24 @@
 'use strict'
 
-const promisify = require('promisify-es6')
-const once = require('once')
 const CID = require('cids')
-const SendOneFile = require('../utils/send-one-file')
+const configure = require('../lib/configure')
+const toFormData = require('../lib/buffer-to-form-data')
 
-module.exports = (send) => {
-  const sendOneFile = SendOneFile(send, 'object/patch/append-data')
+module.exports = configure(({ ky }) => {
+  return async (cid, data, options) => {
+    options = options || {}
 
-  return promisify((cid, data, opts, _callback) => {
-    if (typeof opts === 'function') {
-      _callback = opts
-      opts = {}
-    }
-    const callback = once(_callback)
-    if (!opts) {
-      opts = {}
-    }
+    const searchParams = new URLSearchParams(options.searchParams)
+    searchParams.set('arg', `${cid}`)
 
-    try {
-      cid = new CID(cid)
-    } catch (err) {
-      return callback(err)
-    }
+    const { Hash } = await ky.post('object/patch/append-data', {
+      timeout: options.timeout,
+      signal: options.signal,
+      headers: options.headers,
+      searchParams,
+      body: toFormData(data)
+    }).json()
 
-    sendOneFile(data, { args: [cid.toString()] }, (err, result) => {
-      if (err) {
-        return callback(err)
-      }
-
-      callback(null, new CID(result.Hash))
-    })
-  })
-}
+    return new CID(Hash)
+  }
+})
