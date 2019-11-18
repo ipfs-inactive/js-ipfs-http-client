@@ -16,6 +16,10 @@ describe('interface-ipfs-core tests', () => {
         name: 'should not get bitswap stats when offline',
         reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
       },
+      {
+        name: 'should get human readable bitswap stats',
+        reason: 'FIXME go-ipfs only supports human option for the cli'
+      },
       // bitswap.wantlist
       {
         name: 'should not get the wantlist when offline',
