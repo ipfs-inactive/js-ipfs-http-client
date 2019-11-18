@@ -8,6 +8,11 @@ const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
   return async function * ls (path, options) {
+    if (typeof path !== 'string') {
+      options = path
+      path = '/'
+    }
+
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
