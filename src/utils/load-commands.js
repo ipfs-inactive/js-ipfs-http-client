@@ -113,7 +113,8 @@ function requireCommands (send, config) {
     config: require('../config')(config),
     dag: require('../dag')(config),
     dht: require('../dht')(config),
-    diag: require('../diag')(config)
+    diag: require('../diag')(config),
+    files: require('../files')(config)
   }
 
   Object.assign(cmds.refs, {
@@ -124,9 +125,6 @@ function requireCommands (send, config) {
   })
 
   const subCmds = {
-    // Files MFS (Mutable Filesystem)
-    files: require('../files'),
-
     // Graph
     object: require('../object'),
     pin: require('../pin'),

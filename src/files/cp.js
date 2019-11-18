@@ -1,5 +1,6 @@
 'use strict'
 
+const CID = require('cids')
 const configure = require('../lib/configure')
 const { findSources } = require('./utils')
 
@@ -8,7 +9,7 @@ module.exports = configure(({ ky }) => {
     const { sources, options } = findSources(args)
 
     const searchParams = new URLSearchParams(options.searchParams)
-    sources.forEach(src => searchParams.append('arg', src))
+    sources.forEach(src => searchParams.append('arg', CID.isCID(src) ? `/ipfs/${src}` : src))
     if (options.format) searchParams.set('format', options.format)
     if (options.flush != null) searchParams.set('flush', options.flush)
     if (options.hashAlg) searchParams.set('hash', options.hashAlg)

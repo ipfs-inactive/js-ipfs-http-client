@@ -9,10 +9,10 @@ exports.findSources = (args) => {
   }
 
   if (args.length === 1 && Array.isArray(args[0])) {
-    // support ipfs.file.cp([src, dest], opts)
+    // support ipfs.files.cp([src, dest], opts)
     sources = args[0]
   } else {
-    // support ipfs.file.cp(src, dest, opts) and ipfs.file.cp(src1, src2, dest, opts)
+    // support ipfs.files.cp(src, dest, opts) and ipfs.files.cp(src1, src2, dest, opts)
     sources = args
   }
 

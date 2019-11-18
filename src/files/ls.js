@@ -1,5 +1,6 @@
 'use strict'
 
+const CID = require('cids')
 const ndjson = require('iterable-ndjson')
 const toIterable = require('../lib/stream-to-iterable')
 const configure = require('../lib/configure')
@@ -10,7 +11,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
-    searchParams.set('arg', `${path}`)
+    searchParams.set('arg', CID.isCID(path) ? `/ipfs/${path}` : path)
     searchParams.set('stream', true)
     if (options.cidBase) searchParams.set('cid-base', options.cidBase)
     if (options.long != null) searchParams.set('long', options.long)
