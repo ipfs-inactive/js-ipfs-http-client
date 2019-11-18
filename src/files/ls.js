@@ -1,37 +1,36 @@
 'use strict'
 
-const promisify = require('promisify-es6')
+const ndjson = require('iterable-ndjson')
+const toIterable = require('../lib/stream-to-iterable')
+const configure = require('../lib/configure')
+const toCamel = require('../lib/object-to-camel')
 
-const transform = function (res, callback) {
-  const entries = res.Entries || []
+module.exports = configure(({ ky }) => {
+  return async function * ls (path, options) {
+    options = options || {}
 
-  callback(null, entries.map((entry) => {
-    return {
-      name: entry.Name,
-      type: entry.Type,
-      size: entry.Size,
-      hash: entry.Hash
+    const searchParams = new URLSearchParams(options.searchParams)
+    searchParams.set('arg', `${path}`)
+    searchParams.set('stream', true)
+    if (options.cidBase) searchParams.set('cid-base', options.cidBase)
+    if (options.long != null) searchParams.set('long', options.long)
+
+    const res = await ky.post('files/ls', {
+      timeout: options.timeout,
+      signal: options.signal,
+      headers: options.headers,
+      searchParams
+    })
+
+    for await (const result of ndjson(toIterable(res.body))) {
+      // go-ipfs does not yet support the "stream" option
+      if ('Entries' in result) {
+        for (const entry of result.Entries || []) {
+          yield toCamel(entry)
+        }
+        return
+      }
+      yield toCamel(result)
     }
-  }))
-}
-
-module.exports = (send) => {
-  return promisify((args, opts, callback) => {
-    if (typeof (opts) === 'function') {
-      callback = opts
-      opts = {}
-    }
-
-    if (typeof (args) === 'function') {
-      callback = args
-      opts = {}
-      args = null
-    }
-
-    return send.andTransform({
-      path: 'files/ls',
-      args: args,
-      qs: opts
-    }, transform, callback)
-  })
-}
+  }
+})
