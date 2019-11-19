@@ -55,6 +55,8 @@ function requireCommands (send, config) {
     catReadableStream: streamify.readable(cat),
     catPullStream: pullify.source(cat),
     _catAsyncIterator: cat,
+    commands: callbackify.variadic(require('../commands')(config)),
+    dns: callbackify.variadic(require('../dns')(config)),
     get: callbackify.variadic(async (path, options) => {
       const output = []
 
@@ -98,6 +100,7 @@ function requireCommands (send, config) {
       )
     },
     _getAsyncIterator: get,
+    id: callbackify.variadic(require('../id')(config)),
     ls: callbackify.variadic((path, options) => collectify(ls)(path, options)),
     lsReadableStream: streamify.readable(ls),
     lsPullStream: pullify.source(ls),
@@ -106,6 +109,9 @@ function requireCommands (send, config) {
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
     _refsAsyncIterator: refs,
+    resolve: callbackify.variadic(require('../resolve')(config)),
+    stop: callbackify.variadic(require('../stop')(config)),
+    shutdown: callbackify.variadic(require('../stop')(config)),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
@@ -138,21 +144,15 @@ function requireCommands (send, config) {
     pingPullStream: require('../ping-pull-stream'),
     swarm: require('../swarm'),
     pubsub: require('../pubsub'),
-    dns: require('../dns'),
 
     // Miscellaneous
-    commands: require('../commands'),
-    id: require('../id'),
     key: require('../key'),
     log: require('../log'),
     mount: require('../mount'),
     repo: require('../repo'),
-    stop: require('../stop'),
-    shutdown: require('../stop'),
     stats: require('../stats'),
     update: require('../update'),
-    version: require('../version'),
-    resolve: require('../resolve')
+    version: require('../version')
   }
 
   Object.keys(subCmds).forEach((file) => {
