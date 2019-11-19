@@ -113,7 +113,8 @@ function requireCommands (send, config) {
     config: require('../config')(config),
     dag: require('../dag')(config),
     dht: require('../dht')(config),
-    diag: require('../diag')(config)
+    diag: require('../diag')(config),
+    log: require('../log')(config)
   }
 
   Object.assign(cmds.refs, {
@@ -144,7 +145,6 @@ function requireCommands (send, config) {
     commands: require('../commands'),
     id: require('../id'),
     key: require('../key'),
-    log: require('../log'),
     mount: require('../mount'),
     repo: require('../repo'),
     stop: require('../stop'),
