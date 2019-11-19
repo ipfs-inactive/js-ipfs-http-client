@@ -253,7 +253,14 @@ describe('interface-ipfs-core tests', () => {
 
   tests.repo(defaultCommonFactory)
 
-  tests.stats(defaultCommonFactory)
+  tests.stats(defaultCommonFactory, {
+    skip: [
+      {
+        name: 'should get human readable bitswap stats',
+        reason: 'FIXME go-ipfs only supports human option for the cli'
+      }
+    ]
+  })
 
   tests.swarm(CommonFactory.createAsync())
 })

@@ -3,17 +3,31 @@
 const promisify = require('promisify-es6')
 const Big = require('bignumber.js')
 
-const transform = function (res, callback) {
+const transform = ({ human }) => (res, callback) => {
   callback(null, {
-    provideBufLen: res.ProvideBufLen,
+    provideBufLen: human
+      ? res.ProvideBufLen
+      : new Big(res.ProvideBufLen),
     wantlist: res.Wantlist || [],
     peers: res.Peers || [],
-    blocksReceived: new Big(res.BlocksReceived),
-    dataReceived: new Big(res.DataReceived),
-    blocksSent: new Big(res.BlocksSent),
-    dataSent: new Big(res.DataSent),
-    dupBlksReceived: new Big(res.DupBlksReceived),
-    dupDataReceived: new Big(res.DupDataReceived)
+    blocksReceived: human
+      ? res.BlocksReceived
+      : new Big(res.BlocksReceived),
+    dataReceived: human
+      ? res.DataReceived
+      : new Big(res.DataReceived),
+    blocksSent: human
+      ? res.BlocksSent
+      : new Big(res.BlocksSent),
+    dataSent: human
+      ? res.DataSent
+      : new Big(res.DataSent),
+    dupBlksReceived: human
+      ? res.DupBlksReceived
+      : new Big(res.DupBlksReceived),
+    dupDataReceived: human
+      ? res.DupDataReceived
+      : new Big(res.DupDataReceived)
   })
 }
 
@@ -27,6 +41,6 @@ module.exports = (send) => {
     send.andTransform({
       path: 'stats/bitswap',
       qs: opts
-    }, transform, callback)
+    }, transform(opts), callback)
   })
 }
