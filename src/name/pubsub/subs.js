@@ -13,6 +13,6 @@ module.exports = configure(({ ky }) => {
       searchParams: options.searchParams
     }).json()
 
-    return res.Strings
+    return res.Strings || []
   }
 })
