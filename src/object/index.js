@@ -1,23 +1,14 @@
 'use strict'
 
 const callbackify = require('callbackify')
-const moduleConfig = require('../utils/module-config')
+const { concatify } = require('../lib/converters')
 
-module.exports = (arg, config) => {
-  const send = moduleConfig(arg)
-
-  return {
-    get: require('./get')(send),
-    put: callbackify.variadic(require('./put')(config)),
-    data: require('./data')(send),
-    links: require('./links')(send),
-    stat: require('./stat')(send),
-    new: require('./new')(send),
-    patch: {
-      addLink: require('./addLink')(send),
-      rmLink: require('./rmLink')(send),
-      setData: callbackify.variadic(require('./setData')(config)),
-      appendData: callbackify.variadic(require('./appendData')(config))
-    }
-  }
-}
+module.exports = config => ({
+  data: callbackify.variadic(concatify(require('./data')(config))),
+  get: callbackify.variadic(require('./get')(config)),
+  links: callbackify.variadic(require('./links')(config)),
+  new: callbackify.variadic(require('./new')(config)),
+  patch: require('./patch')(config),
+  put: callbackify.variadic(require('./put')(config)),
+  stat: callbackify.variadic(require('./stat')(config))
+})

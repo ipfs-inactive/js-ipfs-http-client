@@ -102,6 +102,7 @@ function requireCommands (send, config) {
     lsReadableStream: streamify.readable(ls),
     lsPullStream: pullify.source(ls),
     _lsAsyncIterator: ls,
+    object: require('../object')(config),
     refs: callbackify.variadic((path, options) => collectify(refs)(path, options)),
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
@@ -126,9 +127,6 @@ function requireCommands (send, config) {
   })
 
   const subCmds = {
-    // Graph
-    object: require('../object'),
-
     // Network
     name: require('../name'),
     ping: require('../ping'),

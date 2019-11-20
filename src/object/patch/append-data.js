@@ -1,15 +1,16 @@
 'use strict'
 
+const { Buffer } = require('buffer')
 const CID = require('cids')
-const configure = require('../lib/configure')
-const toFormData = require('../lib/buffer-to-form-data')
+const configure = require('../../lib/configure')
+const toFormData = require('../../lib/buffer-to-form-data')
 
 module.exports = configure(({ ky }) => {
   return async (cid, data, options) => {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
-    searchParams.set('arg', `${cid}`)
+    searchParams.set('arg', `${Buffer.isBuffer(cid) ? new CID(cid) : cid}`)
 
     const { Hash } = await ky.post('object/patch/append-data', {
       timeout: options.timeout,
