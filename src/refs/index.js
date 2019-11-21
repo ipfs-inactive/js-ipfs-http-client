@@ -42,7 +42,7 @@ module.exports = config => {
         searchParams.append('arg', `${Buffer.isBuffer(arg) ? new CID(arg) : arg}`)
       }
 
-      const res = await ky.get('refs', {
+      const res = await ky.post('refs', {
         timeout: options.timeout,
         signal: options.signal,
         headers: options.headers,

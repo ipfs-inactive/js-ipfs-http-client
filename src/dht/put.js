@@ -20,7 +20,7 @@ module.exports = configure(({ ky }) => {
     value = Buffer.isBuffer(value) ? encodeBufferURIComponent(value) : encodeURIComponent(value)
 
     const url = `dht/put?arg=${key}&arg=${value}&${searchParams}`
-    const res = await ky.get(url, {
+    const res = await ky.post(url, {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers

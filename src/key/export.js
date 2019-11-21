@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
     searchParams.set('arg', name)
     if (password) searchParams.set('password', password)
 
-    return ky.get('key/export', {
+    return ky.post('key/export', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

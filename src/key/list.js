@@ -7,7 +7,7 @@ module.exports = configure(({ ky }) => {
   return async options => {
     options = options || {}
 
-    const res = await ky.get('key/list', {
+    const res = await ky.post('key/list', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

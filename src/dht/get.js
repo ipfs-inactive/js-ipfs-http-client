@@ -12,7 +12,7 @@ module.exports = configure(({ ky }) => {
     searchParams.set('arg', `${key}`)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
-    const res = await ky.get('dht/get', {
+    const res = await ky.post('dht/get', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

@@ -12,7 +12,7 @@ module.exports = configure(({ ky }) => {
     const searchParams = new URLSearchParams(options.searchParams)
     if (options.streamErrors) searchParams.set('stream-errors', options.streamErrors)
 
-    const res = await ky.get('repo/gc', {
+    const res = await ky.post('repo/gc', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

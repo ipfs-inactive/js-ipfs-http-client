@@ -29,7 +29,7 @@ module.exports = configure(({ ky }) => {
       searchParams.set('length', options.length)
     }
 
-    const res = await ky.get('get', {
+    const res = await ky.post('get', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
     searchParams.set('arg', `${peerId}`)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
-    const res = await ky.get('dht/findpeer', {
+    const res = await ky.post('dht/findpeer', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

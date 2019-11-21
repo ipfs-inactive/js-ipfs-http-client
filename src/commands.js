@@ -9,7 +9,7 @@ module.exports = configure(({ ky }) => {
     const searchParams = new URLSearchParams(options.searchParams)
     if (options.flags != null) searchParams.set('flags', options.flags)
 
-    return ky.get('commands', {
+    return ky.post('commands', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

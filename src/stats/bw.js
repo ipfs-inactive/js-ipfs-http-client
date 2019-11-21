@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
     if (options.poll != null) searchParams.set('poll', options.poll)
     if (options.proto) searchParams.set('proto', options.proto)
 
-    const res = await ky.get('stats/bw', {
+    const res = await ky.post('stats/bw', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

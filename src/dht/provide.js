@@ -18,7 +18,7 @@ module.exports = configure(({ ky }) => {
     if (options.recursive != null) searchParams.set('recursive', options.recursive)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
-    const res = await ky.get('dht/provide', {
+    const res = await ky.post('dht/provide', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

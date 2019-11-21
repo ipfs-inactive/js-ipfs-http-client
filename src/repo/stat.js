@@ -10,7 +10,7 @@ module.exports = configure(({ ky }) => {
     const searchParams = new URLSearchParams(options.searchParams)
     if (options.sizeOnly) searchParams.set('size-only', options.sizeOnly)
 
-    const res = await ky.get('repo/stat', {
+    const res = await ky.post('repo/stat', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

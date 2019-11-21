@@ -20,7 +20,7 @@ module.exports = configure(({ ky }) => {
     if (options.offset) searchParams.set('offset', options.offset)
     if (options.length) searchParams.set('length', options.length)
 
-    const res = await ky.get('cat', {
+    const res = await ky.post('cat', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

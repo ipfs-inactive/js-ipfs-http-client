@@ -23,7 +23,7 @@ module.exports = configure(({ ky }) => {
       searchParams.set('recursive', options.recursive)
     }
 
-    const res = await ky.get('ls', {
+    const res = await ky.post('ls', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

@@ -16,7 +16,7 @@ module.exports = configure(({ ky }) => {
     if (options.numProviders) searchParams.set('num-providers', options.numProviders)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
-    const res = await ky.get('dht/findprovs', {
+    const res = await ky.post('dht/findprovs', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
