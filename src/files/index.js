@@ -1,25 +1,13 @@
 'use strict'
 
-const callbackify = require('callbackify')
-const { collectify, streamify, pullify, concatify } = require('../lib/converters')
-
-module.exports = config => {
-  const ls = require('./ls')(config)
-  const read = require('./read')(config)
-
-  return {
-    cp: callbackify.variadic(require('./cp')(config)),
-    mkdir: callbackify.variadic(require('./mkdir')(config)),
-    flush: callbackify.variadic(require('./flush')(config)),
-    stat: callbackify.variadic(require('./stat')(config)),
-    rm: callbackify.variadic(require('./rm')(config)),
-    ls: callbackify.variadic(collectify(ls)),
-    lsReadableStream: streamify.readable(ls),
-    lsPullStream: pullify.source(ls),
-    read: callbackify.variadic(concatify(read)),
-    readReadableStream: streamify.readable(read),
-    readPullStream: pullify.source(read),
-    write: callbackify.variadic(require('./write')(config)),
-    mv: callbackify.variadic(require('./mv')(config))
-  }
-}
+module.exports = config => ({
+  cp: require('./cp')(config),
+  mkdir: require('./mkdir')(config),
+  flush: require('./flush')(config),
+  stat: require('./stat')(config),
+  rm: require('./rm')(config),
+  ls: require('./ls')(config),
+  read: require('./read')(config),
+  write: require('./write')(config),
+  mv: require('./mv')(config)
+})
