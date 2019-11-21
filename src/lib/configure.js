@@ -24,8 +24,6 @@ module.exports = create => config => {
   config.apiAddr = config.apiAddr.startsWith('/') ? toUri(config.apiAddr) : config.apiAddr
   config.apiPath = config.apiPath || config['api-path'] || '/api/v0'
 
-  // TODO configure ky to use config.fetch when this is released:
-  // https://github.com/sindresorhus/ky/pull/153
   const defaults = {
     prefixUrl: config.apiAddr + config.apiPath,
     timeout: parseTimeout(config.timeout) || 60000 * 20,
