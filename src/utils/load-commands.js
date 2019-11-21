@@ -17,6 +17,7 @@ function requireCommands (send, config) {
   const cat = require('../cat')(config)
   const get = require('../get')(config)
   const ls = require('../ls')(config)
+  const ping = require('../ping')(config)
   const refs = require('../refs')(config)
 
   const cmds = {
@@ -106,6 +107,9 @@ function requireCommands (send, config) {
     lsPullStream: pullify.source(ls),
     _lsAsyncIterator: ls,
     mount: callbackify.variadic(require('../mount')(config)),
+    ping: callbackify.variadic(collectify(ping)),
+    pingReadableStream: streamify.readable(ping),
+    pingPullStream: pullify.source(ping),
     refs: callbackify.variadic((path, options) => collectify(refs)(path, options)),
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
@@ -141,9 +145,6 @@ function requireCommands (send, config) {
 
     // Network
     name: require('../name'),
-    ping: require('../ping'),
-    pingReadableStream: require('../ping-readable-stream'),
-    pingPullStream: require('../ping-pull-stream'),
     swarm: require('../swarm'),
     pubsub: require('../pubsub'),
 
