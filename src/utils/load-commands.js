@@ -108,6 +108,7 @@ function requireCommands (send, config) {
     refsPullStream: pullify.source(refs),
     _refsAsyncIterator: refs,
     repo: require('../repo')(config),
+    stats: require('../stats')(config),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
@@ -145,7 +146,6 @@ function requireCommands (send, config) {
     mount: require('../mount'),
     stop: require('../stop'),
     shutdown: require('../stop'),
-    stats: require('../stats'),
     update: require('../update'),
     version: require('../version'),
     resolve: require('../resolve')
