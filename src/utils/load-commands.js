@@ -120,6 +120,7 @@ function requireCommands (send, config) {
     stats: require('../stats')(config),
     stop: callbackify.variadic(require('../stop')(config)),
     shutdown: callbackify.variadic(require('../stop')(config)),
+    swarm: require('../swarm')(config),
     version: callbackify.variadic(require('../version')(config)),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
@@ -144,8 +145,6 @@ function requireCommands (send, config) {
   })
 
   const subCmds = {
-    // Network
-    swarm: require('../swarm'),
     pubsub: require('../pubsub')
   }
 
