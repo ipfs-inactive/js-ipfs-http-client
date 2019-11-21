@@ -17,6 +17,7 @@ function requireCommands (send, config) {
   const cat = require('../cat')(config)
   const get = require('../get')(config)
   const ls = require('../ls')(config)
+  const ping = require('../ping')(config)
   const refs = require('../refs')(config)
 
   const cmds = {
@@ -55,6 +56,8 @@ function requireCommands (send, config) {
     catReadableStream: streamify.readable(cat),
     catPullStream: pullify.source(cat),
     _catAsyncIterator: cat,
+    commands: callbackify.variadic(require('../commands')(config)),
+    dns: callbackify.variadic(require('../dns')(config)),
     get: callbackify.variadic(async (path, options) => {
       const output = []
 
@@ -98,15 +101,24 @@ function requireCommands (send, config) {
       )
     },
     _getAsyncIterator: get,
+    id: callbackify.variadic(require('../id')(config)),
     ls: callbackify.variadic((path, options) => collectify(ls)(path, options)),
     lsReadableStream: streamify.readable(ls),
     lsPullStream: pullify.source(ls),
     _lsAsyncIterator: ls,
+    mount: callbackify.variadic(require('../mount')(config)),
     object: require('../object')(config),
+    ping: callbackify.variadic(collectify(ping)),
+    pingReadableStream: streamify.readable(ping),
+    pingPullStream: pullify.source(ping),
     refs: callbackify.variadic((path, options) => collectify(refs)(path, options)),
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
     _refsAsyncIterator: refs,
+    resolve: callbackify.variadic(require('../resolve')(config)),
+    stop: callbackify.variadic(require('../stop')(config)),
+    shutdown: callbackify.variadic(require('../stop')(config)),
+    version: callbackify.variadic(require('../version')(config)),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
@@ -131,24 +143,13 @@ function requireCommands (send, config) {
 
   const subCmds = {
     // Network
-    ping: require('../ping'),
-    pingReadableStream: require('../ping-readable-stream'),
-    pingPullStream: require('../ping-pull-stream'),
     swarm: require('../swarm'),
     pubsub: require('../pubsub'),
-    dns: require('../dns'),
 
     // Miscellaneous
-    commands: require('../commands'),
-    id: require('../id'),
-    mount: require('../mount'),
     repo: require('../repo'),
-    stop: require('../stop'),
-    shutdown: require('../stop'),
     stats: require('../stats'),
-    update: require('../update'),
-    version: require('../version'),
-    resolve: require('../resolve')
+    update: require('../update')
   }
 
   Object.keys(subCmds).forEach((file) => {

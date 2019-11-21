@@ -67,9 +67,9 @@ describe('submodules', () => {
   })
 
   it('ping', () => {
-    const ping = require('../src/ping')(config)
-    const pingPullStream = require('../src/ping-pull-stream')(config)
-    const pingReadableStream = require('../src/ping-readable-stream')(config)
+    const ping = require('../src')(config).ping
+    const pingPullStream = require('../src')(config).pingPullStream
+    const pingReadableStream = require('../src')(config).pingReadableStream
 
     expect(ping).to.be.a('function')
     expect(pingPullStream).to.be.a('function')
