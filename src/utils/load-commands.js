@@ -115,7 +115,9 @@ function requireCommands (send, config) {
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
     _refsAsyncIterator: refs,
+    repo: require('../repo')(config),
     resolve: callbackify.variadic(require('../resolve')(config)),
+    stats: require('../stats')(config),
     stop: callbackify.variadic(require('../stop')(config)),
     shutdown: callbackify.variadic(require('../stop')(config)),
     version: callbackify.variadic(require('../version')(config)),
@@ -144,12 +146,7 @@ function requireCommands (send, config) {
   const subCmds = {
     // Network
     swarm: require('../swarm'),
-    pubsub: require('../pubsub'),
-
-    // Miscellaneous
-    repo: require('../repo'),
-    stats: require('../stats'),
-    update: require('../update')
+    pubsub: require('../pubsub')
   }
 
   Object.keys(subCmds).forEach((file) => {
