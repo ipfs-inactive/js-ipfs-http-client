@@ -105,6 +105,7 @@ function requireCommands (send, config) {
     lsReadableStream: streamify.readable(ls),
     lsPullStream: pullify.source(ls),
     _lsAsyncIterator: ls,
+    mount: require('../mount')(config),
     refs: callbackify.variadic((path, options) => collectify(refs)(path, options)),
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
@@ -148,7 +149,6 @@ function requireCommands (send, config) {
     // Miscellaneous
     key: require('../key'),
     log: require('../log'),
-    mount: require('../mount'),
     repo: require('../repo'),
     stats: require('../stats'),
     update: require('../update'),
