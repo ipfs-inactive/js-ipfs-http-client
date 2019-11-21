@@ -88,7 +88,7 @@ describe('ipfs-http-client constructor tests', () => {
     it('throws on invalid multiaddr', () => {
       expect(() => ipfsClient('/dns4')).to.throw('invalid address')
       expect(() => ipfsClient('/hello')).to.throw('no protocol with name')
-      expect(() => ipfsClient('/dns4/ipfs.io')).to.throw(/Invalid URL/)
+      expect(() => ipfsClient('/dns4/ipfs.io')).to.throw()
     })
   })
 
