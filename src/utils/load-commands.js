@@ -117,6 +117,7 @@ function requireCommands (send, config) {
     diag: require('../diag')(config),
     files: require('../files')(config),
     key: require('../key')(config),
+    log: require('../log')(config),
     pin: require('../pin')(config)
   }
 
@@ -140,7 +141,6 @@ function requireCommands (send, config) {
     // Miscellaneous
     commands: require('../commands'),
     id: require('../id'),
-    log: require('../log'),
     mount: require('../mount'),
     repo: require('../repo'),
     stop: require('../stop'),
