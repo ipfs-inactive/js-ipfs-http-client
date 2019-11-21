@@ -10,7 +10,7 @@ module.exports = configure(({ ky }) => {
     const searchParams = new URLSearchParams(options.searchParams)
     if (options.id != null) searchParams.append('id', options.id)
 
-    const res = await ky.get('swarm/addrs/local', {
+    const res = await ky.post('swarm/addrs/local', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

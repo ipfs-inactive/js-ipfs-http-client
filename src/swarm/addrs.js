@@ -9,7 +9,7 @@ module.exports = configure(({ ky }) => {
   return async options => {
     options = options || {}
 
-    const res = await ky.get('swarm/addrs', {
+    const res = await ky.post('swarm/addrs', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,

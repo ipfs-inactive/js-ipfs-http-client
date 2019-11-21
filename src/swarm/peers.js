@@ -14,7 +14,7 @@ module.exports = configure(({ ky }) => {
     if (options.streams != null) searchParams.append('streams', options.streams)
     if (options.verbose != null) searchParams.append('verbose', options.verbose)
 
-    const res = await ky.get('swarm/peers', {
+    const res = await ky.post('swarm/peers', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
