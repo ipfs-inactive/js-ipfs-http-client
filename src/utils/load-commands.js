@@ -107,6 +107,7 @@ function requireCommands (send, config) {
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
     _refsAsyncIterator: refs,
+    swarm: require('../swarm')(config),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
@@ -132,7 +133,6 @@ function requireCommands (send, config) {
     ping: require('../ping'),
     pingReadableStream: require('../ping-readable-stream'),
     pingPullStream: require('../ping-pull-stream'),
-    swarm: require('../swarm'),
     pubsub: require('../pubsub'),
     dns: require('../dns'),
 
