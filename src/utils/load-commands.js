@@ -105,7 +105,7 @@ function requireCommands (send, config) {
     lsReadableStream: streamify.readable(ls),
     lsPullStream: pullify.source(ls),
     _lsAsyncIterator: ls,
-    mount: require('../mount')(config),
+    mount: callbackify.variadic(require('../mount')(config)),
     refs: callbackify.variadic((path, options) => collectify(refs)(path, options)),
     refsReadableStream: streamify.readable(refs),
     refsPullStream: pullify.source(refs),
@@ -113,6 +113,7 @@ function requireCommands (send, config) {
     resolve: callbackify.variadic(require('../resolve')(config)),
     stop: callbackify.variadic(require('../stop')(config)),
     shutdown: callbackify.variadic(require('../stop')(config)),
+    version: callbackify.variadic(require('../version')(config)),
     getEndpointConfig: require('../get-endpoint-config')(config),
     bitswap: require('../bitswap')(config),
     block: require('../block')(config),
@@ -151,8 +152,7 @@ function requireCommands (send, config) {
     log: require('../log'),
     repo: require('../repo'),
     stats: require('../stats'),
-    update: require('../update'),
-    version: require('../version')
+    update: require('../update')
   }
 
   Object.keys(subCmds).forEach((file) => {
