@@ -68,6 +68,7 @@
     "ky-universal": "^0.3.0",
     "merge-options": "^2.0.0",
     "multiaddr": "^6.0.6",
+    "multiaddr-to-uri": "^5.0.0",
     "multibase": "~0.6.0",
     "multicodec": "~0.5.1",
     "multihashes": "~0.4.14",

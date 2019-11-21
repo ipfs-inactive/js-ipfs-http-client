@@ -101,7 +101,7 @@ function ipfsClient (config) {
         yield file
       }
     })()),
-    getPullStream: toPullStream((path, options) => (async function * () {
+    getPullStream: pullify.source((path, options) => (async function * () {
       for await (const file of get(path, options)) {
         if (file.content) {
           const { content } = file
