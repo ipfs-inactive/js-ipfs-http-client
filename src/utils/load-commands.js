@@ -118,6 +118,7 @@ function requireCommands (send, config) {
     files: require('../files')(config),
     key: require('../key')(config),
     log: require('../log')(config),
+    name: require('../name')(config),
     pin: require('../pin')(config)
   }
 
@@ -130,7 +131,6 @@ function requireCommands (send, config) {
 
   const subCmds = {
     // Network
-    name: require('../name'),
     ping: require('../ping'),
     pingReadableStream: require('../ping-readable-stream'),
     pingPullStream: require('../ping-pull-stream'),
