@@ -87,7 +87,7 @@ function ipfsClient (config) {
       return output
     }),
     getEndpointConfig: require('./get-endpoint-config')(config),
-    getReadableStream: streamify.readable((path, options) => (async function * () {
+    getReadableStream: streamify.readable(async function * (path, options) {
       for await (const file of get(path, options)) {
         if (file.content) {
           const { content } = file
@@ -100,8 +100,8 @@ function ipfsClient (config) {
 
         yield file
       }
-    })()),
-    getPullStream: pullify.source((path, options) => (async function * () {
+    }),
+    getPullStream: pullify.source(async function * (path, options) {
       for await (const file of get(path, options)) {
         if (file.content) {
           const { content } = file
@@ -114,7 +114,7 @@ function ipfsClient (config) {
 
         yield file
       }
-    })()),
+    }),
     _getAsyncIterator: get,
     id: callbackify.variadic(require('./id')(config)),
     key: require('./key')(config),

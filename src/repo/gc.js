@@ -6,7 +6,7 @@ const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 
 module.exports = configure(({ ky }) => {
-  return (peerId, options) => (async function * () {
+  return async function * gc (peerId, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
@@ -25,5 +25,5 @@ module.exports = configure(({ ky }) => {
         cid: (gcResult.Key || {})['/'] ? new CID(gcResult.Key['/']) : null
       }
     }
-  })()
+  }
 })

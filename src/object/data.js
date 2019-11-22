@@ -6,7 +6,7 @@ const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 
 module.exports = configure(({ ky }) => {
-  return async function * (cid, options) {
+  return async function * data (cid, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)

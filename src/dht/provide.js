@@ -9,7 +9,7 @@ const toIterable = require('../lib/stream-to-iterable')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
-  return (cids, options) => (async function * () {
+  return async function * provide (cids, options) {
     cids = Array.isArray(cids) ? cids : [cids]
     options = options || {}
 
@@ -36,5 +36,5 @@ module.exports = configure(({ ky }) => {
       }
       yield message
     }
-  })()
+  }
 })

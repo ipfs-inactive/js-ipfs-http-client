@@ -5,7 +5,7 @@ const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
 
 module.exports = configure(({ ky }) => {
-  return (key, options) => (async function * () {
+  return async function * get (key, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
@@ -26,5 +26,5 @@ module.exports = configure(({ ky }) => {
         yield message.Extra
       }
     }
-  })()
+  }
 })
