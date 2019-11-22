@@ -1,7 +1,6 @@
 'use strict'
 
-const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
+const CID = require('cids')
 const multiaddr = require('multiaddr')
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
@@ -28,11 +27,10 @@ module.exports = configure(({ ky }) => {
     for await (let message of ndjson(toIterable(res.body))) {
       message = toCamel(message)
       if (message.responses) {
-        message.responses = message.responses.map(({ ID, Addrs }) => {
-          const peerInfo = new PeerInfo(PeerId.createFromB58String(ID))
-          if (Addrs) Addrs.forEach(a => peerInfo.multiaddrs.add(multiaddr(a)))
-          return peerInfo
-        })
+        message.responses = message.responses.map(({ ID, Addrs }) => ({
+          id: new CID(ID),
+          addrs: (Addrs || []).map(a => multiaddr(a))
+        }))
       }
       yield message
     }

@@ -7,8 +7,6 @@ const multiaddr = require('multiaddr')
 const multibase = require('multibase')
 const multicodec = require('multicodec')
 const multihash = require('multihashes')
-const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 
 function ipfsClient (config) {
   return {
@@ -49,6 +47,6 @@ function ipfsClient (config) {
   }
 }
 
-Object.assign(ipfsClient, { isIPFS, Buffer, CID, multiaddr, multibase, multicodec, multihash, PeerId, PeerInfo })
+Object.assign(ipfsClient, { isIPFS, Buffer, CID, multiaddr, multibase, multicodec, multihash })
 
 module.exports = ipfsClient

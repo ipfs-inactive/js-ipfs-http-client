@@ -1,7 +1,6 @@
 'use strict'
 
-const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
+const CID = require('cids')
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
 const toIterable = require('../lib/stream-to-iterable')
@@ -22,7 +21,10 @@ module.exports = configure(({ ky }) => {
     })
 
     for await (const message of ndjson(toIterable(res.body))) {
-      yield new PeerInfo(PeerId.createFromB58String(message.ID))
+      yield {
+        id: new CID(message.ID),
+        addrs: []
+      }
     }
   })()
 })
