@@ -6,7 +6,7 @@ const configure = require('./lib/configure')
 const toIterable = require('./lib/stream-to-iterable')
 
 module.exports = configure(({ ky }) => {
-  return (path, options) => (async function * () {
+  return async function * cat (path, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
@@ -30,5 +30,5 @@ module.exports = configure(({ ky }) => {
     for await (const chunk of toIterable(res.body)) {
       yield Buffer.from(chunk)
     }
-  })()
+  }
 })
