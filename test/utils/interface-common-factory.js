@@ -6,10 +6,14 @@ const IPFSFactory = require('ipfsd-ctl')
 const ipfsClient = require('../../src')
 const merge = require('merge-options')
 
+const DEFAULT_FACTORY_OPTIONS = {
+  IpfsClient: ipfsClient
+}
+
 function createFactory (options) {
   options = options || {}
 
-  options.factoryOptions = options.factoryOptions || { IpfsClient: ipfsClient }
+  options.factoryOptions = options.factoryOptions || DEFAULT_FACTORY_OPTIONS
   options.spawnOptions = options.spawnOptions || { initOptions: { bits: 1024, profile: 'test' } }
 
   const ipfsFactory = IPFSFactory.create(options.factoryOptions)
@@ -52,19 +56,17 @@ function createFactory (options) {
   }
 }
 
-function createAsync (createFactoryOptions, createSpawnOptions) {
+function createAsync (options = {}) {
   return () => {
     const nodes = []
-    const setup = async (factoryOptions = {}, spawnOptions) => {
+    const setup = async (setupOptions = {}) => {
       const ipfsFactory = IPFSFactory.create(merge(
-        { IpfsClient: ipfsClient },
-        factoryOptions,
-        createFactoryOptions
+        setupOptions.factoryOptions,
+        options.factoryOptions || DEFAULT_FACTORY_OPTIONS
       ))
       const node = await ipfsFactory.spawn(merge(
-        { initOptions: { profile: 'test' } },
-        spawnOptions,
-        createSpawnOptions
+        setupOptions.spawnOptions,
+        options.spawnOptions || { initOptions: { profile: 'test' } }
       ))
       nodes.push(node)
 
