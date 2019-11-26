@@ -13,7 +13,7 @@ const DEFAULT_FACTORY_OPTIONS = {
 function createFactory (options) {
   options = options || {}
 
-  options.factoryOptions = options.factoryOptions || DEFAULT_FACTORY_OPTIONS
+  options.factoryOptions = options.factoryOptions || { ...DEFAULT_FACTORY_OPTIONS }
   options.spawnOptions = options.spawnOptions || { initOptions: { bits: 1024, profile: 'test' } }
 
   const ipfsFactory = IPFSFactory.create(options.factoryOptions)
@@ -61,8 +61,9 @@ function createAsync (options = {}) {
     const nodes = []
     const setup = async (setupOptions = {}) => {
       const ipfsFactory = IPFSFactory.create(merge(
+        options.factoryOptions ? {} : { ...DEFAULT_FACTORY_OPTIONS },
         setupOptions.factoryOptions,
-        options.factoryOptions || DEFAULT_FACTORY_OPTIONS
+        options.factoryOptions
       ))
       const node = await ipfsFactory.spawn(merge(
         setupOptions.spawnOptions,
