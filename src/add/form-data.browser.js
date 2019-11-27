@@ -9,6 +9,14 @@ exports.toFormData = async input => {
   let i = 0
 
   for await (const file of files) {
+    if (file.mtime) {
+      formData.append('mtime', file.mtime)
+    }
+
+    if (file.mode) {
+      formData.append('mode', file.mode)
+    }
+
     if (file.content) {
       // In the browser there's _currently_ no streaming upload, buffer up our
       // async iterator chunks and append a big Blob :(

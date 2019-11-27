@@ -12,6 +12,14 @@ exports.toFormData = async input => {
   let i = 0
 
   for await (const file of files) {
+    if (file.mtime) {
+      formData.append(`file-${i}-mtime`, file.mtime)
+    }
+
+    if (file.mode) {
+      formData.append(`file-${i}-mode`, file.mode)
+    }
+
     if (file.content) {
       // In Node.js, FormData can be passed a stream so no need to buffer
       formData.append(
