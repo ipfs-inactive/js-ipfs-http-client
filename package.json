@@ -1,6 +1,6 @@
 {
   "name": "ipfs-http-client",
-  "version": "39.0.2",
+  "version": "40.0.0",
   "description": "A client library for the IPFS HTTP API",
   "keywords": [
     "ipfs"
@@ -56,7 +56,7 @@
     "ipld-dag-pb": "^0.18.1",
     "ipld-raw": "^4.0.0",
     "is-ipfs": "~0.6.1",
-    "it-glob": "0.0.6",
+    "it-glob": "0.0.7",
     "it-tar": "^1.1.1",
     "iterable-ndjson": "^1.1.0",
     "ky": "^0.15.0",
@@ -76,7 +76,7 @@
     "cross-env": "^6.0.0",
     "detect-node": "^2.0.4",
     "go-ipfs-dep": "^0.4.22",
-    "interface-ipfs-core": "^0.121.0",
+    "interface-ipfs-core": "^0.122.0",
     "ipfsd-ctl": "^0.47.1",
     "ndjson": "^1.5.0",
     "nock": "^11.4.0",
@@ -93,7 +93,6 @@
     "Alan Shaw <alan.shaw@protocol.ai>",
     "Alan Shaw <alan@tableflip.io>",
     "Alex Mingoia <talk@alexmingoia.com>",
-    "Alex Potsides <alex@achingbrain.net>",
     "Antonio Tenorio-Fornés <antoniotenorio@ucm.es>",
     "Bruno Barbieri <bbarbieri@delivery.com>",
     "Clemo <flipflopsimsommer@users.noreply.github.com>",
@@ -166,6 +165,7 @@
     "Victor Bjelkholm <victor@typeform.com>",
     "Volker Mische <volker.mische@gmail.com>",
     "Zhiyuan Lin <edsgerlin@gmail.com>",
+    "achingbrain <alex@achingbrain.net>",
     "dirkmc <dirkmdev@gmail.com>",
     "dmitriy ryajov <dryajov@dmitriys-MacBook-Pro.local>",
     "elsehow <yes@cosmopol.is>",
