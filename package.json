@@ -13,7 +13,7 @@
     "src",
     "dist"
   ],
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "browser": {
     "glob": false,
     "fs": false,
