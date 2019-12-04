@@ -1,5 +1,14 @@
 'use strict'
+const { createTestsInterface } = require('ipfsd-ctl')
+const { findBin } = require('ipfsd-ctl/src/utils')
 
-const IPFSFactory = require('ipfsd-ctl')
+const factory = createTestsInterface({
+  type: 'go',
+  ipfsBin: findBin('go'),
+  ipfsHttp: {
+    path: require.resolve('../../src'),
+    ref: require('../../src')
+  }
+})
 
-module.exports = IPFSFactory.create()
+module.exports = factory

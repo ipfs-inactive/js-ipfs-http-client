@@ -4,14 +4,20 @@
 const tests = require('interface-ipfs-core')
 const merge = require('merge-options')
 const { isNode } = require('ipfs-utils/src/env')
-const ctl = require('ipfsd-ctl')
+const { createTestsInterface } = require('ipfsd-ctl')
 const isWindows = process.platform && process.platform === 'win32'
 
 describe('interface-ipfs-core tests', () => {
   const commonOptions = {
-    factoryOptions: { IpfsClient: require('../src') }
+    ipfsHttp: {
+      path: require.resolve('../src'),
+      ref: require('../src')
+    },
+    ipfsOptions: {
+      pass: 'ipfs-is-awesome-software'
+    }
   }
-  const commonFactory = ctl.createTestsInterface(commonOptions)
+  const commonFactory = createTestsInterface(commonOptions)
 
   tests.bitswap(commonFactory)
 
@@ -144,20 +150,12 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.miscellaneous(commonFactory, {
-    skip: [
-      // stop
-      {
-        name: 'should stop the node',
-        reason: 'FIXME go-ipfs returns an error https://github.com/ipfs/go-ipfs/issues/4078'
-      }
-    ]
-  })
+  tests.miscellaneous(commonFactory)
 
-  tests.name(ctl.createTestsInterface(merge(commonOptions,
+  tests.name(createTestsInterface(merge(commonOptions,
     {
-      spawnOptions: {
-        args: ['--offline']
+      ipfsOptions: {
+        offline: true
       }
     }
   )), {
@@ -170,10 +168,12 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.namePubsub(ctl.createTestsInterface(merge(commonOptions,
+  tests.namePubsub(createTestsInterface(merge(commonOptions,
     {
-      spawnOptions: {
-        args: ['--enable-namesys-pubsub']
+      ipfsOptions: {
+        EXPERIMENTAL: {
+          ipnsPubsub: true
+        }
       }
     }
   )), {
@@ -212,11 +212,9 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.pubsub(ctl.createTestsInterface(merge(commonOptions,
+  tests.pubsub(createTestsInterface(merge(commonOptions,
     {
-      spawnOptions: {
-        args: ['--enable-pubsub-experiment']
-      }
+      args: ['--enable-pubsub-experiment']
     }
   )), {
     skip: isWindows ? [

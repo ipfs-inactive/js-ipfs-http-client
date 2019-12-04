@@ -3,30 +3,18 @@
 'use strict'
 
 const { expect } = require('interface-ipfs-core/src/utils/mocha')
-const ipfsClient = require('../src')
 const f = require('./utils/factory')
 
 describe('.key', function () {
   this.timeout(50 * 1000)
 
-  let ipfsd
   let ipfs
 
   before(async () => {
-    ipfsd = await f.spawn({
-      initOptions: {
-        bits: 1024,
-        profile: 'test'
-      }
-    })
-    ipfs = ipfsClient(ipfsd.apiAddr)
+    ipfs = await f.setup()
   })
 
-  after(async () => {
-    if (ipfsd) {
-      await ipfsd.stop()
-    }
-  })
+  after(() => f.teardown())
 
   describe('.gen', () => {
     it('create a new rsa key', async () => {
