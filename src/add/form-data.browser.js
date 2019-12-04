@@ -9,12 +9,14 @@ exports.toFormData = async input => {
   let i = 0
 
   for await (const file of files) {
+    const headers = {}
+
     if (file.mtime) {
-      formData.append('mtime', file.mtime)
+      headers.mtime = file.mtime
     }
 
     if (file.mode) {
-      formData.append('mode', file.mode)
+      headers.mode = file.mode
     }
 
     if (file.content) {
@@ -26,9 +28,13 @@ exports.toFormData = async input => {
         bufs.push(chunk)
       }
 
-      formData.append(`file-${i}`, new Blob(bufs, { type: 'application/octet-stream' }), encodeURIComponent(file.path))
+      formData.append(`file-${i}`, new Blob(bufs, { type: 'application/octet-stream' }), encodeURIComponent(file.path), {
+        header: headers
+      })
     } else {
-      formData.append(`dir-${i}`, new Blob([], { type: 'application/x-directory' }), encodeURIComponent(file.path))
+      formData.append(`dir-${i}`, new Blob([], { type: 'application/x-directory' }), encodeURIComponent(file.path), {
+        header: headers
+      })
     }
 
     i++

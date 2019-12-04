@@ -12,12 +12,14 @@ exports.toFormData = async input => {
   let i = 0
 
   for await (const file of files) {
+    const headers = {}
+
     if (file.mtime) {
-      formData.append(`file-${i}-mtime`, file.mtime)
+      headers.mtime = file.mtime
     }
 
     if (file.mode) {
-      formData.append(`file-${i}-mode`, file.mode)
+      headers.mode = file.mode.toString(8).padStart(4, '0')
     }
 
     if (file.content) {
@@ -34,7 +36,8 @@ exports.toFormData = async input => {
         {
           filepath: encodeURIComponent(file.path),
           contentType: 'application/octet-stream',
-          knownLength: file.content.length // Send Content-Length header if known
+          knownLength: file.content.length, // Send Content-Length header if known
+          header: headers
         }
       )
     } else {
