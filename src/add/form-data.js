@@ -43,7 +43,8 @@ exports.toFormData = async input => {
     } else {
       formData.append(`dir-${i}`, Buffer.alloc(0), {
         filepath: encodeURIComponent(file.path),
-        contentType: 'application/x-directory'
+        contentType: 'application/x-directory',
+        header: headers
       })
     }
 
