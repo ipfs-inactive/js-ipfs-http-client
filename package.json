@@ -1,13 +1,13 @@
 {
   "name": "ipfs-http-client",
-  "version": "40.0.0",
+  "version": "40.0.1",
   "description": "A client library for the IPFS HTTP API",
   "keywords": [
     "ipfs"
   ],
   "homepage": "https://github.com/ipfs/js-ipfs-http-client",
   "bugs": "https://github.com/ipfs/js-ipfs-http-client/issues",
-  "license": "MIT",
+  "license": "(Apache-2.0 OR MIT)",
   "leadMaintainer": "Alan Shaw <alan@tableflip.io>",
   "files": [
     "src",
@@ -84,17 +84,16 @@
     "cross-env": "^6.0.0",
     "detect-node": "^2.0.4",
     "go-ipfs-dep": "^0.4.22",
-    "interface-ipfs-core": "^0.122.0",
+    "interface-ipfs-core": "^0.124.0",
     "ipfsd-ctl": "^0.47.1",
     "ndjson": "^1.5.0",
     "nock": "^11.4.0",
-    "promisify-es6": "^1.0.3",
     "pull-stream": "^3.6.14",
     "pump": "^3.0.0",
     "stream-equal": "^1.1.1"
   },
   "engines": {
-    "node": ">=8.3.0",
+    "node": ">=10.3.0",
     "npm": ">=3.0.0"
   },
   "contributors": [
@@ -157,6 +156,7 @@
     "Níckolas Goline <nickolas.goline@gmail.com>",
     "Oli Evans <oli@tableflip.io>",
     "Orie Steele <orie@ohs.io>",
+    "Pedro Santos <pedromiguelsousasantos@hotmail.com>",
     "Pedro Teixeira <i@pgte.me>",
     "Pete Thomas <pete@xminusone.net>",
     "Richard Littauer <richard.littauer@gmail.com>",
