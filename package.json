@@ -73,7 +73,7 @@
     "multicodec": "~0.5.1",
     "multihashes": "~0.4.14",
     "parse-duration": "^0.1.1",
-    "peer-id": "~0.12.3",
+    "peer-id": "~0.12.2",
     "peer-info": "~0.15.1",
     "promise-nodeify": "^3.0.1"
   },
