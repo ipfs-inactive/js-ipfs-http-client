@@ -35,10 +35,10 @@ describe('.files (the MFS API part)', function () {
   const expectedMultihash = 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP'
 
   before(async () => {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('.add file for testing', async () => {
     const res = await ipfs.add(testfile)

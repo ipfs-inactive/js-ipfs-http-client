@@ -22,8 +22,8 @@ describe('.ping', function () {
   before(async function () {
     this.timeout(30 * 1000) // slow CI
 
-    ipfs = await f.setup()
-    other = await f.setup()
+    ipfs = (await f.spawn()).api
+    other = (await f.spawn()).api
 
     const ma = (await ipfs.id()).addresses[0]
     await other.swarm.connect(ma)
@@ -31,7 +31,7 @@ describe('.ping', function () {
     otherId = (await other.id()).id
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('.ping with default count', async () => {
     const res = await ipfs.ping(otherId)

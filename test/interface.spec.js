@@ -4,20 +4,26 @@
 const tests = require('interface-ipfs-core')
 const merge = require('merge-options')
 const { isNode } = require('ipfs-utils/src/env')
-const { createTestsInterface } = require('ipfsd-ctl')
+const { createFactory } = require('ipfsd-ctl')
+const { findBin } = require('ipfsd-ctl/src/utils')
 const isWindows = process.platform && process.platform === 'win32'
 
+/** @typedef {import("ipfsd-ctl").ControllerOptions} ControllerOptions */
+
 describe('interface-ipfs-core tests', () => {
+  /** @type ControllerOptions */
   const commonOptions = {
+    test: true,
     ipfsHttp: {
       path: require.resolve('../src'),
       ref: require('../src')
     },
     ipfsOptions: {
       pass: 'ipfs-is-awesome-software'
-    }
+    },
+    ipfsBin: findBin('go')
   }
-  const commonFactory = createTestsInterface(commonOptions)
+  const commonFactory = createFactory(commonOptions)
 
   tests.bitswap(commonFactory)
 
@@ -152,7 +158,7 @@ describe('interface-ipfs-core tests', () => {
 
   tests.miscellaneous(commonFactory)
 
-  tests.name(createTestsInterface(merge(commonOptions,
+  tests.name(createFactory(merge(commonOptions,
     {
       ipfsOptions: {
         offline: true
@@ -168,7 +174,7 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.namePubsub(createTestsInterface(merge(commonOptions,
+  tests.namePubsub(createFactory(merge(commonOptions,
     {
       ipfsOptions: {
         EXPERIMENTAL: {
@@ -212,7 +218,7 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.pubsub(createTestsInterface(merge(commonOptions,
+  tests.pubsub(createFactory(merge(commonOptions,
     {
       args: ['--enable-pubsub-experiment']
     }

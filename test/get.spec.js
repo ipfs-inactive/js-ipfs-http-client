@@ -23,11 +23,11 @@ describe('.get (specific go-ipfs features)', function () {
   let ipfs
 
   before(async () => {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
     await ipfs.add(smallFile.data)
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('no compression args', async () => {
     const files = await ipfs.get(smallFile.cid)

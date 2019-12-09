@@ -13,10 +13,10 @@ let ipfs
 describe('.dag', function () {
   this.timeout(20 * 1000)
   before(async function () {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('should be able to put and get a DAG node with format dag-pb', async () => {
     const data = Buffer.from('some data')

@@ -11,10 +11,10 @@ describe('.log', function () {
   let ipfs
 
   before(async () => {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('.log.tail', async () => {
     const i = setInterval(async () => {

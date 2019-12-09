@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-/* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
 const { expect } = require('interface-ipfs-core/src/utils/mocha')
@@ -11,10 +10,10 @@ describe('.key', function () {
   let ipfs
 
   before(async () => {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   describe('.gen', () => {
     it('create a new rsa key', async () => {

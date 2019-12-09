@@ -10,10 +10,10 @@ describe('stats', function () {
   let ipfs
 
   before(async () => {
-    ipfs = await f.setup()
+    ipfs = (await f.spawn()).api
   })
 
-  after(() => f.teardown())
+  after(() => f.clean())
 
   it('.stats.bitswap', async () => {
     const res = await ipfs.stats.bitswap()
