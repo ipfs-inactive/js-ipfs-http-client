@@ -14,7 +14,7 @@ describe('interface-ipfs-core tests', () => {
   /** @type ControllerOptions */
   const commonOptions = {
     test: true,
-    ipfsHttp: {
+    ipfsHttpModule: {
       path: require.resolve('../src'),
       ref: require('../src')
     },

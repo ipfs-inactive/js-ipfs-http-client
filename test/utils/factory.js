@@ -6,7 +6,7 @@ const factory = createFactory({
   test: 'true',
   type: 'go',
   ipfsBin: findBin('go'),
-  ipfsHttp: {
+  ipfsHttpModule: {
     path: require.resolve('../../src'),
     ref: require('../../src')
   }
