@@ -16,7 +16,7 @@ exports.toFormData = async input => {
     }
 
     if (file.mode) {
-      headers.mode = file.mode
+      headers.mode = file.mode.toString(8).padStart(4, '0')
     }
 
     if (file.content) {
