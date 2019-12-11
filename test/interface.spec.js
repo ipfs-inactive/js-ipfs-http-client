@@ -218,11 +218,11 @@ describe('interface-ipfs-core tests', () => {
     ]
   })
 
-  tests.pubsub(createFactory(merge(commonOptions,
-    {
+  tests.pubsub(createFactory(commonOptions, {
+    go: {
       args: ['--enable-pubsub-experiment']
     }
-  )), {
+  }), {
     skip: isWindows ? [
       // pubsub.subscribe
       {
