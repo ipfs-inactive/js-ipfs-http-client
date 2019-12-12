@@ -11,13 +11,9 @@ const f = require('./utils/factory')
 describe('.get (specific go-ipfs features)', function () {
   this.timeout(60 * 1000)
 
-  function fixture (path) {
-    return loadFixture(path, 'interface-ipfs-core')
-  }
-
   const smallFile = {
     cid: 'Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP',
-    data: fixture('test/fixtures/testfile.txt')
+    data: loadFixture('test/fixtures/testfile.txt', 'interface-ipfs-core')
   }
 
   let ipfs
@@ -28,13 +24,6 @@ describe('.get (specific go-ipfs features)', function () {
   })
 
   after(() => f.clean())
-
-  it('no compression args', async () => {
-    const files = await ipfs.get(smallFile.cid)
-
-    expect(files).to.be.length(1)
-    expect(files[0].content.toString()).to.contain(smallFile.data.toString())
-  })
 
   it('archive true', async () => {
     const files = await ipfs.get(smallFile.cid, { archive: true })
@@ -50,26 +39,19 @@ describe('.get (specific go-ipfs features)', function () {
     })).to.be.rejectedWith('compression level must be between 1 and 9')
   })
 
-  // TODO Understand why this test started failing
-  it.skip('with compression level', async () => {
+  it('with compression level', async () => {
     await ipfs.get(smallFile.cid, { compress: true, 'compression-level': 1 })
   })
 
-  it('add path containing "+"s (for testing get)', async () => {
+  it('get path containing "+"s', async () => {
     const filename = 'ti,c64x+mega++mod-pic.txt'
     const subdir = 'tmp/c++files'
-    const expectedCid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
+    const cid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
     const path = `${subdir}/${filename}`
-    const files = await ipfs.add([{
+    await ipfs.add([{
       path,
       content: Buffer.from(path)
     }])
-
-    expect(files[2].hash).to.equal(expectedCid)
-  })
-
-  it('get path containing "+"s', async () => {
-    const cid = 'QmPkmARcqjo5fqK1V1o8cFsuaXxWYsnwCNLJUYS4KeZyff'
     const files = await ipfs.get(cid)
 
     expect(files).to.be.an('array').with.lengthOf(3)
