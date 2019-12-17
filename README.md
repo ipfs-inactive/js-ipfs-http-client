@@ -1,8 +1,8 @@
 <h1 align="center">
-  <a href="https://ipfs.io"><img width="650px" src="https://ipfs.io/ipfs/QmQJ68PFMDdAsgCZvA1UVzzn18asVcf7HVvCDgpjiSCAse" alt="IPFS http client lib logo" /></a>
+  <a href="https://ipfs.io"><img width="650px" src="https://ipfs.io/ipfs/QmQJ68PFMDdAsgCZvA1UVzzn18asVcf7HVvCDgpjiSCAse" alt="BTFS http client lib logo" /></a>
 </h1>
 
-<h3 align="center">The JavaScript HTTP client library for IPFS implementations.</h3>
+<h3 align="center">The JavaScript HTTP client library for BTFS implementations.</h3>
 
 <p align="center">
   <a href="http://ipn.io"><img src="https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square" /></a>
@@ -26,7 +26,7 @@
   <br>
 </p>
 
-> A client library for the IPFS HTTP API, implemented in JavaScript. This client library implements the [interface-ipfs-core](https://github.com/ipfs/interface-ipfs-core) enabling applications to change between an embedded js-ipfs node and any remote IPFS node without having to change the code. In addition, this client library implements a set of utility functions.
+> A client library for the BTFS HTTP API, implemented in JavaScript. This client library implements the [interface-ipfs-core](https://github.com/TRON-US/js-btfs-http-client) enabling applications to change between an embedded js-btfs node and any remote BTFS node without having to change the code. In addition, this client library implements a set of utility functions.
 
 ## Lead Maintainer
 
@@ -74,15 +74,15 @@ We support both the Current and Active LTS versions of Node.js. Please see [node
 To interact with the API, you need to have a local daemon running. It needs to be open on the right port. `5001` is the default, and is used in the examples below, but it can be set to whatever you need.
 
 ```sh
-# Show the ipfs config API port to check it is correct
-> ipfs config Addresses.API
+# Show the btfs config API port to check it is correct
+> btfs config Addresses.API
 /ip4/127.0.0.1/tcp/5001
 # Set it if it does not match the above output
-> ipfs config Addresses.API /ip4/127.0.0.1/tcp/5001
+> btfs config Addresses.API /ip4/127.0.0.1/tcp/5001
 # Restart the daemon after changing the config
 
 # Run the daemon
-> ipfs daemon
+> btfs daemon
 ```
 
 ### Importing the module and usage
@@ -126,7 +126,7 @@ See the example in the [examples folder](/examples/bundle-webpack) to get an ide
 
 **from CDN**
 
-Instead of a local installation (and browserification) you may request a remote copy of IPFS API from [unpkg CDN](https://unpkg.com/).
+Instead of a local installation (and browserification) you may request a remote copy of BTFS API from [unpkg CDN](https://unpkg.com/).
 
 To always request the latest version, use the following:
 
@@ -138,19 +138,19 @@ Note: remove the `.min` from the URL to get the human-readable (not minified) ve
 
 For maximum security you may also decide to:
 
-* reference a specific version of IPFS API (to prevent unexpected breaking changes when a newer latest version is published)
+* reference a specific version of BTFS API (to prevent unexpected breaking changes when a newer latest version is published)
 * [generate a SRI hash](https://www.srihash.org/) of that version and use it to ensure integrity
 * set the [CORS settings attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) to make anonymous requests to CDN
 
 Example:
 
 ```html
-<script src="https://unpkg.com/ipfs-http-client@9.0.0/dist/index.js"
+<script src="https://unpkg.com/btfs-http-client@9.0.0/dist/index.js"
 integrity="sha384-5bXRcW9kyxxnSMbOoHzraqa7Z0PQWIao+cgeg327zit1hz5LZCEbIMx/LWKPReuB"
 crossorigin="anonymous"></script>
 ```
 
-CDN-based IPFS API provides the `IpfsHttpClient` constructor as a method of the global `window` object. Example:
+CDN-based BTFS API provides the `IpfsHttpClient` constructor as a method of the global `window` object. Example:
 
 ```js
 const ipfs = window.IpfsHttpClient({ host: 'localhost', port: 5001 })
@@ -164,7 +164,7 @@ const ipfs = window.IpfsHttpClient()
 
 ### CORS
 
-In a web browser IPFS HTTP client (either browserified or CDN-based) might encounter an error saying that the origin is not allowed. This would be a CORS ("Cross Origin Resource Sharing") failure: IPFS servers are designed to reject requests from unknown domains by default. You can whitelist the domain that you are calling from by changing your ipfs config like this:
+In a web browser BTFS HTTP client (either browserified or CDN-based) might encounter an error saying that the origin is not allowed. This would be a CORS ("Cross Origin Resource Sharing") failure: BTFS servers are designed to reject requests from unknown domains by default. You can whitelist the domain that you are calling from by changing your ipfs config like this:
 
 ```console
 $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin  '["http://example.com"]'
@@ -202,9 +202,9 @@ const ipfs = ipfsClient({ timeout: '2m' })
 
 ### API
 
-[![IPFS Core API Compatible](https://cdn.rawgit.com/ipfs/interface-ipfs-core/master/img/badge.svg)](https://github.com/ipfs/interface-ipfs-core)
+[![BTFS Core API Compatible](https://cdn.rawgit.com/ipfs/interface-ipfs-core/master/img/badge.svg)](https://github.com/ipfs/interface-ipfs-core)
 
-> `js-ipfs-http-client` follows the spec defined by [`interface-ipfs-core`](https://github.com/ipfs/interface-ipfs-core), which concerns the interface to expect from IPFS implementations. This interface is a currently active endeavor. You can use it today to consult the methods available.
+> `js-btfs-http-client` follows the spec defined by [`interface-ipfs-core`](https://github.com/TRON-US/js-btfs-http-client), which concerns the interface to expect from BTFS implementations. This interface is a currently active endeavor. You can use it today to consult the methods available.
 
 #### Files
 
@@ -408,20 +408,20 @@ We run tests by executing `npm test` in a terminal window. This will run both No
 
 ## Contribute
 
-The js-ipfs-http-client is a work in progress. As such, there's a few things you can do right now to help out:
+The js-btfs-http-client is a work in progress. As such, there's a few things you can do right now to help out:
 
 - **[Check out the existing issues](https://github.com/ipfs/js-ipfs-http-client/issues)**!
 - **Perform code reviews**. More eyes will help a) speed the project along b) ensure quality and c) reduce possible future bugs.
 - **Add tests**. There can never be enough tests. Note that interface tests exist inside [`interface-ipfs-core`](https://github.com/ipfs/interface-ipfs-core/tree/master/js/src).
-- **Contribute to the [FAQ repository](https://github.com/ipfs/faq/issues)** with any questions you have about IPFS or any of the relevant technology. A good example would be asking, 'What is a merkledag tree?'. If you don't know a term, odds are, someone else doesn't either. Eventually, we should have a good understanding of where we need to improve communications and teaching together to make IPFS and IPN better.
+- **Contribute to the [FAQ repository](https://github.com/ipfs/faq/issues)** with any questions you have about BTFS or any of the relevant technology. A good example would be asking, 'What is a merkledag tree?'. If you don't know a term, odds are, someone else doesn't either. Eventually, we should have a good understanding of where we need to improve communications and teaching together to make BTFS and IPN better.
 
-**Want to hack on IPFS?**
+**Want to hack on BTFS?**
 
 [![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md)
 
 ## Historical context
 
-This module started as a direct mapping from the go-ipfs cli to a JavaScript implementation, although this was useful and familiar to a lot of developers that were coming to IPFS for the first time, it also created some confusion on how to operate the core of IPFS and have access to the full capacity of the protocol. After much consideration, we decided to create `interface-ipfs-core` with the goal of standardizing the interface of a core implementation of IPFS, and keep the utility functions the IPFS community learned to use and love, such as reading files from disk and storing them directly to IPFS.
+This module started as a direct mapping from the go-btfs cli to a JavaScript implementation, although this was useful and familiar to a lot of developers that were coming to BTFS for the first time, it also created some confusion on how to operate the core of BTFS and have access to the full capacity of the protocol. After much consideration, we decided to create `interface-ipfs-core` with the goal of standardizing the interface of a core implementation of BTFS, and keep the utility functions the BTFS community learned to use and love, such as reading files from disk and storing them directly to BTFS.
 
 ## License
 
