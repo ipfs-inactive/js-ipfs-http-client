@@ -18,6 +18,7 @@ module.exports = configure(({ ky }) => {
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', cidPath)
+    if (options.localResolve) searchParams.set('localResolve', options.localResolve)
 
     const res = await ky.post('dag/resolve', {
       timeout: options.timeout,
