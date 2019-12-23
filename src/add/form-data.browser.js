@@ -2,6 +2,7 @@
 /* eslint-env browser */
 
 const normaliseInput = require('ipfs-utils/src/files/normalise-input')
+const mtimeToObject = require('../lib/mtime-to-object')
 
 exports.toFormData = async input => {
   const files = normaliseInput(input)
@@ -11,11 +12,16 @@ exports.toFormData = async input => {
   for await (const file of files) {
     const headers = {}
 
-    if (file.mtime) {
-      headers.mtime = file.mtime
+    if (file.mtime !== undefined && file.mtime !== null) {
+      const mtime = mtimeToObject(file.mtime)
+
+      if (mtime) {
+        headers.mtime = mtime.secs
+        headers['mtime-nsecs'] = mtime.nsecs
+      }
     }
 
-    if (file.mode) {
+    if (file.mode !== undefined && file.mode !== null) {
       headers.mode = file.mode.toString(8).padStart(4, '0')
     }
 

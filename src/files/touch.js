@@ -1,19 +1,19 @@
 'use strict'
 
 const configure = require('../lib/configure')
+const mtimeToObject = require('../lib/mtime-to-object')
 
 module.exports = configure(({ ky }) => {
-  return function touch (path, mtime, options) {
+  return function touch (path, options) {
     options = options || {}
-
-    if (isNaN(mtime)) {
-      options = mtime
-      mtime = null
-    }
+    const mtime = mtimeToObject(options.mtime)
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.append('arg', path)
-    if (mtime) searchParams.set('mtime', mtime)
+    if (mtime) {
+      searchParams.set('mtime', mtime.secs)
+      searchParams.set('mtimeNsecs', mtime.nsecs)
+    }
     if (options.format) searchParams.set('format', options.format)
     if (options.flush != null) searchParams.set('flush', options.flush)
     if (options.hashAlg) searchParams.set('hash', options.hashAlg)

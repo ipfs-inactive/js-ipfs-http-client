@@ -53,11 +53,15 @@ module.exports = configure(({ ky }) => {
 })
 
 function toCoreInterface ({ name, hash, size, mode, mtime }) {
-  return {
+  const output = {
     path: name,
     hash,
-    size: parseInt(size),
-    mode: mode,
-    mtime: mtime
+    size: parseInt(size)
   }
+
+  if (mode !== undefined) {
+    output.mode = parseInt(mode, 8)
+  }
+
+  return output
 }
