@@ -25,10 +25,10 @@ module.exports = function parseMtime (mtime) {
   }
 
   // UnixFS TimeSpec
-  if (Object.prototype.hasOwnProperty.call(mtime, 'EpochSeconds')) {
+  if (Object.prototype.hasOwnProperty.call(mtime, 'Seconds')) {
     return {
-      secs: mtime.EpochSeconds,
-      nsecs: mtime.EpochNanoseconds
+      secs: mtime.Seconds,
+      nsecs: mtime.FractionalNanoseconds
     }
   }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 const configure = require('../lib/configure')
-const toCamelWithMode = require('../lib/object-to-camel-with-mode')
+const toCamelWithMetadata = require('../lib/object-to-camel-with-metadata')
 
 module.exports = configure(({ ky }) => {
   return async (path, options) => {
@@ -28,6 +28,6 @@ module.exports = configure(({ ky }) => {
 
     res.WithLocality = res.WithLocality || false
 
-    return toCamelWithMode(res)
+    return toCamelWithMetadata(res)
   }
 })

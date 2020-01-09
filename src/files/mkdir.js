@@ -18,7 +18,10 @@ module.exports = configure(({ ky }) => {
     if (options.parents != null) searchParams.set('parents', options.parents)
     if (mtime) {
       searchParams.set('mtime', mtime.secs)
-      searchParams.set('mtimeNsecs', mtime.nsecs)
+
+      if (mtime.nsecs != null) {
+        searchParams.set('mtimeNsecs', mtime.nsecs)
+      }
     }
     if (options.mode != null) searchParams.set('mode', modeToString(options.mode))
 

@@ -22,8 +22,11 @@ module.exports = configure(({ ky }) => {
     if (options.rawLeaves != null) searchParams.set('raw-leaves', options.rawLeaves)
     if (options.truncate != null) searchParams.set('truncate', options.truncate)
     if (mtime) {
-      searchParams.set('mtime', options.mtime.secs)
-      searchParams.set('mtimeNsecs', options.mtime.nsecs)
+      searchParams.set('mtime', mtime.secs)
+
+      if (mtime.nsecs != null) {
+        searchParams.set('mtimeNsecs', mtime.nsecs)
+      }
     }
 
     const res = await ky.post('files/write', {
