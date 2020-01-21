@@ -11,7 +11,7 @@ const run = async () => {
     Buffer.from('Hello, world!'),
     { create: true, parents: true }
   )
-  const source = await ipfs.files.ls('/temp')
+  const source = ipfs.files.ls('/temp')
 
   for await (const file of source) {
     console.log(file)
