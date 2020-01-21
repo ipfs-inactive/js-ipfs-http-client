@@ -30,7 +30,7 @@ class App extends React.Component {
   // Example #1
   // Add file to IPFS and return a CID
   async saveToIpfs (files) {
-    const source = await this.ipfs.add(
+    const source = this.ipfs.add(
       [...files],
       {
         progress: (prog) => console.log(`received: ${prog}`)
