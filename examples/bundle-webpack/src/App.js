@@ -30,7 +30,7 @@ class App extends React.Component {
       const hash = file.path
       this.setState({ added_file_hash: hash })
 
-      const source = await ipfs.cat(hash)
+      const source = ipfs.cat(hash)
       const data = []
       for await (const chunk of source) {
         data.push(chunk)
