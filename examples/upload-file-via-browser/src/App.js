@@ -59,7 +59,7 @@ class App extends React.Component {
       progress: (prog) => console.log(`received: ${prog}`)
     }
 
-    const source = await this.ipfs.add(fileDetails, options)
+    const source = this.ipfs.add(fileDetails, options)
     try {
       for await (const file of source) {
         console.log(file)
