@@ -24,7 +24,7 @@ class App extends React.Component {
       protocol_version: id.protocolVersion
     })
 
-    const source = await ipfs.add(stringToUse)
+    const source = ipfs.add(stringToUse)
     for await (const file of source) {
       console.log("TCL: App -> forawait -> file", file)
       const hash = file.path
