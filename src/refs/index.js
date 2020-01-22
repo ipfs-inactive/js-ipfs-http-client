@@ -4,11 +4,11 @@ const configure = require('../lib/configure')
 const { Buffer } = require('buffer')
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = config => {
-  const refs = (configure(({ ky }) => {
+  const refs = configure(({ ky }) => {
     return async function * refs (args, options) {
       options = options || {}
 
@@ -39,7 +39,10 @@ module.exports = config => {
       }
 
       for (const arg of args) {
-        searchParams.append('arg', `${Buffer.isBuffer(arg) ? new CID(arg) : arg}`)
+        searchParams.append(
+          'arg',
+          `${Buffer.isBuffer(arg) ? new CID(arg) : arg}`
+        )
       }
 
       const res = await ky.post('refs', {
@@ -49,11 +52,11 @@ module.exports = config => {
         searchParams
       })
 
-      for await (const file of ndjson(toIterable(res))) {
+      for await (const file of ndjson(toAsyncIterable(res))) {
         yield toCamel(file)
       }
     }
-  }))(config)
+  })(config)
 
   refs.local = require('./local')(config)
 

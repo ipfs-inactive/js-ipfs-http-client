@@ -3,7 +3,7 @@
 const ndjson = require('iterable-ndjson')
 const Big = require('bignumber.js')
 const configure = require('../lib/configure')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
   return async function * bw (options) {
@@ -22,7 +22,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const stats of ndjson(toIterable(res))) {
+    for await (const stats of ndjson(toAsyncIterable(res))) {
       yield {
         totalIn: new Big(stats.TotalIn),
         totalOut: new Big(stats.TotalOut),

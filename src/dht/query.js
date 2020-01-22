@@ -4,7 +4,7 @@ const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
   return async function * query (peerId, options) {
@@ -21,7 +21,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const message of ndjson(toIterable(res))) {
+    for await (const message of ndjson(toAsyncIterable(res))) {
       yield new PeerInfo(PeerId.createFromB58String(message.ID))
     }
   }

@@ -2,7 +2,7 @@
 
 const configure = require('../lib/configure')
 const ndjson = require('iterable-ndjson')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
       headers: options.headers
     })
 
-    for await (const file of ndjson(toIterable(res))) {
+    for await (const file of ndjson(toAsyncIterable(res))) {
       yield toCamel(file)
     }
   }

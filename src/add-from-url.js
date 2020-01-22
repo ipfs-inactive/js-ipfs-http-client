@@ -1,19 +1,19 @@
 'use strict'
 
 const kyDefault = require('ky-universal').default
-const toIterable = require('./lib/stream-to-iterable')
+const toAsyncIterable = require('./lib/stream-to-async-iterable')
 
-module.exports = (config) => {
+module.exports = config => {
   const add = require('./add')(config)
 
   return async function * addFromURL (url, options) {
     options = options || {}
 
-    const { body } = await kyDefault.get(url)
+    const res = await kyDefault.get(url)
 
     const input = {
       path: decodeURIComponent(new URL(url).pathname.split('/').pop() || ''),
-      content: toIterable(body)
+      content: toAsyncIterable(res)
     }
 
     yield * add(input, options)

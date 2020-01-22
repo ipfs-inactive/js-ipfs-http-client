@@ -3,7 +3,7 @@
 const { Buffer } = require('buffer')
 const CID = require('cids')
 const configure = require('../lib/configure')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
   return async function * data (cid, options) {
@@ -19,7 +19,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const chunk of toIterable(res)) {
+    for await (const chunk of toAsyncIterable(res)) {
       yield Buffer.from(chunk)
     }
   }

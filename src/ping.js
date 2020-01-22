@@ -2,7 +2,7 @@
 
 const ndjson = require('iterable-ndjson')
 const configure = require('./lib/configure')
-const toIterable = require('./lib/stream-to-iterable')
+const toAsyncIterable = require('./lib/stream-to-async-iterable')
 const toCamel = require('./lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
@@ -20,7 +20,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const chunk of ndjson(toIterable(res))) {
+    for await (const chunk of ndjson(toAsyncIterable(res))) {
       yield toCamel(chunk)
     }
   }

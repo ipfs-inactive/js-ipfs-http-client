@@ -2,7 +2,7 @@
 
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const configure = require('../lib/configure')
 const toCamelWithMetadata = require('../lib/object-to-camel-with-metadata')
 
@@ -28,7 +28,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const result of ndjson(toIterable(res))) {
+    for await (const result of ndjson(toAsyncIterable(res))) {
       // go-ipfs does not yet support the "stream" option
       if ('Entries' in result) {
         for (const entry of result.Entries || []) {

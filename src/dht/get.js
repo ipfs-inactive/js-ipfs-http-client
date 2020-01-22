@@ -2,7 +2,7 @@
 
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
-const toIterable = require('../lib/stream-to-iterable')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
   return async function * get (key, options) {
@@ -19,7 +19,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const message of ndjson(toIterable(res))) {
+    for await (const message of ndjson(toAsyncIterable(res))) {
       // 5 = Value
       // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L21
       if (message.Type === 5) {
