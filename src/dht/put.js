@@ -10,7 +10,7 @@ const encodeBufferURIComponent = require('../lib/encode-buffer-uri-component')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
-  return async function* put(key, value, options) {
+  return async function * put (key, value, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
