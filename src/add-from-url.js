@@ -3,7 +3,7 @@
 const kyDefault = require('ky-universal').default
 const toAsyncIterable = require('./lib/stream-to-async-iterable')
 
-module.exports = config => {
+module.exports = (config) => {
   const add = require('./add')(config)
 
   return async function * addFromURL (url, options) {
