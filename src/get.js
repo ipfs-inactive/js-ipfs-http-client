@@ -38,7 +38,7 @@ module.exports = configure(({ ky }) => {
 
     const extractor = Tar.extract()
 
-    for await (const { header, body } of extractor(toIterable(res.body))) {
+    for await (const { header, body } of extractor(toIterable(res))) {
       if (header.type === 'directory') {
         yield {
           path: header.name

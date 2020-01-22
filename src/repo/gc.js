@@ -19,7 +19,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const gcResult of ndjson(toIterable(res.body))) {
+    for await (const gcResult of ndjson(toIterable(res))) {
       yield {
         err: gcResult.Error ? new Error(gcResult.Error) : null,
         cid: (gcResult.Key || {})['/'] ? new CID(gcResult.Key['/']) : null

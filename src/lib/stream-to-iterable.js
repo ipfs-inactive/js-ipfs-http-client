@@ -1,6 +1,17 @@
 'use strict'
 
-module.exports = function toIterable (body) {
+module.exports = function toIterable (res) {
+  // An env where res.body getter for ReadableStream with getReader
+  // is not supported, for example in React Native
+  if (!res.body) {
+    return (async function * () {
+      const arrayBuffer = await res.arrayBuffer()
+      yield arrayBuffer
+    })()
+  }
+
+  const { body } = res
+
   // Node.js stream
   if (body[Symbol.asyncIterator]) return body
 

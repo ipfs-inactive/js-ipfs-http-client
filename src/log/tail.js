@@ -15,6 +15,6 @@ module.exports = configure(({ ky }) => {
       searchParams: options.searchParams
     })
 
-    yield * ndjson(toIterable(res.body))
+    yield * ndjson(toIterable(res))
   }
 })

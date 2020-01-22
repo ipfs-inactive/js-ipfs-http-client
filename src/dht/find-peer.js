@@ -22,7 +22,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const message of ndjson(toIterable(res.body))) {
+    for await (const message of ndjson(toIterable(res))) {
       // 2 = FinalPeer
       // https://github.com/libp2p/go-libp2p-core/blob/6e566d10f4a5447317a66d64c7459954b969bdab/routing/query.go#L18
       if (message.Type === 2 && message.Responses) {

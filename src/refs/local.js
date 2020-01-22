@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
       headers: options.headers
     })
 
-    for await (const file of ndjson(toIterable(res.body))) {
+    for await (const file of ndjson(toIterable(res))) {
       yield toCamel(file)
     }
   }

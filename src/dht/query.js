@@ -21,7 +21,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const message of ndjson(toIterable(res.body))) {
+    for await (const message of ndjson(toIterable(res))) {
       yield new PeerInfo(PeerId.createFromB58String(message.ID))
     }
   }

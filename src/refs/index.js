@@ -49,7 +49,7 @@ module.exports = config => {
         searchParams
       })
 
-      for await (const file of ndjson(toIterable(res.body))) {
+      for await (const file of ndjson(toIterable(res))) {
         yield toCamel(file)
       }
     }

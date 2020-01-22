@@ -50,7 +50,7 @@ module.exports = configure((config) => {
 
     clearTimeout(ffWorkaround)
 
-    readMessages(ndjson(toIterable(res.body)), {
+    readMessages(ndjson(toIterable(res)), {
       onMessage: handler,
       onEnd: () => subsTracker.unsubscribe(topic, handler),
       onError: options.onError

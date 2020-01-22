@@ -22,7 +22,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const stats of ndjson(toIterable(res.body))) {
+    for await (const stats of ndjson(toIterable(res))) {
       yield {
         totalIn: new Big(stats.TotalIn),
         totalOut: new Big(stats.TotalOut),

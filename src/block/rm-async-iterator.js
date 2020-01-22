@@ -30,7 +30,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const removed of ndjson(toIterable(res.body))) {
+    for await (const removed of ndjson(toIterable(res))) {
       yield toCamel(removed)
     }
   }

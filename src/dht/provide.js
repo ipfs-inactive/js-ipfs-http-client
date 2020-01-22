@@ -25,7 +25,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (let message of ndjson(toIterable(res.body))) {
+    for await (let message of ndjson(toIterable(res))) {
       message = toCamel(message)
       if (message.responses) {
         message.responses = message.responses.map(({ ID, Addrs }) => {

@@ -20,7 +20,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const chunk of toIterable(res.body)) {
+    for await (const chunk of toIterable(res)) {
       yield Buffer.from(chunk)
     }
   }

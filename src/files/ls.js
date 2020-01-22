@@ -28,7 +28,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const result of ndjson(toIterable(res.body))) {
+    for await (const result of ndjson(toIterable(res))) {
       // go-ipfs does not yet support the "stream" option
       if ('Entries' in result) {
         for (const entry of result.Entries || []) {
