@@ -11,6 +11,8 @@ module.exports = function toAsyncIterable (res) {
         const arrayBuffer = await res.arrayBuffer()
         yield arrayBuffer
       })()
+    } else {
+      throw new Error('Neither Response.body nor Response.arrayBuffer is defined')
     }
   }
 

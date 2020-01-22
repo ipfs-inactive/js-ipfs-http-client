@@ -7,7 +7,7 @@ const toAsyncIterable = require('../src/lib/stream-to-async-iterable')
 describe('lib/stream-to-async-iterable', () => {
   it('should return input if already async iterable', () => {
     const input = {
-      [Symbol.asyncIterator] () {
+      [Symbol.asyncIterator]() {
         return this
       }
     }
@@ -19,17 +19,17 @@ describe('lib/stream-to-async-iterable', () => {
     const inputData = [2, 31, 3, 4]
 
     const input = {
-      getReader () {
+      getReader() {
         let i = 0
         return {
-          read () {
+          read() {
             return Promise.resolve(
               i === inputData.length
                 ? { done: true }
                 : { value: inputData[i++] }
             )
           },
-          releaseLock () {}
+          releaseLock() { }
         }
       }
     }
@@ -46,7 +46,7 @@ describe('lib/stream-to-async-iterable', () => {
   it('should return an async iterable even if res.body is undefined', async () => {
     const inputData = [2]
     const res = {
-      arrayBuffer () {
+      arrayBuffer() {
         return Promise.resolve(inputData[0])
       }
     }
@@ -57,6 +57,11 @@ describe('lib/stream-to-async-iterable', () => {
     }
 
     expect(chunks).to.eql(inputData)
+  })
+
+  it('should throw if res.body and res.arrayBuffer are undefined', () => {
+    const res = {}
+    expect(() => toAsyncIterable(res)).to.throw('Neither Response.body nor Response.arrayBuffer is defined')
   })
 
   it('should throw on unknown stream', () => {
