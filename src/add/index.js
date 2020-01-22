@@ -7,7 +7,7 @@ const { toFormData } = require('./form-data')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
-  return async function* add(input, options) {
+  return async function * add (input, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
@@ -52,7 +52,7 @@ module.exports = configure(({ ky }) => {
   }
 })
 
-function toCoreInterface({ name, hash, size, mode, mtime }) {
+function toCoreInterface ({ name, hash, size, mode, mtime }) {
   const output = {
     path: name,
     hash,

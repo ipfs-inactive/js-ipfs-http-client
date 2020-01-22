@@ -10,7 +10,7 @@ module.exports = configure(({ ky }) => {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
-    if (options.streamErrors) { searchParams.set('stream-errors', options.streamErrors) }
+    if (options.streamErrors) searchParams.set('stream-errors', options.streamErrors)
 
     const res = await ky.post('repo/gc', {
       timeout: options.timeout,

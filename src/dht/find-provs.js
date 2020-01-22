@@ -13,7 +13,7 @@ module.exports = configure(({ ky }) => {
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', `${cid}`)
-    if (options.numProviders) { searchParams.set('num-providers', options.numProviders) }
+    if (options.numProviders) searchParams.set('num-providers', options.numProviders)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
     const res = await ky.post('dht/findprovs', {

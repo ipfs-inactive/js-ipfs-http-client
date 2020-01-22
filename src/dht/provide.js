@@ -15,7 +15,7 @@ module.exports = configure(({ ky }) => {
 
     const searchParams = new URLSearchParams(options.searchParams)
     cids.forEach(cid => searchParams.append('arg', `${cid}`))
-    if (options.recursive != null) { searchParams.set('recursive', options.recursive) }
+    if (options.recursive != null) searchParams.set('recursive', options.recursive)
     if (options.verbose != null) searchParams.set('verbose', options.verbose)
 
     const res = await ky.post('dht/provide', {

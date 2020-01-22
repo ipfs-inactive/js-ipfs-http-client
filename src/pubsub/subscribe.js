@@ -9,7 +9,7 @@ const configure = require('../lib/configure')
 const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const SubscriptionTracker = require('./subscription-tracker')
 
-module.exports = configure(config => {
+module.exports = configure((config) => {
   const ky = config.ky
   const subsTracker = SubscriptionTracker.singleton()
   const publish = require('./publish')(config)
@@ -20,7 +20,7 @@ module.exports = configure(config => {
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', topic)
-    if (options.discover != null) { searchParams.set('discover', options.discover) }
+    if (options.discover != null) searchParams.set('discover', options.discover)
 
     let res
 
@@ -28,9 +28,7 @@ module.exports = configure(config => {
     // is received. If this doesn't happen within 1 second send an empty message
     // to kickstart the process.
     const ffWorkaround = setTimeout(async () => {
-      log(
-        `Publishing empty message to "${topic}" to resolve subscription request`
-      )
+      log(`Publishing empty message to "${topic}" to resolve subscription request`)
       try {
         await publish(topic, Buffer.alloc(0), options)
       } catch (err) {
@@ -45,8 +43,7 @@ module.exports = configure(config => {
         headers: options.headers,
         searchParams
       })
-    } catch (err) {
-      // Initial subscribe fail, ensure we clean up
+    } catch (err) { // Initial subscribe fail, ensure we clean up
       subsTracker.unsubscribe(topic, handler)
       throw err
     }
