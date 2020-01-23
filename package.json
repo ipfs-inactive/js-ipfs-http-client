@@ -68,7 +68,7 @@
     "async": "^3.1.0",
     "browser-process-platform": "~0.1.1",
     "go-ipfs-dep": "^0.4.22",
-    "interface-ipfs-core": "github:ipfs/interface-js-ipfs-core#refactor/async-iterables",
+    "interface-ipfs-core": "^0.129.0",
     "ipfsd-ctl": "^1.0.2",
     "it-all": "^1.0.1",
     "it-concat": "^1.0.0",
