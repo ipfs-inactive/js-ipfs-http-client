@@ -1,6 +1,5 @@
 'use strict'
 
-const CID = require('cids')
 const multiaddr = require('multiaddr')
 const configure = require('../lib/configure')
 
