@@ -2,7 +2,7 @@
 
 const { Buffer } = require('buffer')
 const ndjson = require('iterable-ndjson')
-const toAsyncIterable = require('stream-to-it/source')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const encodeBufferURIComponent = require('../lib/encode-buffer-uri-component')
 const configure = require('../lib/configure')
 

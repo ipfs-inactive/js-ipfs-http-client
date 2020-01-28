@@ -5,7 +5,7 @@ const bs58 = require('bs58')
 const { Buffer } = require('buffer')
 const log = require('debug')('ipfs-http-client:pubsub:subscribe')
 const configure = require('../lib/configure')
-const toAsyncIterable = require('stream-to-it/source')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const SubscriptionTracker = require('./subscription-tracker')
 
 module.exports = configure((config) => {

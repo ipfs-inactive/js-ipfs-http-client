@@ -3,7 +3,7 @@
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
 const multiaddr = require('multiaddr')
-const toAsyncIterable = require('stream-to-it/source')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const configure = require('../lib/configure')
 const toCamel = require('../lib/object-to-camel')
 

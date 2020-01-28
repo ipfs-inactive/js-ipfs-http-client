@@ -14,3 +14,4 @@ examples/sub-module/**/*-minified.js
 examples/sub-module/*-bundle.js
 
 .vscode/
+.DS_Store

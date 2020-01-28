@@ -2,7 +2,7 @@
 
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
-const toAsyncIterable = require('stream-to-it/source')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 const configure = require('../lib/configure')
 const toCamelWithMetadata = require('../lib/object-to-camel-with-metadata')
 

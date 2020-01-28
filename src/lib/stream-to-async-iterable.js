@@ -1,5 +1,12 @@
 'use strict'
 
+const toAsyncIterableOriginal = require('stream-to-it/source')
+
+// Note: Turned this into a helper that wraps `stream-to-it/source`
+// to handle the body undefined case without requiring that other libs
+// that consume that package such as `js-ipfs` and `js-ipfs-utils` modify
+// how they use it
+
 module.exports = function toAsyncIterable (res) {
   const { body } = res
 
@@ -16,25 +23,5 @@ module.exports = function toAsyncIterable (res) {
     }
   }
 
-  // Node.js stream
-  if (body[Symbol.asyncIterator]) return body
-
-  // Browser ReadableStream
-  if (body.getReader) {
-    return (async function * () {
-      const reader = body.getReader()
-
-      try {
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) return
-          yield value
-        }
-      } finally {
-        reader.releaseLock()
-      }
-    })()
-  }
-
-  throw new Error('unknown stream')
+  return toAsyncIterableOriginal(body)
 }

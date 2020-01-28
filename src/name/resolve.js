@@ -2,7 +2,7 @@
 
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
-const toAsyncIterable = require('stream-to-it/source')
+const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
   return async function * (path, options) {
