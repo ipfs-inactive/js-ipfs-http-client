@@ -3,7 +3,7 @@
 const CID = require('cids')
 const { Buffer } = require('buffer')
 const configure = require('./lib/configure')
-const toAsyncIterable = require('./lib/stream-to-async-iterable')
+const toAsyncIterable = require('stream-to-it/source')
 
 module.exports = configure(({ ky }) => {
   return async function * cat (path, options) {

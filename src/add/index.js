@@ -1,8 +1,9 @@
 'use strict'
 
 const ndjson = require('iterable-ndjson')
+const CID = require('cids')
 const configure = require('../lib/configure')
-const toAsyncIterable = require('../lib/stream-to-async-iterable')
+const toAsyncIterable = require('stream-to-it/source')
 const { toFormData } = require('./form-data')
 const toCamel = require('../lib/object-to-camel')
 
@@ -42,7 +43,7 @@ module.exports = configure(({ ky }) => {
 
     for await (let file of ndjson(toAsyncIterable(res))) {
       file = toCamel(file)
-      // console.log(file)
+
       if (options.progress && file.bytes) {
         options.progress(file.bytes)
       } else {
@@ -52,15 +53,22 @@ module.exports = configure(({ ky }) => {
   }
 })
 
-function toCoreInterface ({ name, hash, size, mode, mtime }) {
+function toCoreInterface ({ name, hash, size, mode, mtime, mtimeNsecs }) {
   const output = {
     path: name,
-    hash,
+    cid: new CID(hash),
     size: parseInt(size)
   }
 
-  if (mode !== undefined) {
+  if (mode != null) {
     output.mode = parseInt(mode, 8)
+  }
+
+  if (mtime != null) {
+    output.mtime = {
+      secs: mtime,
+      nsecs: mtimeNsecs || 0
+    }
   }
 
   return output

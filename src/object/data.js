@@ -3,24 +3,21 @@
 const { Buffer } = require('buffer')
 const CID = require('cids')
 const configure = require('../lib/configure')
-const toAsyncIterable = require('../lib/stream-to-async-iterable')
 
 module.exports = configure(({ ky }) => {
-  return async function * data (cid, options) {
+  return async function data (cid, options) {
     options = options || {}
 
     const searchParams = new URLSearchParams(options.searchParams)
     searchParams.set('arg', `${Buffer.isBuffer(cid) ? new CID(cid) : cid}`)
 
-    const res = await ky.post('object/data', {
+    const data = await ky.post('object/data', {
       timeout: options.timeout,
       signal: options.signal,
       headers: options.headers,
       searchParams
-    })
+    }).arrayBuffer()
 
-    for await (const chunk of toAsyncIterable(res)) {
-      yield Buffer.from(chunk)
-    }
+    return Buffer.from(data)
   }
 })

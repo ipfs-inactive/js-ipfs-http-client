@@ -3,8 +3,7 @@
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
 const configure = require('../lib/configure')
-const toAsyncIterable = require('../lib/stream-to-async-iterable')
-const toCamel = require('../lib/object-to-camel')
+const toAsyncIterable = require('stream-to-it/source')
 
 module.exports = configure(({ ky }) => {
   return async function * rm (cid, options) {
@@ -31,7 +30,19 @@ module.exports = configure(({ ky }) => {
     })
 
     for await (const removed of ndjson(toAsyncIterable(res))) {
-      yield toCamel(removed)
+      yield toCoreInterface(removed)
     }
   }
 })
+
+function toCoreInterface (removed) {
+  const out = {
+    cid: new CID(removed.Hash)
+  }
+
+  if (removed.Error) {
+    out.error = new Error(removed.Error)
+  }
+
+  return out
+}

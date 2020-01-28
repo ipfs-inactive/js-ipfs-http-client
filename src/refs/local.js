@@ -2,7 +2,7 @@
 
 const configure = require('../lib/configure')
 const ndjson = require('iterable-ndjson')
-const toAsyncIterable = require('../lib/stream-to-async-iterable')
+const toAsyncIterable = require('stream-to-it/source')
 const toCamel = require('../lib/object-to-camel')
 
 module.exports = configure(({ ky }) => {
