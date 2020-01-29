@@ -69,7 +69,7 @@
     "browser-process-platform": "~0.1.1",
     "go-ipfs-dep": "^0.4.22",
     "interface-ipfs-core": "^0.129.0",
-    "ipfsd-ctl": "^1.0.2",
+    "ipfsd-ctl": "^2.0.0",
     "it-all": "^1.0.1",
     "it-concat": "^1.0.0",
     "it-pipe": "^1.1.0",
