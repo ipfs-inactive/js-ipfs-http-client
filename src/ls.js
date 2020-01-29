@@ -3,7 +3,7 @@
 const { Buffer } = require('buffer')
 const CID = require('cids')
 const ndjson = require('iterable-ndjson')
-const toAsyncIterable = require('../lib/stream-to-async-iterable')
+const toAsyncIterable = require('./lib/stream-to-async-iterable')
 const configure = require('./lib/configure')
 
 module.exports = configure(({ ky }) => {
