@@ -23,7 +23,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const result of ndjson(toAsyncIterable(res.body))) {
+    for await (const result of ndjson(toAsyncIterable(res))) {
       yield result.Path
     }
   }

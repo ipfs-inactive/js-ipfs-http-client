@@ -25,7 +25,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (let result of ndjson(toAsyncIterable(res.body))) {
+    for await (let result of ndjson(toAsyncIterable(res))) {
       result = result.Objects
 
       if (!result) {

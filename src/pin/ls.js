@@ -28,7 +28,7 @@ module.exports = configure(({ ky }) => {
       searchParams
     })
 
-    for await (const pin of ndjson(toAsyncIterable(res.body))) {
+    for await (const pin of ndjson(toAsyncIterable(res))) {
       if (pin.Keys) { // non-streaming response
         for (const cid of Object.keys(pin.Keys)) {
           yield { cid: new CID(cid), type: pin.Keys[cid].Type }
