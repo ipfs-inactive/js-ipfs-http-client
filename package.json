@@ -64,7 +64,7 @@
     "stream-to-it": "^0.2.0"
   },
   "devDependencies": {
-    "aegir": "^20.4.1",
+    "aegir": "^20.6.0",
     "async": "^3.1.0",
     "browser-process-platform": "~0.1.1",
     "go-ipfs-dep": "^0.4.23",
