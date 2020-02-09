@@ -41,7 +41,7 @@ module.exports = configure(({ ky }) => {
     for await (const { header, body } of extractor(toIterable(res.body))) {
       const file = {
         path: header.name,
-        mtime: { secs: header.mtime.getTime() },
+        mtime: { secs: Math.floor(header.mtime.getTime() / 1000) },
         mode: header.mode
       }
 
