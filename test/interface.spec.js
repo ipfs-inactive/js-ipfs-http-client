@@ -55,6 +55,14 @@ describe('interface-ipfs-core tests', () => {
         reason: 'TODO not implemented in go-ipfs yet'
       },
       {
+        name: 'should get file with mtime',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
+      {
+        name: 'should get file with mode',
+        reason: 'TODO not implemented in go-ipfs yet'
+      },
+      {
         name: 'should ls with metadata',
         reason: 'TODO not implemented in go-ipfs yet'
       }
