@@ -39,15 +39,16 @@ module.exports = configure(({ ky }) => {
     const extractor = Tar.extract()
 
     for await (const { header, body } of extractor(toIterable(res.body))) {
+      const file = {
+        path: header.name,
+        mtime: { secs: Math.floor(header.mtime.getTime() / 1000) },
+        mode: header.mode
+      }
+
       if (header.type === 'directory') {
-        yield {
-          path: header.name
-        }
+        yield file
       } else {
-        yield {
-          path: header.name,
-          content: body
-        }
+        yield { ...file, content: body }
       }
     }
   }
