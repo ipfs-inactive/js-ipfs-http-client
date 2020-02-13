@@ -55,7 +55,7 @@
     "ky": "^0.15.0",
     "ky-universal": "^0.3.0",
     "merge-options": "^2.0.0",
-    "multiaddr": "^7.2.1",
+    "multiaddr": "^7.3.1",
     "multiaddr-to-uri": "^5.1.0",
     "multibase": "~0.6.0",
     "multicodec": "^1.0.0",
