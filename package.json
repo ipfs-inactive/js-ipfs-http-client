@@ -67,7 +67,7 @@
     "aegir": "^20.4.1",
     "async": "^3.1.0",
     "browser-process-platform": "~0.1.1",
-    "go-ipfs-dep": "^0.4.23-3",
+    "go-ipfs-dep": "0.4.23-3",
     "interface-ipfs-core": "github:ipfs/interface-js-ipfs-core#store-pins-in-datastore",
     "ipfsd-ctl": "^3.0.0",
     "it-all": "^1.0.1",
