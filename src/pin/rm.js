@@ -4,7 +4,7 @@ const CID = require('cids')
 const configure = require('../lib/configure')
 
 module.exports = configure(({ ky }) => {
-  return async function * (path, options) {
+  return async function * (paths, options) {
     paths = Array.isArray(paths) ? paths : [paths]
     options = options || {}
 
