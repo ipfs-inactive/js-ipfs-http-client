@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "aegir": "^20.4.1",
-    "async": "^3.1.0",
+    "async": "^3.2.0",
     "browser-process-platform": "~0.1.1",
     "go-ipfs-dep": "^0.4.23-3",
     "interface-ipfs-core": "^0.131.7",
