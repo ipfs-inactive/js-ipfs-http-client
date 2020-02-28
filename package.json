@@ -52,7 +52,7 @@
     "it-tar": "^1.1.1",
     "it-to-stream": "^0.1.1",
     "iterable-ndjson": "^1.1.0",
-    "ky": "^0.15.0",
+    "ky": "^0.18.0",
     "ky-universal": "^0.3.0",
     "merge-options": "^2.0.0",
     "multiaddr": "^7.2.1",
