@@ -1,3 +1,9 @@
+# 🔒 Archived <!-- omit in toc -->
+
+The contents of this repo have been merged into [ipfs/js-ipfs](https://github.com/ipfs/js-ipfs).
+
+Please open [issues](https://github.com/ipfs/js-ipfs/issues) or submit [PRs](https://github.com/ipfs/js-ipfs/pulls) there.
+
 <h1 align="center">
   <a href="https://ipfs.io"><img width="650px" src="https://ipfs.io/ipfs/QmQJ68PFMDdAsgCZvA1UVzzn18asVcf7HVvCDgpjiSCAse" alt="IPFS http client lib logo" /></a>
 </h1>
@@ -54,7 +60,11 @@
     - [Instance Utils](#instance-utils)
     - [Static Types and Utils](#static-types-and-utils)
       - [Glob source](#glob-source)
+        - [`globSource(path, [options])`](#globsourcepath-options)
+        - [Example](#example)
       - [URL source](#url-source)
+        - [`urlSource(url)`](#urlsourceurl)
+        - [Example](#example-1)
 - [Development](#development)
   - [Testing](#testing)
 - [Contribute](#contribute)
