@@ -25,6 +25,16 @@ module.exports = config => {
       options = options || {}
 
       const resolved = await dagResolve(cid, path, options)
+
+      // TODO: delete this comment
+      // Return like this to be consistent with what core dag/get is returning
+      if (options.localResolve) {
+        return {
+          value: resolved.cid,
+          remainderPath: resolved.remPath
+        }
+      }
+
       const block = await getBlock(resolved.cid, options)
       const dagResolver = resolvers[block.cid.codec]
 
